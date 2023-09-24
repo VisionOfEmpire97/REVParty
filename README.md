@@ -29,4 +29,3 @@ _On pourra voir si on a besoin d'utiliser des pull requests au fur et à mesure.
 ### Trucs pas clairs 
 - à partir des [fichiers csv dispo](https://moodle.univ-tlse3.fr/mod/folder/view.php?id=407976) sur moodle, quelle est la syntaxe exacte qui nous permet de retrouver la ligne correspondant à notre vote vu que l'algorithme sha est sensible à la casse  
 _à noter que j'ai testé uniquement avec `sha256sum` et pas l'algo donné sur moodle_  
-- Comment compter les votes à partir d'un fichier ou tous les candidats sont classés ? **à débattre en réunion**  

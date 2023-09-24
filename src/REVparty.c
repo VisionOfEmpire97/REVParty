@@ -4,6 +4,7 @@
 ///       appelle la méthode de scrutin appropriée, et crée un fichier de vote anonymisé
 
 #include <stdio.h>
+#include <getopt.h>
 
 int main(int argc, char **argv){
     return 0;
