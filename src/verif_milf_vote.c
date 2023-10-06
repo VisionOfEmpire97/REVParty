@@ -42,10 +42,10 @@ int Minuscules(char *chaine) {
 
 /*Fonction lecture de la ligne du retour csv */
 /// \brief Fonction lecture de la ligne du retour csv
-/// \param[in] On récupere la ligne a afficher avec le résultat 
+/// \param[in] On récupere la ligne a afficher avec le résultat
 
 void affichage_ligne (char*ligne)
-{   
+{
     printf("Le vote qui correspond à mon code est : \n ");
     int longeur = strlen(ligne);
     for(int i=0;i<longeur;i++)
@@ -61,12 +61,12 @@ void affichage_ligne (char*ligne)
 /// \param[in] On récupere le nom , prenom , le code et le nom du csv dans argv
 
 int main(int argc, char* argv[])
-{   
+{
     char* nom;
     char* prenom;
     char* code;
     char* nom_csv ;
-    char * ligne ; 
+    char * ligne ;
     if (argc==5)
     {
         nom = argv[1];
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         code = argv[3];
         nom_csv = argv[4];
     }
-    else 
+    else
     {
         fprintf(stderr,"Veuillez mettre tout les parametres \n");
         exit(1);
@@ -82,13 +82,13 @@ int main(int argc, char* argv[])
 
     /* Passage en maj/min du nom et du prenom  */
     /// \brief Partie verif du nom/prenom du main
-    
+
     nom=Majuscule(nom);
     prenom=Minuscules(prenom);
 
 
     /* On fait le hash du code  */
-    /// \brief Partie hash du code client 
+    /// \brief Partie hash du code client
     int bufferSize = SHA256_BLOCK_SIZE;
     char hashRes[bufferSize*2 + 1]; // contiendra le hash en hexadécimal
 	char * item = malloc(STRLONG*sizeof(char)); // contiendra la chaîne à hasher
@@ -97,15 +97,15 @@ int main(int argc, char* argv[])
     strcat(item, code);
     printf("Affichage du nom prénom code concaténer %s \n" , item );
     sha256ofString((BYTE *)item,hashRes); // hashRes contient maintenant le hash du code avec le nom , prenom et code
-    /// \param[out] on récupere le hashRes qui contient le hash de nom , prenom et code  
+    /// \param[out] on récupere le hashRes qui contient le hash de nom , prenom et code
     printf("Affichage du Résultat de sha %s \n" , hashRes );
-    
+
 
     /* On appelle la fonction du lecteur_csv  */
-    /// \brief appelle du lecteur csv , affichage et fin de main 
+    /// \brief appelle du lecteur csv , affichage et fin de main
 
     //ligne = recherche_csv (hashRes,nom_csv);
-    /// \param[out] on récupere la ligne qui contient notre hash 
+    /// \param[out] on récupere la ligne qui contient notre hash
     affichage_ligne (ligne);
     free(item);
     printf(" Fin du programme de vérification  \n" );
