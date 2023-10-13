@@ -25,7 +25,7 @@ OBJET_UTILS = $(OBJDIR)/matrice.o
 #Exécutables
 
 vmv: dirs $(OBJ_SHA_UTILS)
-	$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(OBJ_SHA_UTILS)
+	$(CC) -o $(VERIFY_MY_VOTE) $(SRCDIR)/verify_milf_vote.c $(OBJ_SHA_UTILS)
 
 test_sha: dirs $(OBJ_SHA_UTILS)
 	$(CC) -o $(EXECDIR)/$@ $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
