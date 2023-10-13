@@ -10,11 +10,13 @@ EXECDIR = bin
 SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
+MATDIR = $(SRCDIR)/utils_sd/matrice/
 
 #Exécutables
 VERIFY_MY_VOTE = $(EXECDIR)/verify_my_vote
 PROG_PRINCIPAL = $(EXECDIR)/revparty
 TESTSHA = $(EXECDIR)/test_sha
+TESTMAT = $(EXECDIR)/testStructMatrice
 
 #Objets
 OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
@@ -27,6 +29,9 @@ vmv: dirs $(OBJ_SHA_UTILS)
 
 test_sha: dirs $(OBJ_SHA_UTILS)
 	$(CC) -o $(EXECDIR)/$@ $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
+
+test_matrice: dirs $(OBJET_UTILS)
+	$(CC) -O $(TESTMAT) $(OBJET_UTILS)
 
 #REVparty: TODO
 #	$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
