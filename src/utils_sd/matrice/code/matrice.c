@@ -6,7 +6,7 @@ typedef struct t_mat_char
 {
     int ligne;
     int col;
-    int nbelem;
+    int nb_elem;
     char ***matrice;
 } t_mat_char_star_dyn;
 
@@ -15,7 +15,7 @@ t_mat_char_star_dyn *creer_matrice(int ligne, int colonne)
     t_mat_char_star_dyn *m = malloc(sizeof(struct t_mat_char));
     m->ligne = ligne;
     m->col = colonne;
-    m->nbelem = 0;
+    m->nb_elem = 0;
     m->matrice = (char ***)malloc(ligne * sizeof(char **));
     for (int i = 0; i < ligne; i++)
     {
@@ -30,7 +30,7 @@ t_mat_char_star_dyn *creer_matrice(int ligne, int colonne)
 
 t_mat_char_star_dyn *inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
 {
-    int no = mat->nbelem;
+    int no = mat->nb_elem;
     int ligne = mat->ligne;
     int colonne = mat->col;
     if (no < (ligne) * (colonne))
@@ -39,7 +39,7 @@ t_mat_char_star_dyn *inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat
         int l = no / colonne;
         int c = no % colonne;
         mat->matrice[l][c] = chaine;
-        (mat->nbelem)++;
+        (mat->nb_elem)++;
     }
     return mat;
 }
