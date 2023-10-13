@@ -14,8 +14,9 @@
 
 char data[N];
 
-char** lecture_par_ligne(char buffer[],FILE* file ){
 
+t_mat_char_star_dyn *lecture_par_ligne(char buffer[],FILE* file ){
+t_mat_char_star_dyn *mat = creer_matrice(5, 5);
     fgets(buffer, sizeof(buffer), file);
     printf("%s", buffer);
     char* tok = strtok(buffer, SEPARATEUR);
@@ -25,10 +26,11 @@ char** lecture_par_ligne(char buffer[],FILE* file ){
     tok = strcat(tok,strtok(NULL, SEPARATEUR));
     sscanf(tok, "%s", data); 
     printf("%s\n", data);
-    return data;
+    return mat;
 }
 
-char** lecture_par_col(char buffer[], FILE* file){
+t_mat_char_star_dyn *lecture_par_col(char buffer[], FILE* file){
+    t_mat_char_star_dyn *mat = creer_matrice(5, 5);
     while (fgets(buffer, sizeof(buffer), file)!=NULL)
     {
         printf("%s\n", buffer);
@@ -36,7 +38,7 @@ char** lecture_par_col(char buffer[], FILE* file){
         sscanf(tok, "%s", data); 
         printf("%s\n", data);
     }
-    return data;
+    return mat;
 
 }
 
