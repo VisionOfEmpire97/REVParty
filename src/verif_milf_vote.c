@@ -3,8 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "sha256.h"
-#include "sha256_utils.h"
+#include "SHA256/sha256.h"
+#include "SHA256/sha256_utils.h"
 //#include "lecture_csv"
 #define STRLONG 60
 
@@ -13,8 +13,6 @@
 
 /*Fonction verification majuscule pour le nom */
 /// \brief Fonction verification majuscule pour le nom
-/// \author Antoine Vallat
-/// \date 13 octobre 2023
 /// \param[in] On récupere le nom
 
 int Majuscule(const char *chaine) {
@@ -28,8 +26,6 @@ int Majuscule(const char *chaine) {
 
 /*Fonction verification minuscule pour le prenom */
 /// \brief Fonction verification minuscule pour le prenom
-/// \author Antoine Vallat
-/// \date 13 octobre 2023
 /// \remarks on commence au deuxieme caractere comme le premier doit etre une majuscule
 /// \param[in] On récupere le prenom
 
@@ -44,17 +40,15 @@ int Minuscules(const char *chaine) {
 
 /*Fonction lecture de la ligne du retour csv */
 /// \brief Fonction lecture de la ligne du retour csv
-/// \author Antoine Vallat
-/// \date 13 octobre 2023
 /// \param[in] On récupere la ligne a afficher avec le résultat 
 
 void affichage_ligne (char*ligne)
 {   
     printf("Le vote qui correspond à mon code est : \n ");
     int longeur = strlen(ligne);
-    for(int i=0;i<longeur,i++)
+    for(int i=0;i<longeur;i++)
     {
-        printf("%s \t",ligne[i]);
+        printf("%d \t",ligne[i]);
     }
 }
 
@@ -82,7 +76,7 @@ int main(int argc, char* argv[])
     /* vérification du nom et du prenom  */
     /// \brief Partie verif du nom/prenom du main
     
-    while (Majuscules(nom) == 0) {
+    while (Majuscule(nom) == 0) {
         printf("Le nom n'est pas en majuscules. Veuillez réessayer : ");
         scanf("%s", nom);
     }
@@ -111,7 +105,7 @@ int main(int argc, char* argv[])
     /* On appelle la fonction du lecteur_csv  */
     /// \brief appelle du lecteur csv , affichage et fin de main 
 
-    ligne = recherche_csv (hashRes,nom_csv);
+    //ligne = recherche_csv (hashRes,nom_csv);
     /// \param[out] on récupere la ligne qui contient notre hash 
     affichage_ligne (ligne);
     free(item);
