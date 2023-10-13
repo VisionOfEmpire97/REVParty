@@ -8,34 +8,36 @@
 //#include "lecture_csv"
 #define STRLONG 60
 
-#define LONGEUR_MAX 60
 
 
-/*Fonction verification majuscule pour le nom */
+/*Fonction met en majuscule pour le nom */
 /// \brief Fonction verification majuscule pour le nom
 /// \param[in] On récupere le nom
 
-int Majuscule(const char *chaine) {
+int Majuscule(char *chaine) {
     for (int i = 0; chaine[i] != '\0'; i++) {
-        if (!isupper(chaine[i])) {
-            return 0; // Au moins un caractère n'est pas en majuscule
+        if (islower(chaine[i])) {
+            chaine[i] = toupper(chaine[i]); // Convertir la lettre minuscule en majuscule
         }
     }
-    return 1; // Tous les caractères sont en majuscules
+    return 1; // La chaîne est maintenant en majuscules
 }
-
-/*Fonction verification minuscule pour le prenom */
-/// \brief Fonction verification minuscule pour le prenom
+/*Fonction met en minuscule pour le prenom */
+/// \brief Fonction passe en minuscule le prenom et sa première lettre en majuscule
 /// \remarks on commence au deuxieme caractere comme le premier doit etre une majuscule
 /// \param[in] On récupere le prenom
 
-int Minuscules(const char *chaine) {
+int Minuscules(char *chaine) {
+    if (chaine[0] != '\0') {
+        chaine[0] = toupper(chaine[0]); // Mettre en majuscule la première lettre
+    }
+
     for (int i = 1; chaine[i] != '\0'; i++) {
-        if (!islower(chaine[i])) {
-            return 0; // Au moins un caractère n'est pas en minuscule
+        if (isupper(chaine[i])) {
+            chaine[i] = tolower(chaine[i]); // Convertir les lettres majuscules en minuscules
         }
     }
-    return 1; // Tous les caractères sont en minuscules
+    return 1; // La chaîne a été convertie en minuscules, sauf la première lettre
 }
 
 /*Fonction lecture de la ligne du retour csv */
@@ -62,40 +64,37 @@ int main(int argc, char* argv[])
 {   
     char* nom;
     char* prenom;
-    int code;
+    char* code;
     char* nom_csv ;
     char * ligne ; 
-    if (argc>1)
+    if (argc==5)
     {
         nom = argv[1];
         prenom = argv[2];
-        code = atoi(argv[3]);
+        code = argv[3];
         nom_csv = argv[4];
     }
+    else 
+    {
+        fprintf(stderr,"Veuillez mettre tout les parametres \n");
+        exit(1);
+    }
 
-    /* vérification du nom et du prenom  */
+    /* Passage en maj/min du nom et du prenom  */
     /// \brief Partie verif du nom/prenom du main
     
-    while (Majuscule(nom) == 0) {
-        printf("Le nom n'est pas en majuscules. Veuillez réessayer : ");
-        scanf("%s", nom);
-    }
- 
-    while (Minuscules(prenom) == 0 || islower(prenom[0])) {
-        printf("Le Prenom n'est pas en minuscule ou la première lettre n'est pas en majuscule. Veuillez réessayer : ");
-        scanf("%s", prenom);
-    }
+    nom=Majuscule(nom);
+    prenom=Minuscules(prenom);
+
 
     /* On fait le hash du code  */
     /// \brief Partie hash du code client 
     int bufferSize = SHA256_BLOCK_SIZE;
     char hashRes[bufferSize*2 + 1]; // contiendra le hash en hexadécimal
 	char * item = malloc(STRLONG*sizeof(char)); // contiendra la chaîne à hasher
-    char * chaine_code = malloc(STRLONG*sizeof(char));// contiendra le code à hasher
-    sprintf(chaine_code, "%d", code);
     strcat(item, nom);
     strcat(item, prenom);
-    strcat(item, chaine_code);
+    strcat(item, code);
     printf("Affichage du nom prénom code concaténer %s \n" , item );
     sha256ofString((BYTE *)item,hashRes); // hashRes contient maintenant le hash du code avec le nom , prenom et code
     /// \param[out] on récupere le hashRes qui contient le hash de nom , prenom et code  
