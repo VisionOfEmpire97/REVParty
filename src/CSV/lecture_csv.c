@@ -109,7 +109,7 @@ int main(int argc, char const *argv[])
 
 
     // sscanf(tok, "%s", data); 
-    // printf("%s\n", data);
+    // printf("%s\n", data); 
     
     // lecture_par_col(buffer, file);
     
