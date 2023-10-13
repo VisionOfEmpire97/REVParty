@@ -12,7 +12,7 @@
 #define N 10
 #define SEPARATEUR ","
 
-char data[N], data2[N], data3[N], data4[N], data5[N];
+char data[N];
 
 char** lecture_par_ligne(char buffer[],FILE* file ){
 
