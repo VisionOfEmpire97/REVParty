@@ -12,7 +12,7 @@ typedef struct t_mat_char t_mat_char_star_dyn;
 
 t_mat_char_star_dyn *creer_matrice(int ligne, int colonne);
 
-/// \brief insertion dans une machine
+/// \brief insertion dans une matrice
 /// \param chaine l'element a inserer
 /// \param mat la matrice dans laquelle on va inserer l'element
 /// \return la nouvelle matrice avec l'element place dans la matrice
