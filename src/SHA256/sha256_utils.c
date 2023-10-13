@@ -26,7 +26,7 @@
 
 /*********************** FUNCTION DEFINITIONS ***********************/
 
-void sha256ofString(BYTE* str,char hashRes[SHA256_BLOCK_SIZE*2 + 1])
+void sha256ofString(BYTE * str,char hashRes[SHA256_BLOCK_SIZE*2 + 1])
 // attention tous vos hash doivent avoir ce format. Char * ne convient pas.
 // J'ai perdu deux jours avec cette subtilité
 {
