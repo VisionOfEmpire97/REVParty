@@ -1,4 +1,4 @@
-#include "../code/matrice.h"
+#include "../matrice.h"
 /// \brief program de teste sur une matrice
 
 int main(void)
