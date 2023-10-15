@@ -53,3 +53,6 @@ dkms.conf
 
 #Object and executables
 /bin/*
+
+#VSCode
+.vscode/
