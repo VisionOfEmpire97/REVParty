@@ -1,4 +1,6 @@
-# work in progress it doesn't work
+# WIP
+# Authored by ROSET Nathan for use during the REV party project (Autumn 2023)
+
 CC = gcc
 COMPILEARGS = -std=c11 -Wall
 #INC = -I.
@@ -25,24 +27,29 @@ OBJET_UTILS = $(OBJDIR)/matrice.o
 #Exécutables
 
 vmv: dirs $(OBJ_SHA_UTILS)
-	$(CC) -o $(VERIFY_MY_VOTE) $(SRCDIR)/verify_milf_vote.c $(OBJ_SHA_UTILS)
+	@$(CC) -o $(VERIFY_MY_VOTE) $(SRCDIR)/verify_milf_vote.c $(OBJ_SHA_UTILS)
 
 test_sha: dirs $(OBJ_SHA_UTILS)
-	$(CC) -o $(EXECDIR)/$@ $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
+	@$(CC) -o $(EXECDIR)/$@ $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
+	@echo "succès ! L'exécutable test_sha est situé dans bin/$@"
 
 test_matrice: dirs $(OBJET_UTILS)
-	$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
+	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
 
 #REVparty: TODO
-#	$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
+#	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
 
-$(OBJDIR)/%.o: $(MATDIR)/%.c
-	$(CC) -o $@ -c $< $(COMPILEARGS) 
+vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
+
+$(OBJDIR)/%.o: %.c
+	@$(CC) -o $@ -c $< $(COMPILEARGS) 
 
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
 	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi	
 
 clean:
-	rm -f $(OBJDIR)/*.o
-	rm -f $(EXECDIR)/* 
+	@rm -f $(OBJDIR)/*.o
+	@echo "fichiers objets supprimés avec succès"
+	@rm -f $(EXECDIR)/*
+	@echo "fichiers exécutables supprimés avec succès"
