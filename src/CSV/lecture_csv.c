@@ -21,7 +21,7 @@ t_mat_char_star_dyn *lecture_par_ligne(FILE* file ){
 
     
     // if (fopen(file, "r")==NULL)
-    // {
+    // { 
     //     perror("Echec ouverture fichier");
     //     exit(1);
     // }
