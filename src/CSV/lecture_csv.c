@@ -6,43 +6,27 @@
 #include "../utils_sd/matrice/matrice.h"
 
 #define SEPARATEUR ","
-
-char* data;
-
+#define BUFF_SIZE 300
 
 
+t_mat_char_star_dyn *lecture_par_ligne(const char *nom_fichier ){
 
-t_mat_char_star_dyn *lecture_par_ligne(FILE* file ){
-
-    
-    if (fopen(file, "r")==NULL)
-    { 
-        perror("Echec ouverture fichier");
-        exit(1);
-    }
-    
-    void *mat = creer_matrice();
+    FILE *file = fopen(nom_fichier, "r");  
+    t_mat_char_star_dyn *mat = creer_matrice(); 
     char* tok;
     char buffer[300];
+
     fgets(buffer, sizeof(buffer), file);
     ajouter_ligne(mat);
     inserer_chaine_matrice(buffer,mat);
-    
-    // tok = strtok(buffer, SEPARATEUR);
-    // inserer_matrice_char(tok, mat);
-    // tok = strtok(NULL, SEPARATEUR); 
-    // while (tok!=NULL)
-    // {
-    // inserer_matrice_char(tok, mat);
-    // tok = strtok(NULL, SEPARATEUR);    
-    // }
     afficher_matrice_char(mat); 
     fclose(file); 
     return mat;
 
 }
+
 void inserer_chaine_matrice(char * chaine, t_mat_char_star_dyn *mat){
-    char *chaine2;
+    char *chaine2=malloc(strlen(chaine) + 1);    /*Free???*/
     strcpy(chaine2, chaine);
     char*  tok = strtok(chaine2, SEPARATEUR);
     inserer_matrice_char(tok, mat);
@@ -52,20 +36,18 @@ void inserer_chaine_matrice(char * chaine, t_mat_char_star_dyn *mat){
     inserer_matrice_char(tok, mat);
     tok = strtok(NULL, SEPARATEUR);    
     }
+    
 }
 
-t_mat_char_star_dyn *recherche_hash(char * hash, FILE* file){
+t_mat_char_star_dyn *recherche_hash(char * hash, const char *nom_fichier){
     
-    if (fopen(file, "r")==NULL)
-    { 
-        perror("Echec ouverture fichier");
-        exit(1);
-    }
+    FILE* file = fopen(nom_fichier, "r");
+    
     t_mat_char_star_dyn *mat = creer_matrice();
-
-    char buffer[300];
-    char buffer2[300]; 
+    char buffer[BUFF_SIZE];
+    char buffer2[BUFF_SIZE]; 
     int found=0;
+    
 
      while (fgets(buffer, sizeof(buffer), file)!=NULL&& !found)
     {   
@@ -81,61 +63,9 @@ t_mat_char_star_dyn *recherche_hash(char * hash, FILE* file){
             found=1; 
         }
 
-    }printf("%s\n",found?"found":"not found");
+    }
+    printf("%s\n\n",found?"Hash retourvé!":"Votre hash ne correspond pas.");
+
     fclose(file);
     return mat;
-    
-}
-
-
-
-
-
-int main(int argc, char const *argv[])
-{
-    if (argc != 2)
-    {
-        fprintf(stderr, "Usage: %s port", argv[0]);
-        exit(1);
-    }
-    
-    FILE* file = fopen(argv[1], "r");
-    if (file == NULL)
-    {
-        perror("Echec ouverture fichier");
-        exit(2);
-    }
-
-
-   
-    
-
-    afficher_matrice_char(recherche_hash("83020643a5c92bb5b6ee269146c64a9b989bf203f0fc1348f1479bc637469056", file));
-
-    
-
-    // lecture_par_ligne(file);
-
-
-
-    // while (!feof(file))
-    // {
-    //     lecture_par_ligne(file);
-    // }
-    
-    
-
-    // printf("===================================================\n");
-
-
-
-    fclose(file);
-    
-
-
-    
-    
-
-
-    return 0;
 }
