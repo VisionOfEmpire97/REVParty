@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "matrice.h"
-
+#include "stdbool.h"
 typedef struct t_mat_char
 {
     int ligne;
@@ -17,23 +17,23 @@ t_mat_char_star_dyn *creer_matrice()
     m->col = 0;
     m->nb_elem = 0;
     m->matrice = (char ***)malloc(sizeof(char **));
-
+    m->matrice[0] = (char **)malloc(sizeof(char *));
     return m;
 }
 
-t_mat_char_star_dyn *inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
+int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
 {
     int no = mat->nb_elem;
+
+    if ((mat->ligne) == 1)
+    {
+
+        mat->col++;
+
+        mat->matrice[0] = (char **)realloc(mat->matrice[0], (mat->col) * sizeof(char *));
+    }
     int ligne = mat->ligne;
     int colonne = mat->col;
-   
-    if(ligne==1){
-         mat->col++;
-         colonne = mat->col;
-        realloc(mat->matrice[0],colonne * sizeof(char *));
-
-    }
-
     if (no < (ligne) * (colonne))
     {
         // recuperer la case en fonction du nombre d'element
@@ -41,10 +41,13 @@ t_mat_char_star_dyn *inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat
         int c = no % colonne;
         mat->matrice[l][c] = chaine;
         (mat->nb_elem)++;
-    }      
-    
+    }
+    else
+    {
+        return -1;
+    }
 
-    return mat;
+    return 0;
 }
 
 void afficher_matrice_char(t_mat_char_star_dyn *mat)
@@ -66,7 +69,6 @@ void supprimer_matrice_char(t_mat_char_star_dyn *mat)
 {
     char ***M = mat->matrice;
     int L = mat->ligne;
-    int C = mat->col;
     for (int i = 0; i < L; i++)
     {
         free(M[i]);
@@ -74,8 +76,24 @@ void supprimer_matrice_char(t_mat_char_star_dyn *mat)
     free(M);
     free(mat);
 }
-t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat){
-    mat->ligne++;
-    realloc(mat->matrice,((mat->ligne)* sizeof(char **)));
+
+t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat)
+{
+    (mat->ligne)++;
+
+    (mat->matrice) = (char ***)realloc((mat->matrice), ((mat->ligne) * sizeof(char **)));
+    for (int i = 1; i < (mat->ligne); i++)
+    {
+        mat->matrice[i] = (char **)malloc((mat->col) * sizeof(char *));
+        for (int j = 0; j < (mat->col); j++)
+        {
+            mat->matrice[i][j] = "~";
+        }
+    }
     return mat;
+}
+
+bool est_matrice_vide(t_mat_char_star_dyn *mat)
+{
+    return mat->nb_elem == 0;
 }
