@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "matrice.h"
 #include "stdbool.h"
+#include "stdbool.h"
 typedef struct t_mat_char
 {
     int ligne;
