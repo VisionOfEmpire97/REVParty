@@ -1,6 +1,6 @@
 #ifndef __MATRICE_H__
 #define __MATRICE_H__
-
+#include "stdbool.h"
 /// \brief structure de donnee matrice
 /// \struct t_mat_char_star_dyn une structure de matrice de chaine dynamique
 typedef struct t_mat_char t_mat_char_star_dyn;
@@ -25,8 +25,12 @@ void afficher_matrice_char(t_mat_char_star_dyn *mat);
 /// \param mat la structure a liberer
 void supprimer_matrice_char(t_mat_char_star_dyn *mat);
 
+/// \brief ajouter une ligne a la matrice
+/// \param mat
+/// \return la matyrice en entree avec une ligne ajouté
 t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
 
-
-
+/// @brief renvoie si la matrice est vide ou non
+/// @param mat
+bool est_matrice_vide(t_mat_char_star_dyn *mat);
 #endif
