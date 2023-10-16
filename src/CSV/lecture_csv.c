@@ -1,8 +1,3 @@
-/// \author Equipe 001
-/// \date 23 Septembre 2023
-/// \file le fichier lecture_csv devrait prendre un fichier CSV 
-///       et retourner une matrice de type t_mat_char_star_dyn ????
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -20,11 +15,11 @@ char* data;
 t_mat_char_star_dyn *lecture_par_ligne(FILE* file ){
 
     
-    // if (fopen(file, "r")==NULL)
-    // { 
-    //     perror("Echec ouverture fichier");
-    //     exit(1);
-    // }
+    if (fopen(file, "r")==NULL)
+    { 
+        perror("Echec ouverture fichier");
+        exit(1);
+    }
     
     void *mat = creer_matrice();
     char* tok;
@@ -41,7 +36,8 @@ t_mat_char_star_dyn *lecture_par_ligne(FILE* file ){
     // inserer_matrice_char(tok, mat);
     // tok = strtok(NULL, SEPARATEUR);    
     // }
-    afficher_matrice_char(mat);  
+    afficher_matrice_char(mat); 
+    fclose(file); 
     return mat;
 
 }
@@ -59,12 +55,14 @@ void inserer_chaine_matrice(char * chaine, t_mat_char_star_dyn *mat){
 }
 
 t_mat_char_star_dyn *recherche_hash(char * hash, FILE* file){
+    
+    if (fopen(file, "r")==NULL)
+    { 
+        perror("Echec ouverture fichier");
+        exit(1);
+    }
     t_mat_char_star_dyn *mat = creer_matrice();
-    // if (fopen(file, "r")==NULL)
-    // {
-    //     perror("Echec ouverture fichier");
-    //     exit(1);
-    // }
+
     char buffer[300];
     char buffer2[300]; 
     int found=0;
@@ -80,12 +78,11 @@ t_mat_char_star_dyn *recherche_hash(char * hash, FILE* file){
         {   
             ajouter_ligne(mat);
             inserer_chaine_matrice(buffer2,mat);
-            // printf("%s\n", buffer2);
             found=1; 
         }
-        
 
     }printf("%s\n",found?"found":"not found");
+    fclose(file);
     return mat;
     
 }
