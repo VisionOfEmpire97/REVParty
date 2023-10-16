@@ -14,7 +14,7 @@ t_mat_char_star_dyn *creer_matrice();
 /// \brief insertion dans une matrice
 /// \param chaine l'element a inserer
 /// \param mat la matrice dans laquelle on va inserer l'element
-/// \return 0 si la valeur a bien été inséré
+/// \return 0 si la valeur a bien été inséré -1 sinon
 
 int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
 
@@ -31,7 +31,7 @@ void supprimer_matrice_char(t_mat_char_star_dyn *mat);
 /// \return la matyrice en entree avec une ligne ajouté
 t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
 
-/// @brief renvoie si la matrice est vide ou non
-/// @param mat
+/// \brief renvoie si la matrice est vide ou non
+/// \param mat
 bool est_matrice_vide(t_mat_char_star_dyn *mat);
 #endif
