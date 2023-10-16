@@ -14,8 +14,9 @@ t_mat_char_star_dyn *creer_matrice();
 /// \brief insertion dans une matrice
 /// \param chaine l'element a inserer
 /// \param mat la matrice dans laquelle on va inserer l'element
-/// \return la nouvelle matrice avec l'element place dans la matrice
-t_mat_char_star_dyn *inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
+/// \return 0 si la valeur a bien été inséré
+
+int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
 
 /// \brief faire l'affichage d'une matrice
 /// \param mat la matrice a afficher

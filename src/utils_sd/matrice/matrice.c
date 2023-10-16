@@ -21,7 +21,7 @@ t_mat_char_star_dyn *creer_matrice()
     return m;
 }
 
-t_mat_char_star_dyn *inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
+int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
 {
     int no = mat->nb_elem;
 
@@ -42,8 +42,12 @@ t_mat_char_star_dyn *inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat
         mat->matrice[l][c] = chaine;
         (mat->nb_elem)++;
     }
+    else
+    {
+        return -1;
+    }
 
-    return mat;
+    return 0;
 }
 
 void afficher_matrice_char(t_mat_char_star_dyn *mat)
@@ -72,6 +76,7 @@ void supprimer_matrice_char(t_mat_char_star_dyn *mat)
     free(M);
     free(mat);
 }
+
 t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat)
 {
     (mat->ligne)++;
@@ -87,6 +92,7 @@ t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat)
     }
     return mat;
 }
+
 bool est_matrice_vide(t_mat_char_star_dyn *mat)
 {
     return mat->nb_elem == 0;
