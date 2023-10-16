@@ -54,13 +54,14 @@ int main(int argc, char const *argv[])
         exit(2);
     }
 
-    lecture_par_ligne(file);
-    lecture_par_ligne(file);
-    lecture_par_ligne(file);
-    lecture_par_ligne(file);
-    lecture_par_ligne(file);
-    lecture_par_ligne(file);
 
+
+    while (!feof(file))
+    {
+        lecture_par_ligne(file);
+    }
+    
+    
 
     printf("===================================================\n");
 
