@@ -29,6 +29,7 @@ t_mat_char_star_dyn *inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat
    
     if(ligne==1){
          mat->col++;
+         colonne = mat->col;
         realloc(mat->matrice[0],colonne * sizeof(char *));
 
     }
@@ -75,6 +76,6 @@ void supprimer_matrice_char(t_mat_char_star_dyn *mat)
 }
 t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat){
     mat->ligne++;
-    realloc(mat->matrice,(mat->ligne* sizeof(char **)));
+    realloc(mat->matrice,((mat->ligne)* sizeof(char **)));
     return mat;
 }

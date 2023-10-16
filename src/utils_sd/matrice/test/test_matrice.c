@@ -4,9 +4,10 @@
 int main(void)
 {
     /// creation de la matrice
-    t_mat_char_star_dyn *ma_matrice = creer_matrice(1, 2);
+    t_mat_char_star_dyn *ma_matrice = creer_matrice();
 
     /// insertion des valeurs dans la matrice
+    ajouter_ligne(ma_matrice);
     inserer_matrice_char("1", ma_matrice);
 
     inserer_matrice_char("2", ma_matrice);

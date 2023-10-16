@@ -26,11 +26,11 @@ t_mat_char_star_dyn *lecture_par_ligne(FILE* file ){
     //     exit(1);
     // }
     
-    void *mat = creer_matrice(1, 15);
+    void *mat = creer_matrice();
     char* tok;
     char buffer[300];
     fgets(buffer, sizeof(buffer), file);
-    /*==============================================ajouter_ligne(matrice)===========*/
+    ajouter_ligne(mat);
     inserer_chaine_matrice(buffer,mat);
     
     // tok = strtok(buffer, SEPARATEUR);
@@ -59,7 +59,7 @@ void inserer_chaine_matrice(char * chaine, t_mat_char_star_dyn *mat){
 }
 
 t_mat_char_star_dyn *recherche_hash(char * hash, FILE* file){
-    t_mat_char_star_dyn *mat = creer_matrice(1, 15);
+    t_mat_char_star_dyn *mat = creer_matrice();
     // if (fopen(file, "r")==NULL)
     // {
     //     perror("Echec ouverture fichier");
@@ -77,7 +77,8 @@ t_mat_char_star_dyn *recherche_hash(char * hash, FILE* file){
         tok = strtok(NULL, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
          if (!strcmp(tok, hash))
-        {
+        {   
+            ajouter_ligne(mat);
             inserer_chaine_matrice(buffer2,mat);
             // printf("%s\n", buffer2);
             found=1; 
