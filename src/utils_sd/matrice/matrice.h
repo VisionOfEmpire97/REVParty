@@ -10,8 +10,7 @@ typedef struct t_mat_char t_mat_char_star_dyn;
 /// \param colonne nombre de colonne de la matrice
 /// \return une matrice de charactere bien initialisee avec la chaine vide
 
-t_mat_char_star_dyn *creer_matrice(int ligne, int colonne);
-
+t_mat_char_star_dyn *creer_matrice();
 /// \brief insertion dans une matrice
 /// \param chaine l'element a inserer
 /// \param mat la matrice dans laquelle on va inserer l'element
@@ -25,5 +24,9 @@ void afficher_matrice_char(t_mat_char_star_dyn *mat);
 /// \brief liberer la memoire alloué a la structure
 /// \param mat la structure a liberer
 void supprimer_matrice_char(t_mat_char_star_dyn *mat);
+
+t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
+
+
 
 #endif
