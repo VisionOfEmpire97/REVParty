@@ -10,50 +10,31 @@
 #include "lecture_csv.h"
 #include "../utils_sd/matrice/code/matrice.h"
 
-#define N 10
 #define SEPARATEUR ","
 
 char* data;
 
 
-t_mat_char_star_dyn *lecture_par_ligne(char* buffer,FILE* file ){
+
+t_mat_char_star_dyn *lecture_par_ligne(FILE* file ){
 
     void *mat = creer_matrice(1, 6);
-
-    fgets(buffer, sizeof(char*), file);
+    char* tok;
+    char buffer[100];
+    fgets(buffer, sizeof(buffer), file);
     
-    printf("%s\n", buffer);
-    
-    
-    char* tok = strtok(buffer, SEPARATEUR);
+    tok = strtok(buffer, SEPARATEUR);
     inserer_matrice_char(tok, mat);
-    tok = strtok(NULL, SEPARATEUR);
-    inserer_matrice_char(tok, mat);
-    tok = strtok(NULL, SEPARATEUR);
-    inserer_matrice_char(tok, mat);
-    tok = strtok(NULL, SEPARATEUR);
-    inserer_matrice_char(tok, mat);
-    // tok = strtok(NULL, SEPARATEUR);
-    // inserer_matrice_char(tok, mat);
-
-    printf("test\n");
-    afficher_matrice_char(mat);
-   
-    return mat;
-}
-
-t_mat_char_star_dyn *lecture_par_col(char buffer[], FILE* file){
-    t_mat_char_star_dyn *mat = creer_matrice(6, 1);
-    while (fgets(buffer, sizeof(char*), file)!=NULL)
+    tok = strtok(NULL, SEPARATEUR); 
+    while (tok!=NULL)
     {
-        char* tok = strtok(buffer, SEPARATEUR);
-        printf("%s\n", tok);
-        inserer_matrice_char(tok, mat);
-        afficher_matrice_char(mat);
+    inserer_matrice_char(tok, mat);
+    tok = strtok(NULL, SEPARATEUR);    
     }
+    afficher_matrice_char(mat);  
     return mat;
-
 }
+
 
 
 
@@ -73,24 +54,18 @@ int main(int argc, char const *argv[])
         exit(2);
     }
 
-    char buffer[100];
-    lecture_par_ligne(buffer, file);
-    printf("===================================================\n");
-    // lecture_par_col(buffer, file);
-    while (fgets(buffer, sizeof(buffer), file)!=NULL)
-    {
-        char* tok = strtok(buffer, ",");
+    lecture_par_ligne(file);
+    lecture_par_ligne(file);
+    lecture_par_ligne(file);
+    lecture_par_ligne(file);
+    lecture_par_ligne(file);
+    lecture_par_ligne(file);
 
-        int data;
-        sscanf(tok, "%d", &data);
-        tok = strtok(NULL, ","); //On passe à la colonne suivante
-        tok = strtok(NULL, ",");
-        tok = strtok(NULL, ",");
-        // tok = strtok(NULL, ",");
-        printf("%s\n", tok);
-        printf("\n");
-        printf("%d\n", data);
-    }
+
+    printf("===================================================\n");
+
+
+
     fclose(file);
     
 
