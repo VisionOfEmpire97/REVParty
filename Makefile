@@ -15,7 +15,7 @@ SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
 MATDIR = $(SRCDIR)/utils_sd/matrice
-PATHTOCSVFILE = fichiers_vote/ 
+PATHTOCSVFILE = fichiers_vote/
 
 #Exécutables
 VERIFY_MY_VOTE = $(EXECDIR)/verify_my_vote
@@ -25,15 +25,13 @@ TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
 
 #Objets
-OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
+OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o
 OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 
 #Exécutables
 
 vmv: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verif_milf_vote.c $(OBJ_SHA_UTILS)
-	@echo "succès ! L'exécutable $@ est situé dans bin/$@"
-	@echo "Appelez l'exécutable avec ./bin/$@ *nom* *prenom* *CodePersonnel* *$(PATHTOCSVFILE)/nom-du-csv-de-vote*"
 
 test_sha: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
@@ -53,10 +51,10 @@ test_lecture_csv : dirs $(OBJET_UTILS)
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
 
 $(OBJDIR)/%.o: %.c
-	@$(CC) -o $@ -c $< $(COMPILEARGS) 
+	@$(CC) -o $@ -c $< $(COMPILEARGS)
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
-	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi	
+	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi
 
 clean:
 	@rm -f $(OBJDIR)/*.o
