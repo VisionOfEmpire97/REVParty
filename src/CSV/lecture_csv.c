@@ -6,14 +6,14 @@
 #include "../utils_sd/matrice/matrice.h"
 
 #define SEPARATEUR ","
-#define BUFF_SIZE 300
+#define BUFF_SIZE 500
 
 t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
 {
 
     FILE *file = fopen(nom_fichier, "r");
     t_mat_char_star_dyn *mat = creer_matrice();
-    char buffer[300];
+    char buffer[BUFF_SIZE];
 
     fgets(buffer, sizeof(buffer), file);
     ajouter_ligne(mat);
