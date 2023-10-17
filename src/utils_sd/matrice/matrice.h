@@ -2,6 +2,7 @@
 #define __MATRICE_H__
 #include "stdbool.h"
 #include "stdbool.h"
+#define MAX_CHAR 100
 /// \brief structure de donnee matrice
 /// \struct t_mat_char_star_dyn une structure de matrice de chaine dynamique
 typedef struct t_mat_char t_mat_char_star_dyn;
@@ -16,9 +17,6 @@ t_mat_char_star_dyn *creer_matrice();
 /// \brief insertion dans une matrice
 /// \param chaine l'element a inserer
 /// \param mat la matrice dans laquelle on va inserer l'element
-/// \return 0 si la valeur a bien été inséré -1 sinon
-
-int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
 /// \return 0 si la valeur a bien été inséré -1 sinon
 
 int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
