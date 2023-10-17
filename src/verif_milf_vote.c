@@ -5,7 +5,8 @@
 
 #include "SHA256/sha256.h"
 #include "SHA256/sha256_utils.h"
-//#include "lecture_csv"
+#include "CSV/lecture_csv.h"
+#include "utils_sd/matrice/matrice.h"
 #define STRLONG 60
 
 
@@ -14,20 +15,19 @@
 /// \brief Fonction verification majuscule pour le nom
 /// \param[in] On récupere le nom
 
-int Majuscule(char *chaine) {
+void Majuscule(char *chaine) {
     for (int i = 0; chaine[i] != '\0'; i++) {
         if (islower(chaine[i])) {
             chaine[i] = toupper(chaine[i]); // Convertir la lettre minuscule en majuscule
         }
     }
-    return 1; // La chaîne est maintenant en majuscules
 }
 /*Fonction met en minuscule pour le prenom */
 /// \brief Fonction passe en minuscule le prenom et sa première lettre en majuscule
 /// \remarks on commence au deuxieme caractere comme le premier doit etre une majuscule
 /// \param[in] On récupere le prenom
 
-int Minuscules(char *chaine) {
+void Minuscules(char *chaine) {
     if (chaine[0] != '\0') {
         chaine[0] = toupper(chaine[0]); // Mettre en majuscule la première lettre
     }
@@ -36,21 +36,6 @@ int Minuscules(char *chaine) {
         if (isupper(chaine[i])) {
             chaine[i] = tolower(chaine[i]); // Convertir les lettres majuscules en minuscules
         }
-    }
-    return 1; // La chaîne a été convertie en minuscules, sauf la première lettre
-}
-
-/*Fonction lecture de la ligne du retour csv */
-/// \brief Fonction lecture de la ligne du retour csv
-/// \param[in] On récupere la ligne a afficher avec le résultat
-
-void affichage_ligne (char*ligne)
-{
-    printf("Le vote qui correspond à mon code est : \n ");
-    int longeur = strlen(ligne);
-    for(int i=0;i<longeur;i++)
-    {
-        printf("%d \t",ligne[i]);
     }
 }
 
@@ -66,7 +51,7 @@ int main(int argc, char* argv[])
     char* prenom;
     char* code;
     char* nom_csv ;
-    char * ligne ;
+    t_mat_char_star_dyn * ligne ;
     if (argc==5)
     {
         nom = argv[1];
@@ -83,8 +68,8 @@ int main(int argc, char* argv[])
     /* Passage en maj/min du nom et du prenom  */
     /// \brief Partie verif du nom/prenom du main
 
-    nom=Majuscule(nom);
-    prenom=Minuscules(prenom);
+    Majuscule(nom);
+    Minuscules(prenom);
 
 
     /* On fait le hash du code  */
@@ -104,9 +89,9 @@ int main(int argc, char* argv[])
     /* On appelle la fonction du lecteur_csv  */
     /// \brief appelle du lecteur csv , affichage et fin de main
 
-    //ligne = recherche_csv (hashRes,nom_csv);
+    ligne =recherche_hash(hashRes, nom_csv);
     /// \param[out] on récupere la ligne qui contient notre hash
-    affichage_ligne (ligne);
+    afficher_matrice_char(ligne);
     free(item);
     printf(" Fin du programme de vérification  \n" );
 }
