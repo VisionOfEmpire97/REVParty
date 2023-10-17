@@ -26,7 +26,7 @@ t_mat_char_star_dyn *lecture_par_ligne(const char *nom_fichier ){
 }
 
 void inserer_chaine_matrice(char * chaine, t_mat_char_star_dyn *mat){
-    char *chaine2=malloc(strlen(chaine) + 1);    /*Free???*/
+    char chaine2[600];    /*Free???*/
     strcpy(chaine2, chaine);
     char*  tok = strtok(chaine2, SEPARATEUR);
     inserer_matrice_char(tok, mat);
@@ -64,7 +64,7 @@ t_mat_char_star_dyn *recherche_hash(char * hash, const char *nom_fichier){
         }
 
     }
-    printf("%s\n\n",found?"Hash retourvé!":"Votre hash ne correspond pas.");
+    printf("%s\n\n",found?"Hash retrouvé!":"Votre hash ne correspond pas.");
 
     fclose(file);
     return mat;
