@@ -23,7 +23,7 @@ TESTCSV = $(EXECDIR)/lecture_csv
 
 #Objets
 OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
-OBJET_UTILS = $(OBJDIR)/matrice.o
+OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecteur_csv.o
 
 #Exécutables
 
@@ -38,7 +38,7 @@ test_matrice: dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
 
 lecture_csv : dirs $(OBJET_UTILS)
-	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) 
+	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c
 
 #... TODO
 
