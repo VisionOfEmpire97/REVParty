@@ -19,10 +19,11 @@ VERIFY_MY_VOTE = $(EXECDIR)/verify_my_vote
 PROG_PRINCIPAL = $(EXECDIR)/revparty
 TESTSHA = $(EXECDIR)/test_sha
 TESTMAT = $(EXECDIR)/testStructMatrice
+TESTCSV = $(EXECDIR)/lecture_csv
 
 #Objets
 OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
-OBJET_UTILS = $(OBJDIR)/matrice.o
+OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecteur_csv.o
 
 #Exécutables
 
@@ -30,11 +31,16 @@ vmv: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(VERIFY_MY_VOTE) $(SRCDIR)/verify_milf_vote.c $(OBJ_SHA_UTILS)
 
 test_sha: dirs $(OBJ_SHA_UTILS)
-	@$(CC) -o $(EXECDIR)/$@ $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
+	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
 	@echo "succès ! L'exécutable test_sha est situé dans bin/$@"
 
 test_matrice: dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
+
+lecture_csv : dirs $(OBJET_UTILS)
+	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c
+
+#... TODO
 
 #REVparty: TODO
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
