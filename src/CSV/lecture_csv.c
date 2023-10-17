@@ -59,7 +59,7 @@ t_mat_char_star_dyn *recherche_hash(char *hash, const char *nom_fichier)
             found = 1;
         }
     }
-    printf("%s\n\n", found ? "Hash retrouvé!" : "Votre hash ne correspond pas.");
+    printf("%s\n\n", found ? "Hash retourvé!" : "Votre hash ne correspond pas.");
 
     fclose(file);
     return mat;
