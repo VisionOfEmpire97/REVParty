@@ -28,7 +28,7 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 #Exécutables
 
 vmv: dirs $(OBJ_SHA_UTILS)
-	@$(CC) -o $(VERIFY_MY_VOTE) $(SRCDIR)/verify_milf_vote.c $(OBJ_SHA_UTILS)
+	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verify_milf_vote.c $(OBJ_SHA_UTILS)
 
 test_sha: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
@@ -49,7 +49,6 @@ vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
 
 $(OBJDIR)/%.o: %.c
 	@$(CC) -o $@ -c $< $(COMPILEARGS) 
-
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
 	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi	
