@@ -49,7 +49,6 @@ vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
 
 $(OBJDIR)/%.o: %.c
 	@$(CC) -o $@ -c $< $(COMPILEARGS) 
-
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
 	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi	
