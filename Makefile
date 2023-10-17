@@ -23,7 +23,7 @@ TESTCSV = $(EXECDIR)/lecture_csv
 
 #Objets
 OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
-OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecteur_csv.o
+OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 
 #Exécutables
 
