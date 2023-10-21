@@ -38,7 +38,7 @@ _On pourra voir si on a besoin d'utiliser des pull requests au fur et à mesure.
 
 ### Gérer le caractère EOL
 - Ajoutez à votre `./vscode/settings.json` cette ligne : 
-> `"files.eol": "\n"`
+- `"files.eol": "\n"`
 - C'est pour faire en sorte qu'on ait moins de conflit de merge dans le futur.
 
 
