@@ -13,7 +13,7 @@ SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
 MATDIR = $(SRCDIR)/utils_sd/matrice
-PATHTOCSVFILE = fichiers_vote/ 
+PATHTOCSVFILE = fichiers_vote/
 
 #Exécutables
 VERIFY_MY_VOTE = $(EXECDIR)/verify_my_vote
@@ -31,19 +31,19 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
 	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verif_m_vote.c $(OBJ_SHA_UTILS)
 	@echo "succès ! L'exécutable $@ est situé dans bin/$@"
-	@echo "Appelez l'exécutable avec ./bin/$@ *nom* *prenom* *CodePersonnel* *$(PATHTOCSVFILE)/nom-du-csv-de-vote*"
+	@echo "Appelez l'exécutable avec ./bin/$@ *nom* *prenom* *CodePersonnel* *$(PATHTOCSVFILE)nom-du-csv-de-vote*"
 
 test_sha: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
-	@echo "succès ! L'exécutable $@ est situé dans bin/$@"
+	@echo "succès ! L'exécutable $(TESTSHA) est situé dans bin/$(TESTSHA)"
 
 test_matrice: dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
-	@echo "succès ! L'exécutable $@ est situé dans bin/$@"
+	@echo "succès ! L'exécutable $(TESTMAT) est situé dans bin/$(TESTMAT)"
 
 test_lecture_csv : dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c
-	@echo "succès ! L'exécutable $@ est situé dans bin/$@"
+	@echo "succès ! L'exécutable $(TESTCSV) est situé dans bin/$(TESTCSV)"
 
 #... TODO
 
