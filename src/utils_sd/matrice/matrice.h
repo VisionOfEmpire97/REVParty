@@ -2,7 +2,7 @@
 #define __MATRICE_H__
 #include "stdbool.h"
 #include "stdbool.h"
-#define MAX_CHAR 100
+#define MAX_CHAR 500
 /// \brief structure de donnee matrice
 /// \struct t_mat_char_star_dyn une structure de matrice de chaine dynamique
 typedef struct t_mat_char t_mat_char_star_dyn;

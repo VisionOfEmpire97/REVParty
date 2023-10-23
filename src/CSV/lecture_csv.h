@@ -5,10 +5,9 @@
 #include <stdio.h>
 #include "../utils_sd/matrice/matrice.h"
 
-/// \brief Lecture et traduction en matrice du fichier csv ligne par ligne
+/// \brief Lecture et traduction en matrice de l'entete du fichier csv
 /// \param[in] file le fichier à parser
 /// \param[out] mat la matrice contenant la premiere ligne du fichier
-/// \note Appeler la fonction n fois pour lire n lignes
 t_mat_char_star_dyn *lecture_entete(const char *file);
 
 /// \brief Recherche de la ligne contenant le hash
