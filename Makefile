@@ -30,8 +30,8 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 
 vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
 	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verif_m_vote.c $(OBJ_SHA_UTILS)
-	@echo "succès ! L'exécutable $@ est situé dans bin/$@"
-	@echo "Appelez l'exécutable avec ./bin/$@ *nom* *prenom* *CodePersonnel* *$(PATHTOCSVFILE)nom-du-csv-de-vote*"
+	@echo "succès ! L'exécutable $(VERIFY_MY_VOTE) est situé dans bin/$(VERIFY_MY_VOTE)"
+	@echo -e "Appelez l'exécutable avec ./bin/$(VERIFY_MY_VOTE) \"nom\" \"prenom\" \"CodePersonnel\" \"$(PATHTOCSVFILE)nom-du-csv-de-vote\""
 
 test_sha: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
