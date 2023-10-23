@@ -31,7 +31,7 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 #Exécutables
 
 vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
-	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verif_milf_vote.c $(OBJ_SHA_UTILS)
+	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verif_m_vote.c $(OBJ_SHA_UTILS)
 
 test_sha: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
