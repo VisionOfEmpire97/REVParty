@@ -49,4 +49,9 @@ t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
 /// \param colonne la colonne a laquelle on veut acceder
 /// \return la valeur a la case donnée ou NULL si l'indice est incorrecte
 char * valeur_matrice_char_indice(t_mat_char_star_dyn *mat,int ligne,int colonne);
+
+/// \brief récuperer le nombre de colonne de la matrice
+/// \param mat
+/// \return le nombre de colonnes de la matrice
+int recuperer_nb_colonnes(t_mat_char_star_dyn *mat);
 #endif
