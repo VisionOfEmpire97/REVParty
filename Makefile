@@ -5,8 +5,6 @@ CC = gcc
 COMPILEARGS = -std=c11 -Wall
 #INC = -I.
 
-vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
-
 # Dossiers
 SRCDIR = src
 OBJDIR = obj
@@ -15,7 +13,7 @@ SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
 MATDIR = $(SRCDIR)/utils_sd/matrice
-PATHTOCSVFILE = fichiers_vote/
+PATHTOCSVFILE = fichiers_vote/ 
 
 #Exécutables
 VERIFY_MY_VOTE = $(EXECDIR)/verify_my_vote
@@ -25,7 +23,7 @@ TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
 
 #Objets
-OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o
+OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
 OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 
 #Exécutables
@@ -52,11 +50,14 @@ test_lecture_csv : dirs $(OBJET_UTILS)
 #REVparty: TODO
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
 
+vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
+
 $(OBJDIR)/%.o: %.c
 	@$(CC) -o $@ -c $< $(COMPILEARGS)
+
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
-	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi
+	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi	
 
 clean:
 	@rm -f $(OBJDIR)/*.o
