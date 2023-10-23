@@ -6,65 +6,60 @@
 #include "../utils_sd/matrice/matrice.h"
 
 #define SEPARATEUR ","
-#define BUFF_SIZE 300
+#define BUFF_SIZE 500
 
+t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
+{
 
-t_mat_char_star_dyn *lecture_par_ligne(const char *nom_fichier ){
-
-    FILE *file = fopen(nom_fichier, "r");  
-    t_mat_char_star_dyn *mat = creer_matrice(); 
-    char* tok;
-    char buffer[300];
+    FILE *file = fopen(nom_fichier, "r");
+    t_mat_char_star_dyn *mat = creer_matrice();
+    char buffer[BUFF_SIZE];
 
     fgets(buffer, sizeof(buffer), file);
     ajouter_ligne(mat);
-    inserer_chaine_matrice(buffer,mat);
-    afficher_matrice_char(mat); 
-    fclose(file); 
+    inserer_ligne_matrice(buffer, mat);
+    afficher_matrice_char(mat);
+    fclose(file);
     return mat;
-
 }
 
-void inserer_chaine_matrice(char * chaine, t_mat_char_star_dyn *mat){
-    char *chaine2=malloc(strlen(chaine) + 1);    /*Free???*/
+void inserer_ligne_matrice(char *chaine, t_mat_char_star_dyn *mat)
+{
+    char chaine2[BUFF_SIZE];
     strcpy(chaine2, chaine);
-    char*  tok = strtok(chaine2, SEPARATEUR);
-    inserer_matrice_char(tok, mat);
-    tok = strtok(NULL, SEPARATEUR); 
-    while (tok!=NULL)
+    char *tok = strtok(chaine2, SEPARATEUR);
+    while (tok != NULL)
     {
-    inserer_matrice_char(tok, mat);
-    tok = strtok(NULL, SEPARATEUR);    
+        inserer_matrice_char(tok, mat);
+        tok = strtok(NULL, SEPARATEUR);
     }
-    
 }
 
-t_mat_char_star_dyn *recherche_hash(char * hash, const char *nom_fichier){
-    
-    FILE* file = fopen(nom_fichier, "r");
-    
+t_mat_char_star_dyn *recherche_hash(char *hash, const char *nom_fichier)
+{
+
+    FILE *file = fopen(nom_fichier, "r");
+
     t_mat_char_star_dyn *mat = creer_matrice();
     char buffer[BUFF_SIZE];
-    char buffer2[BUFF_SIZE]; 
-    int found=0;
-    
+    char buffer2[BUFF_SIZE];
+    int found = 0;
 
-     while (fgets(buffer, sizeof(buffer), file)!=NULL&& !found)
-    {   
-        strcpy(buffer2,buffer);
-        char* tok = strtok(buffer, SEPARATEUR);
+    while (fgets(buffer, sizeof(buffer), file) != NULL && !found)
+    {
+        strcpy(buffer2, buffer);
+        char *tok = strtok(buffer, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
-         if (!strcmp(tok, hash))
-        {   
+        if (!strcmp(tok, hash))
+        {
             ajouter_ligne(mat);
-            inserer_chaine_matrice(buffer2,mat);
-            found=1; 
+            inserer_ligne_matrice(buffer2, mat);
+            found = 1;
         }
-
     }
-    printf("%s\n\n",found?"Hash retourvé!":"Votre hash ne correspond pas.");
+    printf("%s\n\n", found ? "Hash retourvé!" : "Votre hash ne correspond pas.");
 
     fclose(file);
     return mat;

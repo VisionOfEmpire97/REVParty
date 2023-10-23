@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "matrice.h"
 #include "stdbool.h"
-#include "stdbool.h"
+#include "string.h"
+
 typedef struct t_mat_char
 {
     int ligne;
@@ -35,12 +36,16 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
     }
     int ligne = mat->ligne;
     int colonne = mat->col;
+
     if (no < (ligne) * (colonne))
     {
         // recuperer la case en fonction du nombre d'element
         int l = no / colonne;
         int c = no % colonne;
-        mat->matrice[l][c] = chaine;
+        char *element;
+        element = (char *)malloc(MAX_CHAR);
+        strcpy(element, chaine);
+        mat->matrice[l][c] = element;
         (mat->nb_elem)++;
     }
     else
@@ -69,9 +74,14 @@ void afficher_matrice_char(t_mat_char_star_dyn *mat)
 void supprimer_matrice_char(t_mat_char_star_dyn *mat)
 {
     char ***M = mat->matrice;
-    int L = mat->ligne;
-    for (int i = 0; i < L; i++)
+    int lig = mat->ligne;
+    int col = mat->col;
+    for (int i = 0; i < lig; i++)
     {
+        for (int j = 0; j < col; j++)
+        {
+            free(M[i][j]);
+        }
         free(M[i]);
     }
     free(M);
