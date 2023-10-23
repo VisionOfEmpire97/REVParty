@@ -104,7 +104,7 @@ t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat)
     return mat;
 }
 char * valeur_matrice_char_indice(t_mat_char_star_dyn *mat,int ligne,int colonne){
-    if ((ligne<0 && ligne<(mat->ligne))&&(ligne<0 && ligne<(mat->ligne))){
+    if ((ligne<0 && ligne<(mat->ligne))&&(colonne<0 && colonne<(mat->col))){
         return mat->matrice[ligne][colonne];
     }
     return NULL;
