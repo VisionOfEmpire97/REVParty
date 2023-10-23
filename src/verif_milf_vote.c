@@ -76,17 +76,10 @@ int main(int argc, char* argv[])
     /// \brief Partie hash du code client
     int bufferSize = SHA256_BLOCK_SIZE;
     char hashRes[bufferSize*2 + 1]; // contiendra le hash en hexadécimal
-    printf("ON DECLARE ITEM \n" );
 	char * item = malloc(STRLONG*sizeof(char)); // contiendra la chaîne à hasher
-    printf("ON DECLARE ITEM ???? OUI MONSIEUR POUSSER FORT PTIN \n" );
     strcat(item, nom);
-    printf("probleme 1 \n" );
     strcat(item, " ");
-    printf("probleme 2 \n" );
     strcat(item, prenom);
-    printf("probleme 3 \n" );
-    strcat(item, " ");
-    printf("probleme 4\n" );
     strcat(item, code);
     printf("Affichage du nom prénom code concaténer %s \n" , item );
     sha256ofString((BYTE *)item,hashRes); // hashRes contient maintenant le hash du code avec le nom , prenom et code
@@ -96,13 +89,10 @@ int main(int argc, char* argv[])
 
     /* On appelle la fonction du lecteur_csv  */
     /// \brief appelle du lecteur csv , affichage et fin de main
-    printf("probleme 6\n" );
     ligne =recherche_hash(hashRes, nom_csv);
-    printf("probleme 7\n" );
     /// \param[out] on récupere la ligne qui contient notre hash
     afficher_matrice_char(ligne);
-    printf("probleme 8\n" );
+    // a partir de la colonne 4 , et ligne 0 et ligne que l'on veut 
     free(item);
-    printf("probleme 9\n" );
     printf(" Fin du programme de vérification  \n" );
 }
