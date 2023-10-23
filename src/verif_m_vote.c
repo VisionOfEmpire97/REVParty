@@ -87,13 +87,17 @@ int main(int argc, char* argv[])
 
 
     /* On appelle la fonction du lecteur_csv  */
+
     /// \brief appelle du lecteur csv , affichage de l'entete et la correspondance du hash et fin de main
     lecture_entete(nom_csv);
-    /// \param[out] Lecture et affichage de l'entete 
+    /// \param[out] Lecture et affichage de l'entete
+
+    /// \brief appelle du lecteur csv , affichage et fin de main
+
     ligne =recherche_hash(hashRes, nom_csv);
     /// \param[out] on récupere la ligne qui contient notre hash
     afficher_matrice_char(ligne);
-    // a partir de la colonne 4 , et ligne 0 et ligne que l'on veut 
+    // a partir de la colonne 4 , et ligne 0 et ligne que l'on veut
     free(item);
     printf(" Fin du programme de vérification  \n" );
 }
