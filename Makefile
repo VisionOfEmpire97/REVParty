@@ -5,8 +5,6 @@ CC = gcc
 COMPILEARGS = -std=c11 -Wall
 #INC = -I.
 
-vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
-
 # Dossiers
 SRCDIR = src
 OBJDIR = obj
@@ -30,8 +28,8 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 
 #Exécutables
 
-vmv: dirs $(OBJ_SHA_UTILS)
-	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verif_milf_vote.c $(OBJ_SHA_UTILS)
+vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
+	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verif_m_vote.c $(OBJ_SHA_UTILS)
 	@echo "succès ! L'exécutable $@ est situé dans bin/$@"
 	@echo "Appelez l'exécutable avec ./bin/$@ *nom* *prenom* *CodePersonnel* *$(PATHTOCSVFILE)/nom-du-csv-de-vote*"
 
@@ -52,8 +50,11 @@ test_lecture_csv : dirs $(OBJET_UTILS)
 #REVparty: TODO
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
 
+vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
+
 $(OBJDIR)/%.o: %.c
-	@$(CC) -o $@ -c $< $(COMPILEARGS) 
+	@$(CC) -o $@ -c $< $(COMPILEARGS)
+
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
 	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi	
@@ -63,3 +64,5 @@ clean:
 	@echo "fichiers objets supprimés avec succès"
 	@rm -f $(EXECDIR)/*
 	@echo "fichiers exécutables supprimés avec succès"
+
+.PHONY: clean vmv test_sha test_matrice test_lecture_csv REVparty
