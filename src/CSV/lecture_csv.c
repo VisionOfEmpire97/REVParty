@@ -27,10 +27,11 @@ t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
 void inserer_ligne_matrice(char *chaine, t_mat_char_star_dyn *mat)
 {
     char chaine2[BUFF_SIZE];
+    strcpy(chaine2, chaine);
     size_t length= strlen(chaine2);
     if(chaine2[length-1]=='\n')
-        chaine2[--length]=='\0';
-    strcpy(chaine2, chaine);
+        chaine2[--length]='\0';
+    
     char *tok = strtok(chaine2, SEPARATEUR);
     while (tok != NULL)
     {
