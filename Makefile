@@ -64,3 +64,5 @@ clean:
 	@echo "fichiers objets supprimés avec succès"
 	@rm -f $(EXECDIR)/*
 	@echo "fichiers exécutables supprimés avec succès"
+
+.PHONY: clean vmv test_sha test_matrice test_lecture_csv REVparty
