@@ -46,7 +46,7 @@ t_mat_char_star_dyn *recherche_hash(char * hash, const char *nom_fichier){
 
 
      while (fgets(buffer, sizeof(buffer), file)!=NULL&& !found)
-
+    {
         strcpy(buffer2,buffer);
         char* tok = strtok(buffer, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
