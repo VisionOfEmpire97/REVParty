@@ -37,12 +37,16 @@ t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
 /// \brief renvoie si la matrice est vide ou non
 /// \param mat
 bool est_matrice_vide(t_mat_char_star_dyn *mat);
+
 /// \brief ajouter une ligne a la matrice
 /// \param mat
 /// \return la matyrice en entree avec une ligne ajouté
 t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
 
-/// \brief renvoie si la matrice est vide ou non
+/// \brief récuperer la valeur a une case precise de la matrice
 /// \param mat
-bool est_matrice_vide(t_mat_char_star_dyn *mat);
+/// \param ligne la ligne a laquelle on veut acceder
+/// \param colonne la colonne a laquelle on veut acceder
+/// \return la valeur a la case donnée ou NULL si l'indice est incorrecte
+char * valeur_matrice_char_indice(t_mat_char_star_dyn *mat,int ligne,int colonne);
 #endif
