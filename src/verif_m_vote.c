@@ -9,6 +9,18 @@
 #include "utils_sd/matrice/matrice.h"
 #define STRLONG 120
 
+void affichage_resultat(t_mat_char_star_dyn *entete ,t_mat_char_star_dyn *result )
+{   
+    char*entete_valeur = NULL;
+    char*result_valeur = NULL;
+    for (int i=4 ; i<recuperer_nb_colonnes(result); i ++ )
+    {   
+        entete_valeur = valeur_matrice_char_indice(entete,0,i);
+        result_valeur = valeur_matrice_char_indice(result,0,i);
+        printf("%s %s \n",entete_valeur,result_valeur);
+ 
+    }
+}
 
 /*Fonction met en majuscule pour le nom */
 /// \brief Fonction verification majuscule pour le nom
@@ -80,24 +92,22 @@ int main(int argc, char* argv[])
     strcat(item, " ");
     strcat(item, prenom);
     strcat(item, code);
-    printf("Affichage du nom prénom code concaténer %s \n" , item );
+
     sha256ofString((BYTE *)item,hashRes); // hashRes contient maintenant le hash du code avec le nom , prenom et code
     /// \param[out] on récupere le hashRes qui contient le hash de nom , prenom et code
-    printf("Affichage du Résultat de sha %s \n" , hashRes );
 
 
+    t_mat_char_star_dyn *entete ;
+    t_mat_char_star_dyn *result;
     /* On appelle la fonction du lecteur_csv  */
-
     /// \brief appelle du lecteur csv , affichage de l'entete et la correspondance du hash et fin de main
-    lecture_entete(nom_csv);
-    /// \param[out] Lecture et affichage de l'entete
-
-    /// \brief appelle du lecteur csv , affichage et fin de main
-
-    ligne =recherche_hash(hashRes, nom_csv);
-    /// \param[out] on récupere la ligne qui contient notre hash
-    afficher_matrice_char(ligne);
-    // a partir de la colonne 4 , et ligne 0 et ligne que l'on veut
+    entete = lecture_entete(nom_csv);
+    /// \param[out] Récuperation de l'entete
+    result =recherche_hash(hashRes, nom_csv);
+    /// \param[out] récuperation de la ligne du hash 
+    affichage_resultat(entete ,result );
+    /// \param[out] affichage des résultats 
+    // a partir de la colonne 4 , et ligne 0 et ligne que l'on veut 
     free(item);
-    printf(" Fin du programme de vérification  \n" );
+
 }
