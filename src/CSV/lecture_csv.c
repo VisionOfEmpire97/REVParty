@@ -15,9 +15,11 @@ t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
     t_mat_char_star_dyn *mat = creer_matrice();
     char buffer[BUFF_SIZE];
 
-    fgets(buffer, sizeof(buffer), file);
-    ajouter_ligne(mat);
-    inserer_ligne_matrice(buffer, mat);
+    if (fgets(buffer, sizeof(buffer), file)!=NULL)
+    {
+        ajouter_ligne(mat);
+        inserer_ligne_matrice(buffer, mat);
+    }
     fclose(file);
     return mat;
 }
@@ -25,6 +27,9 @@ t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
 void inserer_ligne_matrice(char *chaine, t_mat_char_star_dyn *mat)
 {
     char chaine2[BUFF_SIZE];
+    size_t length= strlen(chaine2);
+    if(chaine2[length-1]=='\n')
+        chaine2[--length]=='\0';
     strcpy(chaine2, chaine);
     char *tok = strtok(chaine2, SEPARATEUR);
     while (tok != NULL)
