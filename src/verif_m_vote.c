@@ -17,7 +17,7 @@ void affichage_resultat(t_mat_char_star_dyn *entete ,t_mat_char_star_dyn *result
     {   
         entete_valeur = valeur_matrice_char_indice(entete,0,i);
         result_valeur = valeur_matrice_char_indice(result,0,i);
-        printf("%s %s \n",entete_valeur,result_valeur);
+        printf("%-40s%3s \n",entete_valeur,result_valeur);
  
     }
 }
