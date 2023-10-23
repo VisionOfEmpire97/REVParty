@@ -18,7 +18,6 @@ t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
     fgets(buffer, sizeof(buffer), file);
     ajouter_ligne(mat);
     inserer_ligne_matrice(buffer, mat);
-    afficher_matrice_char(mat);
     fclose(file);
     return mat;
 }
