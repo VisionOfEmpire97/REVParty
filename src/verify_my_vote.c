@@ -1,11 +1,10 @@
-/** Programme principal - Vérif my vote :) 
- *
- *
- * @brief Programme principal de vérification de vote
+/**
+ * Programme principal - Verify my vote :) 
+ * @brief Programme principal de vérification de vote.
  * @author Antoine Vallat
  * @date 13 octobre 2023
+ * @file src/verify_my_vote.c
  */
-/// \file verif_my_vote
 
 #include <stdlib.h>
 #include <string.h>
@@ -17,18 +16,21 @@
 #include "utils_sd/matrice/matrice.h"
 #define STRLONG 120
 
+/**
+ * \defgroup VMV Verify My Vote
+ Documentation de verify_my_vote avec ses fonctions 
+ * @{
+ */
 
 /**
- * \defgroup VMV Documentation du main de verif_my_vote
- Documentation du verif_my_vote avec ses fonctions 
- * @{
- *
+ * \defgroup FormatE Fonction de formatage des entrées
+ * \brief Ces fonctions s'occupent de formater les arguments passés au programme
+ *@{
  */
 
 /**     
- * Fonction pour l'affichage des résultats 
  * \brief Fonction pour l'affichage des résultats 
- * \param[in] On récupere la matrice de l'entete et du résultat de la recherche
+ * \param[in] On récupère la matrice de l'entête et du résultat de la recherche
  * \param[out] On affiche le résultat 
 **/
 void affichage_resultat(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *result)
@@ -43,10 +45,10 @@ void affichage_resultat(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *result
     }
 }
 
-/** 
- * \brief Fonction verification majuscule pour le nom
- * \param[in] On récupere le nom
- * \param[out] On renvoie le nom en majuscule
+/**
+ * \brief Fonction qui vérifie si le nom est en majuscule.
+ * \param[in] chaine On récupère le nom
+ * \param[out] chaine On renvoie le nom en majuscule
 **/
 
 void Majuscule(char *chaine)
@@ -60,10 +62,10 @@ void Majuscule(char *chaine)
     }
 }
 /**
- * \brief Fonction passe en minuscule le prenom et sa première lettre en majuscule
- * \remarks on commence au deuxième caractere comme le premier doit être une majuscule
- * \param[in] On récupere le prenom
- * \param[out] On renvoie le prénom en minuscule et la première lettre en majuscule
+ * \brief Fonction passe en minuscule le prénom et sa première lettre en majuscule.
+ * \remarks on commence à itérer au deuxième caractère comme le premier doit être une majuscule
+ * \param[in] chaine On récupère le prénom
+ * \param[out] chaine On renvoie le prénom en minuscule et la première lettre en majuscule
  */
 void Minuscules(char *chaine)
 {
@@ -81,9 +83,10 @@ void Minuscules(char *chaine)
     }
 }
 
+
 /**
- * \brief Fonction principale Main 
- * \remarks on commence au deuxième caractere comme le premier doit être une majuscule
+ * \ingroup VMV
+ * \brief programme indépendant qui vérifie qu'un vote a bien été enregistré 
  * \param[in] argc Le nombre d'arguments de la ligne de commande.
  * \param[in] argv	Les arguments de la ligne de commande.
  */
@@ -103,18 +106,18 @@ int main(int argc, char *argv[])
     }
     else
     {
-        fprintf(stderr, "usage :./bin/verify_my_vote nom prenom code nom_csv\n");
+        fprintf(stderr, "usage :./bin/verify_my_vote nom prénom code nom_csv\n");
         exit(1);
     }
 
-    /* Passage en maj/min du nom et du prenom  */
-    /// \brief Partie-1 , Correction du nom/prenom donne en parametre 
+    /**
+     \brief Partie 1 : Correction du nom/prénom donne en paramètre  
+    */
 
     Majuscule(nom);
     Minuscules(prenom);
 
-    /* On fait le hash du code  */
-    /// \brief Partie-2 , Hash le code 
+    /// \brief Partie 2 : Hash le code 
     int bufferSize = SHA256_BLOCK_SIZE;
     char hashresult[bufferSize * 2 + 1];            /**< contiendra le hash en hexadécimal */
     char *stringtohash = malloc(STRLONG * sizeof(char));  /**< contiendra la chaîne à hasher */
@@ -127,7 +130,7 @@ int main(int argc, char *argv[])
     t_mat_char_star_dyn *entete;
     t_mat_char_star_dyn *result;
     
-    /// \brief Partie-3 , appel du lecteur csv , affichage de l'entete et la correspondance du hash et fin de main
+    /// \brief Partie 3 :    appel du lecteur csv , affichage de l'entête et la correspondance du hash et fin de main
     entete = lecture_entete(nom_csv);
     /// \param[out] entête entête du CSV lu
     result = recherche_hash(hashresult, nom_csv);
@@ -143,3 +146,4 @@ int main(int argc, char *argv[])
     free(stringtohash);
     return 0;
 }
+/** }@ */

@@ -1,7 +1,8 @@
 /**
- * \author Equipe 001 (JOSEPH REMY)
+ * \author Équipe 001 (JOSEPH REMY)
  * \date 16 Octobre 2023
  * \brief Fichier de definition de la structure de donnée
+ * \file matrice.h
  */
 #ifndef __MATRICE_H__
 #define __MATRICE_H__
@@ -16,26 +17,30 @@
  */
 
 /**
- * \defgroup Type Type de données Matrice de chaines
+ * \defgroup Type Type de données
+ * Types de données utilisés afin de manipuler des matrices
  *@{
- * \brief Structure de donnee matrice.
- * \struct t_mat_char_star_dyn une structure de matrice de chaine dynamique
+ */
+/**
+ * \brief Structure de donnée matrice de chaîne dynamique
+ * \struct t_mat_char_star_dyn une structure
+ * Matrice de n lignes , m colonnes de taille non statique
  */
 
 typedef struct t_mat_char t_mat_char_star_dyn;
-/**@}*/
+/** @} */
 
 /** \defgroup Constructeur Constructeurs et destructeurs de matrice
  *@{
  * \brief Creation d'une matrice vide.
- * \return Une matrice de charactere vide
+ * \return Une matrice de caractères vide
  */
 t_mat_char_star_dyn *creer_matrice();
 
 /**
- * \brief Insertion dans une matrice de chaine
- * \param chaine L'element a inserer
- * \param mat La matrice dans laquelle on va inserer l'element
+ * \brief Insertion dans une matrice de chaîne
+ * \param chaine L'element a insérer
+ * \param mat La matrice dans laquelle on va insérer l'element
  * \return 0 si la valeur a bien été inséré -1 sinon
  */
 int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
@@ -47,13 +52,13 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
 void afficher_matrice_char(t_mat_char_star_dyn *mat);
 
 /**
- * \brief Supprime et libere la memoire allouée a la structure
- * \param mat La structure à liberer
+ * \brief Supprime la matrice et libère la mémoire allouée 
+ * \param mat La structure à libérer
  */
 void supprimer_matrice_char(t_mat_char_star_dyn *mat);
 
 /**
- * \brief Ajouter une ligne a la matrice
+ * \brief Ajoute une ligne a la matrice
  * \param mat
  * \return La matrice en entree avec une ligne ajoutée
  */
@@ -61,7 +66,7 @@ void supprimer_matrice_char(t_mat_char_star_dyn *mat);
 t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
 
 /**
- * \brief Renvoie si la matrice est vide ou non
+ * \brief Indique si la matrice est vide ou non
  * \param mat
  * \return true si la matrice est vide
  * \return false si il y a au moins un element dans la matrice
@@ -69,7 +74,7 @@ t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
 bool est_matrice_vide(t_mat_char_star_dyn *mat);
 
 /**
- * \brief Récuperer la valeur a une case precise de la matrice
+ * \brief Récupérer la valeur a une position precise de la matrice
  * \param mat
  * \param ligne La ligne a laquelle on veut accéder
  * \param colonne La colonne a laquelle on veut accéder
@@ -78,11 +83,10 @@ bool est_matrice_vide(t_mat_char_star_dyn *mat);
 char *valeur_matrice_char_indice(t_mat_char_star_dyn *mat, int ligne, int colonne);
 
 /**
- * \brief Récuperer le nombre de colonne de la matrice
+ * \brief Récupérer le nombre de colonne de la matrice
  * \param mat
  * \return Le nombre de colonnes de la matrice
  */
 int recuperer_nb_colonnes(t_mat_char_star_dyn *mat);
 /**@}*/
-/**@*/
 #endif
