@@ -93,9 +93,9 @@ mrproper: dirs clean
 	@echo "documentation doxygen effacée"
 
 deliver:
-	mkdir $(TEAMNAME)
+	@if [ ! -d "./$(TEAMNAME)" ]; then mkdir $(TEAMNAME); fi
 	cp -r $(SRCDIR) $(TEAMNAME)
-	cp $(PATHTOCSVFILE) $(TEAMNAME)
+	cp -r $(PATHTOCSVFILE) $(TEAMNAME)
 	cp Makefile Doxyfile $(TEAMNAME)
 	zip -r $(TEAMNAME).zip $(TEAMNAME)
 	rm -rf $(TEAMNAME)
