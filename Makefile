@@ -15,7 +15,7 @@ SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
 MATDIR = $(SRCDIR)/utils_sd/matrice
-PATHTOCSVFILE = fichiers_vote/
+PATHTOCSVFILE = fichiers_votes/
 DOXYGENDIR = documentation/
 
 #Exécutables
@@ -47,6 +47,17 @@ test_matrice: dirs $(OBJET_UTILS)
 test_lecture_csv : dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c
 	@echo "succès ! L'exécutable $(TESTCSV) est situé dans $(TESTCSV)"
+
+test_vmv : vmv
+	@echo "**********************************************"
+	@echo "test 1 : retour attendu: ligne du vote trouvée" 
+	@./$(VERIFY_MY_VOTE) roset nathan e9RkoTAH $(PATHTOCSVFILE)VoteCondorcet.csv
+	@echo "**********************************************"
+	@echo "test 2 : retour attendu: ligne du vote trouvée"
+	@./$(VERIFY_MY_VOTE) roset nathan IXtE5L46o0T $(PATHTOCSVFILE)jugement.csv
+	@echo "**********************************************"
+	@echo "test 3 : retour attendu: pas de ligne trouvée"
+	@./$(VERIFY_MY_VOTE) rset nathan abcdefgh $(PATHTOCSVFILE)VoteCondorcet.csv
 
 #... TODO
 
