@@ -118,7 +118,13 @@ int main(int argc, char *argv[])
     /// \param[out] entête entête du CSV lu
     result = recherche_hash(hashresult, nom_csv);
     /// \param[out] result ligne du CSV contenant hashresult si elle existe
-    affichage_resultat(entete, result);
+    if (!est_matrice_vide(result)) 
+    {
+        affichage_resultat(entete, result);
+    }else
+    {
+        printf("On n'a pas trouver de correspondance pour votre Nom prénom code ");
+    }
     /// \param[out] affichage des résultats uniquement la colonne 4 de l'entête et de la ligne de vote recherchée
     free(stringtohash);
     return 0;
