@@ -25,7 +25,7 @@ t_mat_char_star_dyn *creer_matrice()
 
 int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
 {
-    int no = mat->nb_elem;
+    int nb_elem = mat->nb_elem;
 
     if ((mat->ligne) == 1)
     {
@@ -37,11 +37,11 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
     int ligne = mat->ligne;
     int colonne = mat->col;
 
-    if (no < (ligne) * (colonne))
+    if (nb_elem < (ligne) * (colonne))
     {
         // recuperer la case en fonction du nombre d'element
-        int l = no / colonne;
-        int c = no % colonne;
+        int l = nb_elem / colonne;
+        int c = nb_elem % colonne;
         char *element;
         element = (char *)malloc(MAX_CHAR);
         strcpy(element, chaine);
