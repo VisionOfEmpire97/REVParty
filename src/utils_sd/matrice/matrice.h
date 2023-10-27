@@ -3,13 +3,25 @@
 #include "stdbool.h"
 #include "stdbool.h"
 #define MAX_CHAR 500
+
+/** \defgroup ADTMatrice Matrice
+ Documentation de l'implémentation de la structure de données Matrice
+ @{
+ *
+ */
+
 /**
+ * \defgroup Type Type de données Matrice de chaines
+ * @{
  * \brief Structure de donnee matrice.
  * \struct t_mat_char_star_dyn une structure de matrice de chaine dynamique
  */
-typedef struct t_mat_char t_mat_char_star_dyn;
 
-/**
+typedef struct t_mat_char t_mat_char_star_dyn;
+/**@}*/
+
+/** \defgroup Constructeur Constructeurs et destructeurs de matrice
+ * @{
  * \brief Creation d'une matrice vide.
  * \param ligne nombre de ligne de la matrice
  * \param colonne nombre de colonne de la matrice
@@ -74,4 +86,5 @@ char *valeur_matrice_char_indice(t_mat_char_star_dyn *mat, int ligne, int colonn
  * \return le nombre de colonnes de la matrice
  */
 int recuperer_nb_colonnes(t_mat_char_star_dyn *mat);
+/**@}*/
 #endif
