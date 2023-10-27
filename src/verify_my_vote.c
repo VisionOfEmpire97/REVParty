@@ -1,3 +1,12 @@
+/** Programme principal - Vérif my vote :) 
+ *
+ *
+ * @brief Programme principal de vérification de vote
+ * @author Antoine Vallat
+ * @date 13 octobre 2023
+ */
+/// \file verif_my_vote
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -8,10 +17,19 @@
 #include "utils_sd/matrice/matrice.h"
 #define STRLONG 120
 
+
 /**
- * @fn formate et affiche le résultat de la recherche
- * @param entete
- * @param result
+ * \defgroup VMV Documentation du main de verif_my_vote
+ Documentation du verif_my_vote avec ses fonctions 
+ * @{
+ *
+ */
+
+/**     
+ * Fonction pour l'affichage des résultats 
+ * \brief Fonction pour l'affichage des résultats 
+ * \param[in] On récupere la matrice de l'entete et du résultat de la recherche
+ * \param[out] On affiche le résultat 
 **/
 void affichage_resultat(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *result)
 {
@@ -26,9 +44,9 @@ void affichage_resultat(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *result
 }
 
 /** 
- * Fonction met en majuscule pour le nom 
  * \brief Fonction verification majuscule pour le nom
  * \param[in] On récupere le nom
+ * \param[out] On renvoie le nom en majuscule
 **/
 
 void Majuscule(char *chaine)
@@ -42,10 +60,10 @@ void Majuscule(char *chaine)
     }
 }
 /**
- *Fonction met en minuscule pour le prenom 
  * \brief Fonction passe en minuscule le prenom et sa première lettre en majuscule
  * \remarks on commence au deuxième caractere comme le premier doit être une majuscule
  * \param[in] On récupere le prenom
+ * \param[out] On renvoie le prénom en minuscule et la première lettre en majuscule
  */
 void Minuscules(char *chaine)
 {
@@ -63,16 +81,12 @@ void Minuscules(char *chaine)
     }
 }
 
-/** Programme principal - Vérif my vote :) 
- * \brief Fonction main verif vote
- * \author Antoine Vallat
- * \date 13 octobre 2023
- * \fn On récupere le nom , prenom , le code et le nom du csv dans argv
- * \param[in] nom
- * \param[in] prénom
- * \param[in] CodePersonnel
- * \param[in] nom_csv
-**/
+/**
+ * \brief Fonction principale Main 
+ * \remarks on commence au deuxième caractere comme le premier doit être une majuscule
+ * \param[in] argc Le nombre d'arguments de la ligne de commande.
+ * \param[in] argv	Les arguments de la ligne de commande.
+ */
 int main(int argc, char *argv[])
 {
     char *nom;
@@ -94,13 +108,13 @@ int main(int argc, char *argv[])
     }
 
     /* Passage en maj/min du nom et du prenom  */
-    /// \brief Partie verif du nom/prenom du main
+    /// \brief Partie-1 , Correction du nom/prenom donne en parametre 
 
     Majuscule(nom);
     Minuscules(prenom);
 
     /* On fait le hash du code  */
-    /// \brief Partie hash du code personnel
+    /// \brief Partie-2 , Hash le code 
     int bufferSize = SHA256_BLOCK_SIZE;
     char hashresult[bufferSize * 2 + 1];            /**< contiendra le hash en hexadécimal */
     char *stringtohash = malloc(STRLONG * sizeof(char));  /**< contiendra la chaîne à hasher */
@@ -108,12 +122,12 @@ int main(int argc, char *argv[])
     sprintf(stringtohash,"%s %s%s",nom,prenom,code);
 
     sha256ofString((BYTE *)stringtohash, hashresult); /**< hashresult contient maintenant le hash du code avec le nom , prenom et code */
-    /// \param[out] hashresult le résultat qui contient le hash de nom , prenom et code
+    /// \param[out] hashresult est le résultat qui contient le hash de nom , prenom et code
 
     t_mat_char_star_dyn *entete;
     t_mat_char_star_dyn *result;
     
-    /// \brief appel du lecteur csv , affichage de l'entete et la correspondance du hash et fin de main
+    /// \brief Partie-3 , appel du lecteur csv , affichage de l'entete et la correspondance du hash et fin de main
     entete = lecture_entete(nom_csv);
     /// \param[out] entête entête du CSV lu
     result = recherche_hash(hashresult, nom_csv);
@@ -123,7 +137,7 @@ int main(int argc, char *argv[])
         affichage_resultat(entete, result);
     }else
     {
-        printf("On n'a pas trouvé de correspondance pour votre Nom prénom code \n");
+        printf("Aucune correspondance n'a été retrouvée pour les données fournies. . . . . . :)  \n");
     }
     /// \param[out] affichage des résultats uniquement la colonne 4 de l'entête et de la ligne de vote recherchée
     free(stringtohash);
