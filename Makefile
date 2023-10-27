@@ -14,6 +14,7 @@ CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
 MATDIR = $(SRCDIR)/utils_sd/matrice
 PATHTOCSVFILE = fichiers_vote/
+DOXYGENDIR = documentation/
 
 #Exécutables
 VERIFY_MY_VOTE = $(EXECDIR)/verify_my_vote
@@ -59,10 +60,17 @@ dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
 	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi	
 
+doxygen:
+	@doxygen Doxyfile
+
 clean:
 	@rm -f $(OBJDIR)/*.o
 	@echo "fichiers objets supprimés avec succès"
 	@rm -f $(EXECDIR)/*
 	@echo "fichiers exécutables supprimés avec succès"
 
-.PHONY: clean vmv test_sha test_matrice test_lecture_csv REVparty
+mrproper: clean
+	@rm -rf $(DOXYGENDIR)/*
+	@echo "documentation doxygen effacée"
+
+.PHONY: clean vmv mrproper test_sha test_matrice test_lecture_csv REVparty
