@@ -1,9 +1,12 @@
 /**
  \mainpage
-  \section Projet REVParty
+  \section Project Projet REVParty
   \subsection Objectifs Objectifs du Projet :
    - Implémentation de différentes méthodes de scrutins
    - Vérification des résultats du scrutin grâce à SHA256
+   \subsection Modules Liste des modules du programme
+   - Programme Verify_my_vote
+   - Programme principal REVParty
  */
 
 /**

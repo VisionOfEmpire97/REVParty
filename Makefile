@@ -5,6 +5,8 @@ CC = gcc
 COMPILEARGS = -std=c11 -Wall
 #INC = -I.
 
+TEAMNAME = Equipe_001
+
 # Dossiers
 SRCDIR = src
 OBJDIR = obj
@@ -30,7 +32,7 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 #Exécutables
 
 vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
-	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verif_m_vote.c $(OBJ_SHA_UTILS)
+	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verify_my_vote.c $(OBJ_SHA_UTILS)
 	@echo "succès ! L'exécutable $(VERIFY_MY_VOTE) est situé dans $(VERIFY_MY_VOTE)"
 	@echo "Appelez l'exécutable avec ./$(VERIFY_MY_VOTE) \"nom\" \"prenom\" \"CodePersonnel\" \"$(PATHTOCSVFILE)nom-du-csv-de-vote\""
 
@@ -73,5 +75,11 @@ clean:
 mrproper: dirs clean
 	@rm -rf $(DOXYGENDIR)/*
 	@echo "documentation doxygen effacée"
+
+deliver:
+	mkdir $(TEAMNAME)
+	cp -r src $(TEAMNAME)
+	zip -r $(TEAMNAME).zip $(TEAMNAME)
+	rm -rf $(TEAMNAME)
 
 .PHONY: clean vmv mrproper test_sha test_matrice test_lecture_csv REVparty
