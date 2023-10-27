@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
         affichage_resultat(entete, result);
     }else
     {
-        printf("On n'a pas trouver de correspondance pour votre Nom prénom code ");
+        printf("On n'a pas trouvé de correspondance pour votre Nom prénom code \n");
     }
     /// \param[out] affichage des résultats uniquement la colonne 4 de l'entête et de la ligne de vote recherchée
     free(stringtohash);
