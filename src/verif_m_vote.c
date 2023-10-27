@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -8,6 +7,7 @@
 #include "CSV/lecture_csv.h"
 #include "utils_sd/matrice/matrice.h"
 #define STRLONG 120
+
 /**
  * @fn formate et affiche le résultat de la recherche
  * @param entete
@@ -41,11 +41,12 @@ void Majuscule(char *chaine)
         }
     }
 }
-/*Fonction met en minuscule pour le prenom */
-/// \brief Fonction passe en minuscule le prenom et sa première lettre en majuscule
-/// \remarks on commence au deuxième caractere comme le premier doit être une majuscule
-/// \param[in] On récupere le prenom
-
+/**
+ *Fonction met en minuscule pour le prenom 
+ * \brief Fonction passe en minuscule le prenom et sa première lettre en majuscule
+ * \remarks on commence au deuxième caractere comme le premier doit être une majuscule
+ * \param[in] On récupere le prenom
+ */
 void Minuscules(char *chaine)
 {
     if (chaine[0] != '\0')
