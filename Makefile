@@ -14,6 +14,7 @@ CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
 MATDIR = $(SRCDIR)/utils_sd/matrice
 PATHTOCSVFILE = fichiers_vote/
+DOXYGENDIR = documentation/
 
 #Exécutables
 VERIFY_MY_VOTE = $(EXECDIR)/verify_my_vote
@@ -30,20 +31,20 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 
 vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
 	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verif_m_vote.c $(OBJ_SHA_UTILS)
-	@echo "succès ! L'exécutable $@ est situé dans bin/$@"
-	@echo "Appelez l'exécutable avec ./bin/$@ *nom* *prenom* *CodePersonnel* *$(PATHTOCSVFILE)nom-du-csv-de-vote*"
+	@echo "succès ! L'exécutable $(VERIFY_MY_VOTE) est situé dans $(VERIFY_MY_VOTE)"
+	@echo "Appelez l'exécutable avec ./$(VERIFY_MY_VOTE) \"nom\" \"prenom\" \"CodePersonnel\" \"$(PATHTOCSVFILE)nom-du-csv-de-vote\""
 
 test_sha: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
-	@echo "succès ! L'exécutable $(TESTSHA) est situé dans bin/$(TESTSHA)"
+	@echo "succès ! L'exécutable $(TESTSHA) est situé dans $(TESTSHA)"
 
 test_matrice: dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
-	@echo "succès ! L'exécutable $(TESTMAT) est situé dans bin/$(TESTMAT)"
+	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
 
 test_lecture_csv : dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c
-	@echo "succès ! L'exécutable $(TESTCSV) est situé dans bin/$(TESTCSV)"
+	@echo "succès ! L'exécutable $(TESTCSV) est situé dans $(TESTCSV)"
 
 #... TODO
 
@@ -57,7 +58,11 @@ $(OBJDIR)/%.o: %.c
 
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
-	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi	
+	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi
+	@if [ ! -d "./$(DOXYGENDIR)" ]; then mkdir $(DOXYGENDIR); fi
+
+doxygen:
+	@doxygen Doxyfile
 
 clean:
 	@rm -f $(OBJDIR)/*.o
@@ -65,4 +70,8 @@ clean:
 	@rm -f $(EXECDIR)/*
 	@echo "fichiers exécutables supprimés avec succès"
 
-.PHONY: clean vmv test_sha test_matrice test_lecture_csv REVparty
+mrproper: dirs clean
+	@rm -rf $(DOXYGENDIR)/*
+	@echo "documentation doxygen effacée"
+
+.PHONY: clean vmv mrproper test_sha test_matrice test_lecture_csv REVparty
