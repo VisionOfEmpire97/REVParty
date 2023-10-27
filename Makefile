@@ -7,6 +7,11 @@ COMPILEARGS = -std=c11 -Wall
 
 TEAMNAME = Equipe_001
 
+# Couleurs
+RED = \033[1;31m
+GREEN = \033[1;32m
+END_C = \e[00m
+
 # Dossiers
 SRCDIR = src
 OBJDIR = obj
@@ -33,8 +38,8 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 
 vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
 	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verify_my_vote.c $(OBJ_SHA_UTILS)
-	@echo "succès ! L'exécutable $(VERIFY_MY_VOTE) est situé dans $(VERIFY_MY_VOTE)"
-	@echo "Appelez l'exécutable avec ./$(VERIFY_MY_VOTE) \"nom\" \"prenom\" \"CodePersonnel\" \"$(PATHTOCSVFILE)nom-du-csv-de-vote\""
+	@echo "\n$(GREEN)succès ! L'exécutable $(VERIFY_MY_VOTE) est situé dans $(VERIFY_MY_VOTE) $(END_C)"
+	@echo "$(GREEN)Appelez l'exécutable avec ./$(VERIFY_MY_VOTE) \"nom\" \"prenom\" \"CodePersonnel\" \"$(PATHTOCSVFILE)nom-du-csv-de-vote\"$(END_C)"
 
 test_sha: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
@@ -50,14 +55,14 @@ test_lecture_csv : dirs $(OBJET_UTILS)
 
 test_vmv : vmv
 	@echo "**********************************************"
-	@echo "test 1 : retour attendu: ligne du vote trouvée" 
+	@echo "$(GREEN)test 1 avec VoteCondorcet.csv: retour attendu: ligne du vote trouvée$(END_C)" 
 	@./$(VERIFY_MY_VOTE) roset nathan e9RkoTAH $(PATHTOCSVFILE)VoteCondorcet.csv
 	@echo "**********************************************"
-	@echo "test 2 : retour attendu: ligne du vote trouvée"
+	@echo "$(GREEN)test 2 avec jugement.csv : retour attendu: ligne du vote trouvée$(END_C)"
 	@./$(VERIFY_MY_VOTE) roset nathan IXtE5L46o0T $(PATHTOCSVFILE)jugement.csv
 	@echo "**********************************************"
-	@echo "test 3 : retour attendu: pas de ligne trouvée"
-	@./$(VERIFY_MY_VOTE) rset nathan abcdefgh $(PATHTOCSVFILE)VoteCondorcet.csv
+	@echo "$(GREEN)test 3 avec code érroné: retour attendu: pas de ligne trouvée$(END_C)"
+	@./$(VERIFY_MY_VOTE) roset nathan abcdefgh $(PATHTOCSVFILE)VoteCondorcet.csv
 
 #... TODO
 
@@ -89,7 +94,9 @@ mrproper: dirs clean
 
 deliver:
 	mkdir $(TEAMNAME)
-	cp -r src $(TEAMNAME)
+	cp -r $(SRCDIR) $(TEAMNAME)
+	cp $(PATHTOCSVFILE) $(TEAMNAME)
+	cp Makefile Doxyfile $(TEAMNAME)
 	zip -r $(TEAMNAME).zip $(TEAMNAME)
 	rm -rf $(TEAMNAME)
 
