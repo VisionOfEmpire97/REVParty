@@ -58,7 +58,8 @@ $(OBJDIR)/%.o: %.c
 
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
-	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi	
+	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi
+	@if [ ! -d "./$(DOXYGENDIR)" ]; then mkdir $(DOXYGENDIR); fi
 
 doxygen:
 	@doxygen Doxyfile
@@ -69,7 +70,7 @@ clean:
 	@rm -f $(EXECDIR)/*
 	@echo "fichiers exécutables supprimés avec succès"
 
-mrproper: clean
+mrproper: dirs clean
 	@rm -rf $(DOXYGENDIR)/*
 	@echo "documentation doxygen effacée"
 
