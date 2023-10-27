@@ -23,15 +23,12 @@ typedef struct t_mat_char t_mat_char_star_dyn;
 /** \defgroup Constructeur Constructeurs et destructeurs de matrice
  * @{
  * \brief Creation d'une matrice vide.
- * \param ligne nombre de ligne de la matrice
- * \param colonne nombre de colonne de la matrice
- * \return une matrice de charactere bien initialisee avec la chaine vide
+ * \return une matrice de charactere vide
  */
-t_mat_char_star_dyn *creer_matrice();
 t_mat_char_star_dyn *creer_matrice();
 
 /**
- * \brief insertion dans une matrice
+ * \brief Insertion dans une matrice de chaine
  * \param chaine l'element a inserer
  * \param mat la matrice dans laquelle on va inserer l'element
  * \return 0 si la valeur a bien été inséré -1 sinon
@@ -39,19 +36,19 @@ t_mat_char_star_dyn *creer_matrice();
 int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
 
 /**
- * \brief faire l'affichage d'une matrice sur stdout.
+ * \brief Faire l'affichage d'une matrice sur stdout.
  * \param mat la matrice a afficher
  */
 void afficher_matrice_char(t_mat_char_star_dyn *mat);
 
 /**
- * \brief liberer la memoire alloué a la structure
+ * \brief Supprime et libere la memoire allouée a la structure
  * \param mat la structure à liberer
  */
 void supprimer_matrice_char(t_mat_char_star_dyn *mat);
 
 /**
- * \brief ajouter une ligne a la matrice
+ * \brief Ajouter une ligne a la matrice
  * \param mat
  * \return la matrice en entree avec une ligne ajoutée
  */
@@ -63,13 +60,6 @@ t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
  * \param mat
  */
 bool est_matrice_vide(t_mat_char_star_dyn *mat);
-
-/**
- * \brief ajouter une ligne a la matrice
- * \param mat
- * \return la matrice en entrée avec une ligne ajoutée
- */
-t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
 
 /**
  * \brief récuperer la valeur a une case precise de la matrice
