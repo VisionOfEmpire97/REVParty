@@ -43,7 +43,7 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
         int l = nb_elem / colonne;
         int c = nb_elem % colonne;
         char *element;
-        element = (char *)malloc(MAX_CHAR);
+        element = (char *)malloc(strlen(chaine) > 3 ? (strlen(chaine) + 1) * sizeof(char) : 5 * sizeof(char));
         strcpy(element, chaine);
         mat->matrice[l][c] = element;
         (mat->nb_elem)++;

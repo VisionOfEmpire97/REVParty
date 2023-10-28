@@ -15,7 +15,7 @@ t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
     t_mat_char_star_dyn *mat = creer_matrice();
     char buffer[BUFF_SIZE];
 
-    if (fgets(buffer, sizeof(buffer), file)!=NULL)
+    if (fgets(buffer, sizeof(buffer), file) != NULL)
     {
         ajouter_ligne(mat);
         inserer_ligne_matrice(buffer, mat);
@@ -28,10 +28,10 @@ void inserer_ligne_matrice(char *ligne, t_mat_char_star_dyn *mat)
 {
     char chaine[BUFF_SIZE];
     strcpy(chaine, ligne);
-    size_t length= strlen(chaine);
-    if(chaine[length-1]=='\n')
-        chaine[--length]='\0';
-    
+    size_t length = strlen(chaine);
+    if (chaine[length - 1] == '\n')
+        chaine[--length] = '\0';
+
     char *tok = strtok(chaine, SEPARATEUR);
     while (tok != NULL)
     {
@@ -40,25 +40,25 @@ void inserer_ligne_matrice(char *ligne, t_mat_char_star_dyn *mat)
     }
 }
 
-t_mat_char_star_dyn *recherche_hash(char * hash, const char *nom_fichier){
+t_mat_char_star_dyn *recherche_hash(char *hash, const char *nom_fichier)
+{
 
-    FILE* file = fopen(nom_fichier, "r");
+    FILE *file = fopen(nom_fichier, "r");
 
     t_mat_char_star_dyn *mat = creer_matrice();
     char buffer[BUFF_SIZE];
     char buffer2[BUFF_SIZE];
-    int found=0;
+    int found = 0;
 
-
-     while (fgets(buffer, sizeof(buffer), file)!=NULL&& !found)
+    while (fgets(buffer, sizeof(buffer), file) != NULL && !found)
     {
-        strcpy(buffer2,buffer);
-        char* tok = strtok(buffer, SEPARATEUR);
+        strcpy(buffer2, buffer);
+        char *tok = strtok(buffer, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
 
-         if (!strcmp(tok, hash))
+        if (!strcmp(tok, hash))
         {
             ajouter_ligne(mat);
             inserer_ligne_matrice(buffer2, mat);

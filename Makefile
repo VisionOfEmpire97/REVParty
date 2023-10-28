@@ -5,7 +5,7 @@ CC = gcc
 COMPILEARGS = -std=c11 -Wall
 #INC = -I.
 
-TEAMNAME = Equipe_001
+TEAMNAME = REVParty_Equipe_001
 
 # Couleurs
 RED = \033[1;31m
@@ -44,14 +44,17 @@ vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
 test_sha: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
 	@echo "succès ! L'exécutable $(TESTSHA) est situé dans $(TESTSHA)"
+	@./$(TESTSHA)
 
 test_matrice: dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
 	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
+	@./$(TESTMAT)
 
 test_lecture_csv : dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c
 	@echo "succès ! L'exécutable $(TESTCSV) est situé dans $(TESTCSV)"
+	@./$(TESTCSV) fichiers_votes/VoteCondorcet.csv
 
 test_vmv : vmv
 	@echo "**********************************************"
@@ -63,7 +66,10 @@ test_vmv : vmv
 	@echo "**********************************************"
 	@echo "$(GREEN)test 3 avec code érroné: retour attendu: pas de ligne trouvée$(END_C)"
 	@./$(VERIFY_MY_VOTE) roset nathan abcdefgh $(PATHTOCSVFILE)VoteCondorcet.csv
-
+	@echo "\n**************** FIN DU PROGRAMME ***************\n"
+	@echo "Vous pouvez tester les fuites mémoires avec \
+	\"$(RED)valgrind --leak-check=full $(verify_my_vote) roset nathan e9RkoTAH $(PATHTOCSVFILE)VoteCondorcet.csv$(END_C)\""
+	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
 #... TODO
 
 #REVparty: TODO
@@ -92,12 +98,13 @@ mrproper: dirs clean
 	@rm -rf $(DOXYGENDIR)/*
 	@echo "documentation doxygen effacée"
 
-deliver:
+deliverCC2:
 	@if [ ! -d "./$(TEAMNAME)" ]; then mkdir $(TEAMNAME); fi
 	cp -r $(SRCDIR) $(TEAMNAME)
 	cp -r $(PATHTOCSVFILE) $(TEAMNAME)
-	cp Makefile Doxyfile README.md $(TEAMNAME)
+	cp Makefile Doxyfile $(TEAMNAME)
+	cp README_DELIVER.md $(TEAMNAME)
 	zip -r $(TEAMNAME).zip $(TEAMNAME)
 	rm -rf $(TEAMNAME)
 
-.PHONY: clean vmv mrproper test_sha test_matrice test_lecture_csv REVparty
+.PHONY: clean vmv mrproper test_sha test_matrice test_lecture_csv test_vmv REVparty

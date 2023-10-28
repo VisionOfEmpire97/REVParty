@@ -14,6 +14,7 @@
 #include "SHA256/sha256_utils.h"
 #include "CSV/lecture_csv.h"
 #include "utils_sd/matrice/matrice.h"
+/// \var macro utilisée pour allouer un bloc au string à hasher
 #define STRLONG 120
 
 /**
@@ -30,17 +31,17 @@
 
 /**     
  * \brief Fonction pour l'affichage des résultats 
- * \param[in] On récupère la matrice de l'entête et du résultat de la recherche
- * \param[out] On affiche le résultat 
+ * \param[in] entete On récupère la matrice de l'entête et du résultat de la recherche
+ * \param[out] search_result affiche le résultat 
 **/
-void affichage_resultat(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *result)
+void affichage_resultat(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *search_result)
 {
     char *entete_valeur = NULL;
     char *result_valeur = NULL;
-    for (int i = 4; i < recuperer_nb_colonnes(result); i++)
+    for (int i = 4; i < recuperer_nb_colonnes(search_result); i++)
     {
         entete_valeur = valeur_matrice_char_indice(entete, 0, i);
-        result_valeur = valeur_matrice_char_indice(result, 0, i);
+        result_valeur = valeur_matrice_char_indice(search_result, 0, i);
         printf("%-40s%3s \n", entete_valeur, result_valeur);
     }
 }
@@ -128,22 +129,25 @@ int main(int argc, char *argv[])
     /// \param[out] hashresult est le résultat qui contient le hash de nom , prenom et code
 
     t_mat_char_star_dyn *entete;
-    t_mat_char_star_dyn *result;
+    t_mat_char_star_dyn *csv_search_result;
     
     /// \brief Partie 3 :    appel du lecteur csv , affichage de l'entête et la correspondance du hash et fin de main
     entete = lecture_entete(nom_csv);
     /// \param[out] entête entête du CSV lu
-    result = recherche_hash(hashresult, nom_csv);
-    /// \param[out] result ligne du CSV contenant hashresult si elle existe
-    if (!est_matrice_vide(result)) 
+    csv_search_result = recherche_hash(hashresult, nom_csv);
+    /// \param[out] csv_search_result ligne du CSV contenant hashresult si elle existe
+    if (!est_matrice_vide(csv_search_result)) 
     {
-        affichage_resultat(entete, result);
+        affichage_resultat(entete, csv_search_result);
     }else
     {
         printf("Aucune correspondance n'a été retrouvée pour les données fournies. . . . . . :)  \n");
     }
     /// \param[out] affichage des résultats uniquement la colonne 4 de l'entête et de la ligne de vote recherchée
     free(stringtohash);
+    supprimer_matrice_char(entete);
+    supprimer_matrice_char(csv_search_result);
+
     return 0;
 }
 /** }@ */

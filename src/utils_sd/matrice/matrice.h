@@ -26,12 +26,13 @@
  * \struct t_mat_char_star_dyn une structure
  * Matrice de n lignes , m colonnes de taille non statique
  */
-
 typedef struct t_mat_char t_mat_char_star_dyn;
 /** @} */
 
 /** \defgroup Constructeur Constructeurs et destructeurs de matrice
  *@{
+ */
+/**
  * \brief Creation d'une matrice vide.
  * \return Une matrice de caractères vide
  */
