@@ -96,7 +96,7 @@ deliver:
 	@if [ ! -d "./$(TEAMNAME)" ]; then mkdir $(TEAMNAME); fi
 	cp -r $(SRCDIR) $(TEAMNAME)
 	cp -r $(PATHTOCSVFILE) $(TEAMNAME)
-	cp Makefile Doxyfile $(TEAMNAME)
+	cp Makefile Doxyfile README.md $(TEAMNAME)
 	zip -r $(TEAMNAME).zip $(TEAMNAME)
 	rm -rf $(TEAMNAME)
 
