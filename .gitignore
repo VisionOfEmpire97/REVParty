@@ -62,3 +62,6 @@ documentation/
 
 #zip
 *.zip
+
+#log
+log/*
