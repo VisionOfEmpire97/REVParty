@@ -116,4 +116,4 @@ deliverCC2:
 	zip -r $(TEAMNAME).zip $(TEAMNAME)
 	rm -rf $(TEAMNAME)
 
-.PHONY: clean vmv mrproper test_sha test_matrice test_lecture_csv test_vmv REVparty
+.PHONY: vmv test_sha test_matrice test_lecture_csv test_vmv scrutin
