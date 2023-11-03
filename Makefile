@@ -25,7 +25,7 @@ DOXYGENDIR = documentation/
 
 #Exécutables
 VERIFY_MY_VOTE = $(EXECDIR)/verify_my_vote
-PROG_PRINCIPAL = $(EXECDIR)/revparty
+PROG_PRINCIPAL = $(EXECDIR)/scrutin
 TESTSHA = $(EXECDIR)/test_sha
 TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
@@ -72,7 +72,7 @@ test_vmv : vmv
 	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
 #... TODO
 
-#REVparty: TODO
+#scrutin: TODO
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
 
 vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
