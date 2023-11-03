@@ -70,10 +70,10 @@ int main(int argc, char **argv)
             n++;
             break;
         default:
-            printf("usage : ./REVparty -i/d [nom_du_csv] -o [nom_du_log] -m [méthodes]\n");
+            printf("usage : ./REVparty -i/-d [nom_du_csv] -o [nom_du_log] -m [méthodes]\n");
             exit(EXIT_FAILURE);
         }
     };
-    // getopt();
+    
     return 0;
 }
