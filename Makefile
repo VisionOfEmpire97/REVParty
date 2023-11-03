@@ -16,6 +16,7 @@ END_C = \e[00m
 SRCDIR = src
 OBJDIR = obj
 EXECDIR = bin
+LOGDIR = log
 SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
@@ -72,7 +73,7 @@ test_vmv : vmv
 	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
 #... TODO
 
-#scrutin: TODO
+#scrutin: dirs... TODO
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
 
 vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
@@ -84,19 +85,27 @@ dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
 	@if [ ! -d "./$(EXECDIR)" ]; then mkdir $(EXECDIR); fi
 	@if [ ! -d "./$(DOXYGENDIR)" ]; then mkdir $(DOXYGENDIR); fi
+	@if [ ! -d "./$(LOGDIR)" ]; then mkdir $(LOGDIR); fi
 
-doxygen:
+doc:
 	@doxygen Doxyfile
 
-clean:
+clean: dirs
 	@rm -f $(OBJDIR)/*.o
 	@echo "fichiers objets supprimés avec succès"
 	@rm -f $(EXECDIR)/*
 	@echo "fichiers exécutables supprimés avec succès"
 
-mrproper: dirs clean
+remove_logs: dirs
+	@rm -f $(LOGDIR)/*
+	@echo "Tous les fichiers de log ont été supprimés"
+
+remove_doc: dirs
 	@rm -rf $(DOXYGENDIR)/*
 	@echo "documentation doxygen effacée"
+
+mrproper: dirs clean remove_doc remove_logs
+	@echo "Tous les fichiers générés ont été retirés"
 
 deliverCC2:
 	@if [ ! -d "./$(TEAMNAME)" ]; then mkdir $(TEAMNAME); fi
