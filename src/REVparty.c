@@ -18,33 +18,14 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include <arg_parse_util.h>
 #define NAMELENGHT 60
-
-// Variables Couleurs
-char *RED = "\033[1;31m";
-char *GREEN = "\033[1;32m";
-char *END_COLOR = "\e[00m";
-
-//méthodes
-enum methodes{uni1,uni2,cm,cp,cs,jm,all};
-
-void check_compatibility(int *tab, int len_tab)
-{
-    for (int i = 0; i < len_tab; i++)
-    {
-        if (tab[i] == 'i' || tab[i] == 'd')
-        {
-            printf("%sLes balises i et d ne sont pas compatibles, merci de n'utiliser qu'une seule occurence de -i ou -d%s\n", RED, END_COLOR);
-            exit(EXIT_FAILURE);
-        };
-    }
-}
 
 int main(int argc, char **argv)
 {
     int balise[5], n = 0;
     char *nom_csv;
-    char *nom_log = stdout;
+    char *nom_log;
     char *methode;
     while ((balise[n] = getopt(argc, argc, "i:d:o:m:")) != -1)
     {
@@ -65,7 +46,7 @@ int main(int argc, char **argv)
             nom_log = optarg;
             n++;
             break;
-        case 'm': //ne prend qu'un argument ?
+        case 'm': // ne prend qu'un argument ?
             methode = optarg;
             n++;
             break;
@@ -74,6 +55,11 @@ int main(int argc, char **argv)
             exit(EXIT_FAILURE);
         }
     };
-    
+    begin_to_log(nom_log);
+
+    lancer_methode(methode);
+    //more things here 
+
+    if (nom_log != NULL) fclose(nom_log);
     return 0;
 }
