@@ -14,6 +14,7 @@ void begin_to_log(const char *filename) // will check if filename exists, and op
         file = stdout;
     }
     // something should happen here, dunno what tho
+    //probably should add stdout and stderr to file 
 }
 
 void check_compatibility(int *tab, int len_tab)
@@ -60,6 +61,7 @@ void lancer_methode(char *methode)
         // fonction qui appelle TOUT
         break;
     default:
-        break;
+        printf("%sargument de méthode invalide%s\n", RED, END_COLOR);
+        exit(EXIT_FAILURE);
     }
 };

@@ -1,26 +1,43 @@
 /**
+ * \author Équipe 001
+ * \date 23 Septembre 2023
+ * \brief Programme principal de décompte de voix.
+ * \file src/scrutin.c 
+ * Le fichier scrutin s'occupe d'analyser les balises et les paramètres,
+ * appelle la méthode de scrutin appropriée, et crée un fichier de vote anonymisé
+ */
+/**
  \mainpage
   \section Project Projet REVParty
   \subsection Objectifs Objectifs du Projet :
    - Implémentation de différentes méthodes de scrutins
    - Vérification des résultats du scrutin grâce à SHA256
    \subsection Modules Liste des modules du programme
-   - Programme \ref VMV
-   - Programme principal REVParty
+   - Programme indépendant \ref VMV
+   - Programme principal \ref scrutin
+   - Lecteur du fichier csv \ref CSV
+   - Initialisation des matrices \ref ADTMatrice
  */
 
 /**
- * \author Équipe 001
- * \date 23 Septembre 2023
- * \file le fichier REVparty s'occupe d'analyser les balises et les paramètres,
- *       appelle la méthode de scrutin appropriée, et crée un fichier de vote anonymisé
- */
+ * \defgroup scrutin Programme principal
+ * Analyse des balises et arguments passés en paramètre et appel des 
+ * différentes méthodes de scrutins
+ * \{
+*/
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
 #include <arg_parse_util.h>
 #define NAMELENGHT 60
 
+/**
+ * @brief utilise getopt() afin de récupérer les arguments de la ligne de commande 
+ * 
+ * @param[in] argc 
+ * @param[in] argv 
+ * @return retourne zéro en cas de succès
+ */
 int main(int argc, char **argv)
 {
     int balise[5], n = 0;
@@ -63,3 +80,5 @@ int main(int argc, char **argv)
     if (nom_log != NULL) fclose(nom_log);
     return 0;
 }
+
+/**}\*/
