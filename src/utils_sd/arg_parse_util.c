@@ -34,7 +34,7 @@ void lancer_methode(char *methode)
     int methode_id = 0;
     for (methode_id; methode_id < 7; methode_id++)
     {
-        if (*methode == valid_methods[methode_id])
+        if (*methode == valid_methods[methode_id]) //strcmp ?
             break;
     }
     switch (methode_id)
