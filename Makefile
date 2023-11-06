@@ -45,7 +45,7 @@ vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
 test_sha: dirs $(OBJ_SHA_UTILS)
 	@$(CC) -o $(TESTSHA) $(OBJ_SHA_UTILS) $(SHADIR)/test_sha.c
 	@echo "succès ! L'exécutable $(TESTSHA) est situé dans $(TESTSHA)"
-	@./$(TESTSHA)
+	@./$(TESTSHA) fich_tests/vote10.csv
 
 test_matrice: dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
