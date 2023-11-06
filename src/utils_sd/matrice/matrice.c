@@ -39,11 +39,11 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
     int ligne = mat->ligne;
     int colonne = mat->col;
 
-    if (no < (ligne) * (colonne))
+    if (nb_elem < (ligne) * (colonne))
     {
         // recuperer la case en fonction du nombre d'element
-        int l = no / colonne;
-        int c = no % colonne;
+        int l = nb_elem / colonne;
+        int c = nb_elem % colonne;
         char *element;
 
         element = (char *)malloc(MAX_CHAR);
@@ -67,7 +67,7 @@ void afficher_matrice_char(t_mat_char_star_dyn *mat)
     {
         for (int j = 0; j < C; j++)
         {
-            printf("%s", M[i][j]);
+            printf("%5s ", M[i][j]);
         }
         printf("\n");
     }

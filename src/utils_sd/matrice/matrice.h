@@ -26,17 +26,30 @@
  * \struct t_mat_char_star_dyn une structure
  * Matrice de n lignes , m colonnes de taille non statique
  */
+<<<<<<< HEAD
 
 typedef struct t_mat_char t_mat_char_star_dyn;
 typedef struct t_mat_int t_mat_int_dyn;
+=======
+typedef struct t_mat_char t_mat_char_star_dyn;
+>>>>>>> makefile
 /** @} */
 
 /** \defgroup Constructeur Constructeurs et destructeurs de matrice
  *@{
+<<<<<<< HEAD
  * \brief Creation d'une matrice vide.
  * \return Une matrice de caractères vide
  */
 t_mat_char_star_dyn *creer_matrice_char();
+=======
+ */
+/**
+ * \brief Creation d'une matrice vide.
+ * \return Une matrice de caractères vide
+ */
+t_mat_char_star_dyn *creer_matrice();
+>>>>>>> makefile
 
 /**
  * \brief Insertion dans une matrice de chaîne
@@ -53,7 +66,11 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
 void afficher_matrice_char(t_mat_char_star_dyn *mat);
 
 /**
+<<<<<<< HEAD
  * \brief Supprime la matrice et libère la mémoire allouée
+=======
+ * \brief Supprime la matrice et libère la mémoire allouée 
+>>>>>>> makefile
  * \param mat La structure à libérer
  */
 void supprimer_matrice_char(t_mat_char_star_dyn *mat);
@@ -89,6 +106,7 @@ char *valeur_matrice_char_indice(t_mat_char_star_dyn *mat, int ligne, int colonn
  * \return Le nombre de colonnes de la matrice
  */
 int recuperer_nb_colonnes(t_mat_char_star_dyn *mat);
+<<<<<<< HEAD
 /**
  * \brief Transforme une matrice de chaine lu du CSV en matrice de duel
  *
@@ -110,3 +128,7 @@ void afficher_matrice_int(t_mat_int_dyn *mat);
 void supprimer_matrice_int(t_mat_int_dyn *mat);
 /**@}*/
 #endif
+=======
+/**@}*/
+#endif
+>>>>>>> makefile

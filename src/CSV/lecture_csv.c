@@ -71,6 +71,7 @@ t_mat_char_star_dyn *recherche_hash(char *hash, const char *nom_fichier)
         tok = strtok(NULL, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
         tok = strtok(NULL, SEPARATEUR);
+
         if (!strcmp(tok, hash))
         {
             ajouter_ligne(mat);

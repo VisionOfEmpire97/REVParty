@@ -52,7 +52,16 @@ Mkfile.old
 dkms.conf
 
 #Object and executables
-/bin/*
+bin/*
 
 #VSCode
 .vscode/
+
+#Doxygen
+documentation/
+
+#zip
+*.zip
+
+#log
+log/*
