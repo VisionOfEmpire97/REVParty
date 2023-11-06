@@ -146,7 +146,6 @@ t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat)
     int ligne = mat->ligne;
     int colonne = mat->col, val1, val2;
     t_mat_int_dyn *mat_duel = creer_matrice_int(colonne - 4, colonne - 4);
-    printf("CONSTRUIRE MATRICE\n");
     if (!est_matrice_vide(mat))
     {
         for (int i = 1; i < ligne; i++)
