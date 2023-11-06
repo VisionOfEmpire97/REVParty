@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
+
+
 /**
  * 
  * @brief Ecriture du fichier de log
@@ -12,7 +14,16 @@
  * **début du programme [nom du programme]**
  * [nom du prgm] - étape réalisée 
  * **fin du programme [nom du programme]**
+ * Le log sera fermé dans le main principal
  * 
  * @param filename le fichier de log déjà ouvert
  */
 void to_log_file(char* filename);
+
+/**
+ * @brief Affiche les logs recueillis tout au long 
+ * du programme ou les sauvegarde dans un fichier 
+ * 
+ * @param[in] filename nom du fichier ou les logs seront écrit tout au long du programme
+*/
+void begin_to_log(const char *filename);
