@@ -29,6 +29,7 @@
 #include <getopt.h>
 #include <stdlib.h>
 #include <arg_parse_util.h>
+#include <util_log.h>
 #define NAMELENGHT 60
 
 /**
