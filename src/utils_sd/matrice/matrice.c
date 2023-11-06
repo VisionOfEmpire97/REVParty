@@ -26,6 +26,7 @@ t_mat_char_star_dyn *creer_matrice_char()
 
 int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
 {
+
     int no = mat->nb_elem;
 
     if ((mat->ligne) == 1)
@@ -44,6 +45,7 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
         int l = no / colonne;
         int c = no % colonne;
         char *element;
+
         element = (char *)malloc(MAX_CHAR);
         strcpy(element, chaine);
         mat->matrice[l][c] = element;
@@ -53,7 +55,6 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
     {
         return -1;
     }
-
     return 0;
 }
 
@@ -66,7 +67,7 @@ void afficher_matrice_char(t_mat_char_star_dyn *mat)
     {
         for (int j = 0; j < C; j++)
         {
-            printf("%5s ", M[i][j]);
+            printf("%s", M[i][j]);
         }
         printf("\n");
     }
@@ -94,13 +95,11 @@ t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat)
     (mat->ligne)++;
 
     (mat->matrice) = (char ***)realloc((mat->matrice), ((mat->ligne) * sizeof(char **)));
-    for (int i = 1; i < (mat->ligne); i++)
+
+    mat->matrice[(mat->ligne) - 1] = (char **)malloc((mat->col) * sizeof(char *));
+    for (int j = 0; j < (mat->col); j++)
     {
-        mat->matrice[i] = (char **)malloc((mat->col) * sizeof(char *));
-        for (int j = 0; j < (mat->col); j++)
-        {
-            mat->matrice[i][j] = "";
-        }
+        mat->matrice[(mat->ligne) - 1][j] = "";
     }
     return mat;
 }
@@ -126,7 +125,7 @@ typedef struct t_mat_int
 {
     int ligne;
     int col;
-    int ***matrice;
+    int **matrice;
 } t_mat_int_dyn;
 
 t_mat_int_dyn *creer_matrice_int(int ligne, int colonne)
@@ -134,7 +133,7 @@ t_mat_int_dyn *creer_matrice_int(int ligne, int colonne)
     t_mat_int_dyn *m = malloc(sizeof(struct t_mat_int));
     m->ligne = ligne;
     m->col = colonne;
-    m->matrice = (int ***)malloc(ligne * sizeof(int **));
+    m->matrice = (int **)malloc(ligne * sizeof(int *));
     for (int i = 0; i < ligne; i++)
     {
         m->matrice[i] = calloc(colonne, sizeof(int));
@@ -147,6 +146,7 @@ t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat)
     int ligne = mat->ligne;
     int colonne = mat->col, val1, val2;
     t_mat_int_dyn *mat_duel = creer_matrice_int(colonne - 4, colonne - 4);
+    printf("CONSTRUIRE MATRICE\n");
     if (!est_matrice_vide(mat))
     {
         for (int i = 1; i < ligne; i++)
@@ -157,6 +157,7 @@ t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat)
                 for (int k = j + 1; k < colonne; k++)
                 {
                     val2 = atoi(mat->matrice[i][k]);
+
                     if (val1 > val2)
                     {
                         mat_duel->matrice[j - 4][k - 4]++;
@@ -188,4 +189,30 @@ t_mat_int_dyn *transformer_mat_char_mat_duel(t_mat_char_star_dyn *mat)
             mat_duel->matrice[i][j] = atoi(mat->matrice[i][j]);
         }
     }
+    return mat_duel;
+}
+void afficher_matrice_int(t_mat_int_dyn *mat)
+{
+    int **M = mat->matrice;
+    int L = mat->ligne;
+    int C = mat->col;
+    for (int i = 0; i < L; i++)
+    {
+        for (int j = 0; j < C; j++)
+        {
+            printf("%5d ", M[i][j]);
+        }
+        printf("\n");
+    }
+}
+void supprimer_matrice_int(t_mat_int_dyn *mat)
+{
+    int **M = mat->matrice;
+    int lig = mat->ligne;
+    for (int i = 0; i < lig; i++)
+    {
+        free(M[i]);
+    }
+    free(M);
+    free(mat);
 }

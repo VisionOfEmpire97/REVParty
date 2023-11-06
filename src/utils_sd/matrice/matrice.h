@@ -2,18 +2,17 @@
 #define __MATRICE_H__
 #include "stdbool.h"
 #include "stdbool.h"
-#define MAX_CHAR 500
+#define MAX_CHAR 70
 /// \brief structure de donnee matrice
 /// \struct t_mat_char_star_dyn une structure de matrice de chaine dynamique
 typedef struct t_mat_char t_mat_char_star_dyn;
-
+typedef struct t_mat_int t_mat_int_dyn;
 /// \brief creation d'une matrice vide
 /// \param ligne nombre de ligne de la matrice
 /// \param colonne nombre de colonne de la matrice
 /// \return une matrice de charactere bien initialisee avec la chaine vide
 
-t_mat_char_star_dyn *creer_matrice();
-t_mat_char_star_dyn *creer_matrice();
+t_mat_char_star_dyn *creer_matrice_char();
 /// \brief insertion dans une matrice
 /// \param chaine l'element a inserer
 /// \param mat la matrice dans laquelle on va inserer l'element
@@ -48,10 +47,14 @@ t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat);
 /// \param ligne la ligne a laquelle on veut acceder
 /// \param colonne la colonne a laquelle on veut acceder
 /// \return la valeur a la case donnée ou NULL si l'indice est incorrecte
-char * valeur_matrice_char_indice(t_mat_char_star_dyn *mat,int ligne,int colonne);
+char *valeur_matrice_char_indice(t_mat_char_star_dyn *mat, int ligne, int colonne);
 
 /// \brief récuperer le nombre de colonne de la matrice
 /// \param mat
 /// \return le nombre de colonnes de la matrice
 int recuperer_nb_colonnes(t_mat_char_star_dyn *mat);
+
+t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat);
+void afficher_matrice_int(t_mat_int_dyn *mat);
+void supprimer_matrice_int(t_mat_int_dyn *mat);
 #endif

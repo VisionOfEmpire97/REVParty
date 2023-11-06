@@ -23,3 +23,4 @@ t_mat_char_star_dyn *recherche_indice(int i_deb, int i_fin, int j_deb, int j_fin
 /// \param mat matrice destination
 
 void inserer_ligne_matrice(char *chaine, t_mat_char_star_dyn *mat);
+t_mat_char_star_dyn *lecture_fichier(const char *nom_fichier);
