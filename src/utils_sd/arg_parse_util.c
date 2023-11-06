@@ -1,21 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <arg_parse_util.h>
-
-void begin_to_log(const char *filename) // will check if filename exists, and open it in write
-{
-    FILE *file;
-    if (filename != NULL)
-    {
-        file = fopen(filename, "wt");
-    }
-    else
-    {
-        file = stdout;
-    }
-    // something should happen here, dunno what tho
-    //probably should add stdout and stderr to file 
-}
 
 void check_compatibility(int *tab, int len_tab)
 {
@@ -34,7 +20,7 @@ void lancer_methode(char *methode)
     int methode_id = 0;
     for (methode_id; methode_id < 7; methode_id++)
     {
-        if (*methode == valid_methods[methode_id])
+        if (strcmp(methode, valid_methods[methode_id]) == 0)
             break;
     }
     switch (methode_id)
@@ -57,8 +43,10 @@ void lancer_methode(char *methode)
     case 5: // jugement majoritaire
         // fonction qui appelle la méthode de vote
         break;
-    case 6: //toutes le méthodes
+    case 6: // toutes le méthodes
         // fonction qui appelle TOUT
+        // - si -i (vote par classement), alors on lance toutes les méthodes 
+        // - si -d(matrice de duel), alors on lance toutes les méthodes sauf uni1 et uni2
         break;
     default:
         printf("%sargument de méthode invalide%s\n", RED, END_COLOR);
