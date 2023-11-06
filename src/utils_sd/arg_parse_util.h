@@ -37,14 +37,6 @@ char *END_COLOR = "\e[00m";
 char *valid_methods[7] = {"uni1", "uni2", "cm", "cp", "cs", "jm", "all"};
 
 /**
- * @brief Affiche les logs recueillis tout au long 
- * du programme ou les sauvegarde dans un fichier 
- * 
- * @param[in] filename nom du fichier ou les logs seront écrit tout au long du programme
-*/
-void begin_to_log(const char *filename);
-
-/**
  * @brief Vérifie que seul -i ou -d est présent lors de l'appel 
  * 
  * @param[in] tab liste des balises déjà traitées
