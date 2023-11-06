@@ -38,11 +38,15 @@ t_mat_char_star_dyn *lecture_fichier(const char *nom_fichier)
     return mat;
 }
 
-void inserer_ligne_matrice(char *chaine, t_mat_char_star_dyn *mat)
+void inserer_ligne_matrice(char *ligne, t_mat_char_star_dyn *mat)
 {
-    char chaine2[BUFF_SIZE];
-    strcpy(chaine2, chaine);
-    char *tok = strtok(chaine2, SEPARATEUR);
+    char chaine[BUFF_SIZE];
+    strcpy(chaine, ligne);
+    size_t length = strlen(chaine);
+    if (chaine[length - 1] == '\n')
+        chaine[--length] = '\0';
+
+    char *tok = strtok(chaine, SEPARATEUR);
     while (tok != NULL)
     {
         inserer_matrice_char(tok, mat);

@@ -31,7 +31,9 @@ int main(int argc, char *argv[])
 
     printf("TEST CREATION MATRICE DUEL\n");
     m = lecture_fichier(argv[1]);
+    printf("s\n");
     mat_duel = construire_mat_duel(ma_matrice);
+    printf("s\n");
     printf("TEST OK!\n");
 
     printf("TEST AFFICHAGE\n");
