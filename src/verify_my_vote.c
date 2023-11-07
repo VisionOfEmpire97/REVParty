@@ -1,6 +1,6 @@
 /**
- * Programme principal - Verify my vote :) 
- * @brief Programme principal de vérification de vote.
+ * Programme indépendant - Verify my vote :) 
+ * @brief Programme indépendant de vérification de vote.
  * @author Antoine Vallat
  * @date 13 octobre 2023
  * @file src/verify_my_vote.c
