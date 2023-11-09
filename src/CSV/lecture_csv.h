@@ -38,10 +38,8 @@ t_mat_char_star_dyn *recherche_hash(char *hash, const char *file);
  @{
  */
 
-<<<<<<< HEAD
-void inserer_ligne_matrice(char *chaine, t_mat_char_star_dyn *mat);
 t_mat_char_star_dyn *lecture_fichier(const char *nom_fichier);
-=======
+
 /**
  * \brief Permet d'insérer une ligne entière dans la matrice
  * \param[in] ligne ligne à insérer
@@ -49,4 +47,3 @@ t_mat_char_star_dyn *lecture_fichier(const char *nom_fichier);
  */
 void inserer_ligne_matrice(char *ligne, t_mat_char_star_dyn *mat);
 /**@}*/
->>>>>>> makefile

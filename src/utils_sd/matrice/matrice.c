@@ -39,11 +39,11 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
     int ligne = mat->ligne;
     int colonne = mat->col;
 
-    if (nb_elem < (ligne) * (colonne))
+    if (no < (ligne) * (colonne))
     {
         // recuperer la case en fonction du nombre d'element
-        int l = nb_elem / colonne;
-        int c = nb_elem % colonne;
+        int l = no / colonne;
+        int c = no % colonne;
         char *element;
 
         element = (char *)malloc(MAX_CHAR);
