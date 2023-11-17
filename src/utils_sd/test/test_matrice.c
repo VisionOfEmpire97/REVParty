@@ -1,5 +1,5 @@
 #include "../matrice.h"
-#include "../../../CSV/lecture_csv.h"
+#include "../../CSV/lecture_csv.h"
 /// \brief program de teste sur une matrice
 
 int main(int argc, char *argv[])
