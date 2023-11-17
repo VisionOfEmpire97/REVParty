@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <string.h>
 #include "lecture_csv.h"
-#include "../utils_sd/matrice.h"
 
 #define SEPARATEUR ","
 #define BUFF_SIZE 500

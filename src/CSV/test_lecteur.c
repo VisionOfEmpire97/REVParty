@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "lecture_csv.h"
-#include "../utils_sd/matrice/matrice.h"
 
 int main(int argc, char const *argv[])
 {
