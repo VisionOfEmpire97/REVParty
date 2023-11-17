@@ -4,7 +4,7 @@
 #include "SHA256/sha256.h"
 #include "SHA256/sha256_utils.h"
 #include "CSV/lecture_csv.h"
-#include "utils_sd/matrice/matrice.h"
+#include "utils_sd/matrice.h"
 void electionUninominale(int votes[], char *candidats[], int n , int nombreDeVotes ) {
     int candidatVotes[n];
     for (int i = 0; i < n; i++) {
@@ -128,8 +128,8 @@ void traitement_uninominal_1tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
     for (int num=0 ;  num<nombreVotant ; num++ )
     {
         vote = recupere_1(entete, mat , num );
-        vote_final = changement(candidats , vote ,nombreCandidat);
-        vote[num]=vote_final;
+        vote_final = changement(candidats , vote ,nombrecandidat);
+        votes[num]=vote_final;
     }
     electionUninominale(votes, candidats, nombrecandidat , nombreVotant );
 }
@@ -145,10 +145,10 @@ void traitement_uninominal_2tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
     for (int num=0 ;  num<nombreVotant ; num++ )
     {
         vote = recupere_1(entete, mat , num );
-        vote_final = changement(candidats , vote ,nombreCandidat);
-        vote[num]=vote_final;
+        vote_final = changement(candidats , vote ,nombrecandidat);
+        votes[num]=vote_final;
         vote = recupere_2(entete, mat , num );
-        vote_final = changement(candidats , vote ,nombreCandidat);
+        vote_final = changement(candidats , vote ,nombrecandidat);
         votes_deux[num]=vote_final;
     }
     electionUninominalDeuxTours(votes, candidats, nombrecandidat , nombreVotant ,votes_deux);

@@ -3,17 +3,17 @@
  * \date 16 Octobre 2023
  * \brief Programme permettant de lire un fichier CSV (Comma Separated Value) et de renvoyer son contenu sous forme de matrice.
  * La matrice est de type t_mat_char_star_dyn.
- * \file
+ * \file lecture_csv.h
  */
 #include <stdio.h>
-#include "../utils_sd/matrice/matrice.h"
+#include "../utils_sd/matrice.h"
 
-/** \defgroup Programme Lecteur de fichier .csv
- @{
+/** \defgroup CSV Lecteur de fichier csv
+ \{
  */
 
 /** \defgroup GetLine Fonctions permettant de récupérer une ligne précise du fichier csv
- @{
+ \{
  */
 
 /** 
@@ -35,7 +35,7 @@ t_mat_char_star_dyn *recherche_hash(char *hash, const char *file);
 //t_mat_char_star_dyn *recherche_indice(int i_deb, int i_fin, int j_deb, int j_fin);
 
 /** \defgroup UtilityFunctors Fonctions de modification de la matrice
- @{
+ \{
  */
 
 t_mat_char_star_dyn *lecture_fichier(const char *nom_fichier);
