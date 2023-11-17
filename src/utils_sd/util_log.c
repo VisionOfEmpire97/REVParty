@@ -12,12 +12,12 @@
 #include <stdlib.h>
 #include "util_log.h"
 
-FILE *begin_to_log(const char *filename) // will check if filename exists, and open it in write
+FILE *begin_to_log(const char *filename)
 {
     FILE *logfp;
     if (filename != NULL)
     {
-        logfp = fopen(filename, "wt");
+        logfp = fopen(filename, "w");
         if (logfp == NULL)
         {
             perror("Echec d'ouverture du fichier de logs");
@@ -28,21 +28,20 @@ FILE *begin_to_log(const char *filename) // will check if filename exists, and o
     {
         logfp = stdout;
     }
+    fprintf(logfp, "**\tDébut du programme\n\n**");
     return logfp;
-    // something should happen here, dunno what tho
-    // probably should add stdout and stderr to file
 }
 
-void append_to_log_file(const char *nomMethode,const char *textToLog, FILE *logfp)
+void append_to_log_file(const char *textToLog, FILE *logfp)
 {
-
-    fprintf(logfp, "**\tDébut du programme %s\n\n**", nomMethode); //?
     fprintf(logfp, "%s", textToLog);
-    fprintf(logfp, "**\tFin du programme %s\n\n**", nomMethode); //?
 }
 
-void close_log_file(FILE *logfp) {
-    if (logfp != stdout) {
+void close_log_file(FILE *logfp)
+{
+    fprintf(logfp, "**\n\tFin du programme\n**");
+    if (logfp != stdout)
+    {
         fclose(logfp);
     }
 }

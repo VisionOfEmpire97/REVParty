@@ -23,14 +23,15 @@
  * OU ALORS
  * utiliser dup tout simplement ? à voir...
  */
+
+
 /**
- * @brief Ajoute une nouvelle ligne au fixhier de log ouvert
- * Cette fonction serait appelée à chaque étape de calcul
- * @param[in] filename le fichier de log déjà ouvert
- * @param[in] textToLog journalisation du texte en entrée
- * @param[in] nomMethode nom de la méthode courante
+ * @brief Ajoute une nouvelle ligne au fixhier de log ouvert.
+ * Cette fonction serait appelée à chaque étape de calcul.
+ * @param[in] filename Fichier de log déjà ouvert
+ * @param[in] textToLog Journalisation du texte en entrée
  */
-void append_to_log_file(const char* nomMethode,const char* textToLog, FILE* logfp);
+void append_to_log_file(const char* textToLog, FILE* logfp);
 
 /**
  * @brief Affiche sur stdout les logs recueillis pendant l'exécution  
@@ -43,8 +44,8 @@ FILE* begin_to_log(const char *filename);
 
 
 /**
- * @brief Ferme le fichier log s'il a été ouvert
- * @param[in] logfp fichier ouvert (pas d'effet si logfp == stdout)
+ * @brief Ferme le fichier log s'il a été ouvert.
+ * @param[in] logfp Fichier ouvert (Pas d'effet si logfp == stdout)
  * 
 */
 void close_log_file(FILE *logfp);
