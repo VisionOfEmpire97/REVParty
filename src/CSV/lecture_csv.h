@@ -6,7 +6,7 @@
  * \file lecture_csv.h
  */
 #include <stdio.h>
-#include "../utils_sd/matrice/matrice.h"
+#include "../utils_sd/matrice.h"
 
 /** \defgroup CSV Lecteur de fichier csv
  \{
