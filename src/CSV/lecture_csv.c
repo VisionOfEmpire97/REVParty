@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <string.h>
 #include "lecture_csv.h"
-#include "../utils_sd/matrice.h"
 
 #define SEPARATEUR ","
 #define BUFF_SIZE 500
@@ -28,7 +27,6 @@ t_mat_char_star_dyn *lecture_fichier(const char *nom_fichier)
     FILE *file = fopen(nom_fichier, "r");
     t_mat_char_star_dyn *mat = creer_matrice_char();
     char buffer[BUFF_SIZE];
-
     while (fgets(buffer, sizeof(buffer), file) != NULL)
     {
         ajouter_ligne(mat);

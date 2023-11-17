@@ -13,7 +13,6 @@
 #include "SHA256/sha256.h"
 #include "SHA256/sha256_utils.h"
 #include "CSV/lecture_csv.h"
-#include "utils_sd/matrice.h"
 /// \var macro utilisée pour allouer un bloc au string à hasher
 #define STRLONG 120
 
