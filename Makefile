@@ -20,7 +20,7 @@ LOGDIR = log
 SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
-MATDIR = $(SRCDIR)/utils_sd/matrice
+MATDIR = $(SRCDIR)/utils_sd
 PATHTOCSVFILE = fichiers_votes/
 DOXYGENDIR = documentation/
 
