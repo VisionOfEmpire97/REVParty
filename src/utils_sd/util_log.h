@@ -26,15 +26,38 @@
 /**
  * @brief Ajoute une nouvelle ligne au fixhier de log ouvert
  * Cette fonction serait appelée à chaque étape de calcul
- * Peut prendre plus de paramètres, à toi de voir comment tu gères l'implémentation
  * @param[in] filename le fichier de log déjà ouvert
+ * @param[in] textToLog journalisation du texte en entrée
+ * @param[in] nomMethode nom de la méthode courante
  */
-void append_to_log_file(char* filename);
+void append_to_log_file(const char* nomMethode,const char* textToLog, FILE* logfp);
 
 /**
  * @brief Affiche sur stdout les logs recueillis pendant l'exécution  
  * du programme ou les sauvegarde dans un fichier 
  * Fonction à appeler une seule fois dans le programme principal
  * @param[in] filename nom du fichier ou les logs seront écrit tout au long du programme
+ * @param[out] logfp résultat de l'ouverture du fichier, stdout si pas de fichier spécifié
 */
-void begin_to_log(const char *filename);
+FILE* begin_to_log(const char *filename);
+
+
+/**
+ * @brief Ferme le fichier log s'il a été ouvert
+ * @param[in] logfp fichier ouvert (pas d'effet si logfp == stdout)
+ * 
+*/
+void close_log_file(FILE *logfp);
+
+/**
+ * COMMENTAIRE PROVISOIRE EN ATTENDANT VALIDATION
+ * 
+ * Application des idées proposées
+ * 
+ * Fonction begin_to_log qui retourne un le descripteur logfp
+ * logfp == stdout | fopen(logfile) en fonction de la présence ou non de la balise -o
+ * 
+ * Fonction append_to_log_file qui concatene le fichier de logs a chaque appel, avec le format proposé
+ * 
+ * 
+*/
