@@ -1,3 +1,4 @@
+
 /**
  * \author Équipe 001 (JOSEPH REMY)
  * \date 16 Octobre 2023
@@ -26,14 +27,16 @@
  * \struct t_mat_char_star_dyn une structure
  * Matrice de n lignes , m colonnes de taille non statique
  */
+/**
+ * \defgroup Matrice de chaine de charactere
+ * @{
+ */
 
 typedef struct t_mat_char t_mat_char_star_dyn;
-typedef struct t_mat_int t_mat_int_dyn;
-
-/** @} */
 
 /** \defgroup Constructeur Constructeurs et destructeurs de matrice
  *@{
+
 
  * \brief Creation d'une matrice vide.
  * \return Une matrice de caractères vide
@@ -91,24 +94,44 @@ char *valeur_matrice_char_indice(t_mat_char_star_dyn *mat, int ligne, int colonn
  * \return Le nombre de colonnes de la matrice
  */
 int recuperer_nb_colonnes(t_mat_char_star_dyn *mat);
+
+/**
+ * \brief Récupérer le nombre de colonne de la matrice
+ * \param mat
+ * \return Le nombre de lignes de la matrice
+ */
+int recuperer_nb_lignes(t_mat_char_star_dyn *mat);
+/**@}*/
+
+/**
+ * \defgroup Matrice de d'entier
+ * @{
+ */
+
+typedef struct t_mat_int t_mat_int_dyn;
 /**
  * \brief Transforme une matrice de chaine lu du CSV en matrice de duel
  *
  * \param mat
  * \return t_mat_int_dyn* Une matrice de duel
- */
+ * */
+
 t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat);
+
 /**
  * \brief Affiche une matrice d'entiers
  *
  * @param mat
  */
 void afficher_matrice_int(t_mat_int_dyn *mat);
+
 /**
  * @brief supprime une matrice et libere la memoire occupee par celle ci
  *
  * @param mat
  */
 void supprimer_matrice_int(t_mat_int_dyn *mat);
+/** @} */
+
 /**@}*/
 #endif

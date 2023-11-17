@@ -115,7 +115,10 @@ int recuperer_nb_colonnes(t_mat_char_star_dyn *mat)
 {
     return mat->col;
 }
-
+int recuperer_nb_lignes(t_mat_char_star_dyn *mat)
+{
+    return mat->ligne;
+}
 bool est_matrice_vide(t_mat_char_star_dyn *mat)
 {
     return mat->nb_elem == 0;
