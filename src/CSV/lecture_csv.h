@@ -6,7 +6,7 @@
  * \file lecture_csv.h
  */
 #include <stdio.h>
-#include "../utils_sd/matrice/matrice.h"
+#include "../utils_sd/matrice.h"
 
 /** \defgroup CSV Lecteur de fichier csv
  \{
@@ -37,6 +37,8 @@ t_mat_char_star_dyn *recherche_hash(char *hash, const char *file);
 /** \defgroup UtilityFunctors Fonctions de modification de la matrice
  \{
  */
+
+t_mat_char_star_dyn *lecture_fichier(const char *nom_fichier);
 
 /**
  * \brief Permet d'insérer une ligne entière dans la matrice
