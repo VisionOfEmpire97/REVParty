@@ -14,7 +14,6 @@ t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
     FILE *file = fopen(nom_fichier, "r");
     t_mat_char_star_dyn *mat = creer_matrice();
     char buffer[BUFF_SIZE];
-
     if (fgets(buffer, sizeof(buffer), file) != NULL)
     {
         ajouter_ligne(mat);
