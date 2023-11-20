@@ -30,6 +30,8 @@ PROG_PRINCIPAL = $(EXECDIR)/scrutin
 TESTSHA = $(EXECDIR)/test_sha
 TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
+TESTGRAPH = $(EXECDIR)/testStructGraph
+UNI = $(EXECDIR)/uninominal
 
 #Objets
 OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
@@ -71,10 +73,16 @@ test_vmv : vmv
 	@echo "Vous pouvez tester les fuites mémoires avec \
 	\"$(RED)valgrind --leak-check=full $(verify_my_vote) roset nathan e9RkoTAH $(PATHTOCSVFILE)VoteCondorcet.csv$(END_C)\""
 	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
+
+test_graph : dirs $(OBJET_UTILS)
+	@$(CC) -o $(TESTGRAPH) $(SRCDIR)/test_graph.c $(OBJET_UTILS)
 #... TODO
 
 #scrutin: dirs... TODO
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
+
+uninominal: dirs $(OBJET_UTILS)
+	@$(CC) -o $(UNI) $(SRCDIR)/uninominal.c $(OBJET_UTILS)
 
 vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
 
