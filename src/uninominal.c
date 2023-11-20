@@ -160,10 +160,6 @@ void traitement_uninominal_1tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
     {
         printf("Probleme boucle numéro i %d \n"  , num );
         vote = recupere_1(entete, mat , num );
-<<<<<<< Updated upstream:src/uninominal_invasion_cd.c
-        vote_final = changement(candidats , vote ,nombrecandidat);
-        votes[num]=vote_final;
-=======
         printf("Probleme 7  \n");
         printf("vote : %s  \n", vote);
          printf("Probleme seg  \n");
@@ -171,7 +167,6 @@ void traitement_uninominal_1tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
         printf("Probleme 8  \n");
         vote[num-1]=vote_final;
         printf("Probleme 9 \n");
->>>>>>> Stashed changes:src/uninominal.c
     }
     printf("Ôk on envoie  \n");
     electionUninominale(votes, candidats, nombrecandidat , nombreVotant );
@@ -190,17 +185,10 @@ void traitement_uninominal_2tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
     {
         vote = recupere_1(entete, mat , num );
         vote_final = changement(candidats , vote ,nombrecandidat);
-<<<<<<< Updated upstream:src/uninominal_invasion_cd.c
-        votes[num]=vote_final;
-        vote = recupere_2(entete, mat , num );
-        vote_final = changement(candidats , vote ,nombrecandidat);
-        votes_deux[num]=vote_final;
-=======
         vote[num-1]=vote_final;
         vote = recupere_2(entete, mat , num );
         vote_final = changement(candidats , vote ,nombrecandidat);
         votes_deux[num-1]=vote_final;
->>>>>>> Stashed changes:src/uninominal.c
     }
     electionUninominalDeuxTours(votes, candidats, nombrecandidat , nombreVotant ,votes_deux);
 }
