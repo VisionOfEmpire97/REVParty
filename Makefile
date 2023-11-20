@@ -82,7 +82,10 @@ test_graph : dirs $(OBJET_UTILS)
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
 
 uninominal: dirs $(OBJET_UTILS)
-	@$(CC) -o $(UNI) $(SRCDIR)/uninominal.c $(OBJET_UTILS)
+	@$(CC) -o $(UNI) $(SRCDIR)/$@.c $(OBJET_UTILS)
+
+test_uni: uninominal
+	@./$(UNI) fich_tests/vote10.csv
 
 vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
 
