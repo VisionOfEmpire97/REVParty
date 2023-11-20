@@ -30,12 +30,13 @@ PROG_PRINCIPAL = $(EXECDIR)/scrutin
 TESTSHA = $(EXECDIR)/test_sha
 TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
+UNI = $(EXECDIR)/uninominal
 
 #Objets
 OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
 OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 
-#Exécutables
+#Exécutablespremier
 
 vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
 	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verify_my_vote.c $(OBJ_SHA_UTILS)
@@ -75,6 +76,9 @@ test_vmv : vmv
 
 #scrutin: dirs... TODO
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
+
+uninominal: dirs $(OBJET_UTILS)
+	@$(CC) -o $(UNI) $(SRCDIR)/uninominal.c $(OBJET_UTILS)
 
 vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
 
