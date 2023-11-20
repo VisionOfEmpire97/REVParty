@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "SHA256/sha256.h"
-#include "SHA256/sha256_utils.h"
 #include "CSV/lecture_csv.h"
 #include "utils_sd/matrice.h"
 
@@ -81,17 +79,15 @@ char *recupere_1(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *mat , int num
 {
     for(int z = 1; z < 9 ; z++)
     {
-        printf("Probleme 9  \n");
         for (int i = 4; i < recuperer_nb_colonnes(mat); i++){
-            printf("Probleme num %d \n",num_ligne);
             if (atoi(valeur_matrice_char_indice(mat,num_ligne, i))==z) // On parcourt i colonne a partir de la colonne 4 
             {
-                printf("Probleme 10  \n");
                 return valeur_matrice_char_indice(entete, 0, i);
             }
         }
     }
     printf("Errreur encore \n");
+    return NULL;
 }
 char *recupere_2(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *mat , int num_ligne )
 {
@@ -118,54 +114,56 @@ char *recupere_2(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *mat , int num
     }
     printf("Pas de 2 trouver dans la ligne ") ;*/
     }
+    printf("Errreur encore \n");
+    return NULL;
 }
-void recupere_candidat(t_mat_char_star_dyn *entete,int nbColonne,char *liste_candidat[])
+void recupere_candidat(t_mat_char_star_dyn *entete,char *liste_candidat[])
 {   
-
-    for (int i = 0; i < nbColonne; i++){
-      liste_candidat[i]=valeur_matrice_char_indice(entete, 0, i);
+    int nbColonne = recuperer_nb_colonnes(entete);
+    for (int i = 4; i < nbColonne; i++){
+      liste_candidat[i-4]=valeur_matrice_char_indice(entete, 0, i);
     }
 
 }
 int changement(char*liste_candidat[] , char *vote , int nombreCandidat)
-{    printf("Probleme 12  \n");
+{    
     for(int i = 0 ; i<nombreCandidat ; i++)
     {
-        printf("Probleme 13  \n");
-        if (strcmp(liste_candidat[i],vote)==0)
+        if (liste_candidat[i]==vote)
         {
-            return i+1 ;
+            return i+1;
         }
-        printf("Probleme 14 \n");
     }
+    printf("Retour -1 \n");
     return -1 ;
 }
 void traitement_uninominal_1tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *entete) 
 {
-    printf("Probleme 2  \n");
+
     int nombrecandidat = recuperer_nb_colonnes(entete)-4;
     int nombreVotant = recuperer_nb_lignes(mat)-1;
-    printf("Probleme 3  \n");
+    
     char *candidats[nombrecandidat] ; 
-    recupere_candidat(entete,nombrecandidat,candidats);
-    printf("Probleme 4 \n");
+    recupere_candidat(entete,candidats);
+
     int votes[nombreVotant];
     char *vote ; 
     int vote_final = 0 ;
-    printf("Probleme 6  \n");
-    for (int num=1 ;  num<nombreVotant ; num++ )
+   
+    for (int num=1 ;  num<nombreVotant+1 ; num++ )
     {
-        printf("Probleme boucle numéro i %d \n"  , num );
         vote = recupere_1(entete, mat , num );
-        printf("Probleme 7  \n");
-        printf("vote : %s  \n", vote);
-        printf("Probleme seg  \n");
         vote_final = changement(candidats , vote ,nombrecandidat); // le premier candidat est le candidat 1 = 1  , candidat 2 = 2 , . . .
-        printf("Probleme 8  \n");
-        vote[num-1]=vote_final;
-        printf("Probleme 9 \n");
+        printf("vote final = %d\n",vote_final);
+        votes[num-1]=vote_final;
+
     }
     printf("Ôk on envoie  \n");
+    printf("Nombre de candidat : %d \n " ,nombrecandidat );
+    for (int i = 0; i < 10; i++) {
+        printf("Vote %d : %d \n ",i,votes[i]);
+
+    }
     electionUninominale(votes, candidats, nombrecandidat , nombreVotant );
 }
 void traitement_uninominal_2tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *entete) 
@@ -173,16 +171,16 @@ void traitement_uninominal_2tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
     int nombrecandidat = recuperer_nb_colonnes(entete)-4;
     int nombreVotant = recuperer_nb_lignes(mat)-1;
     char *candidats[nombrecandidat];
-    recupere_candidat(entete,nombrecandidat,candidats);
+    recupere_candidat(entete,candidats);
     int votes[nombreVotant];
     int votes_deux[nombreVotant];
     char *vote;
     int vote_final = 0 ;
-    for (int num=1 ;  num<nombreVotant ; num++ )
+    for (int num=1 ;  num<nombreVotant+1 ; num++ )
     {
         vote = recupere_1(entete, mat , num );
         vote_final = changement(candidats , vote ,nombrecandidat);
-        vote[num-1]=vote_final;
+        votes[num-1]=vote_final;
         vote = recupere_2(entete, mat , num );
         vote_final = changement(candidats , vote ,nombrecandidat);
         votes_deux[num-1]=vote_final;
@@ -190,17 +188,22 @@ void traitement_uninominal_2tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
     electionUninominalDeuxTours(votes, candidats, nombrecandidat , nombreVotant ,votes_deux);
 }
 int main(int argc, char *argv[])
-{
+{   
+    printf("lancement progrmame \n ");
     char *nom = argv[1]; 
     t_mat_char_star_dyn *mat  = lecture_fichier(nom);
+
     t_mat_char_star_dyn *entete  = lecture_entete(nom);
+
     printf("Ok pour le moment \n");
     int votes[] = {1, 2, 2, 1, 1, 2, 2, 2, 2, 3};
     int votes_deux[] = {1, 2, 2, 1, 1, 2, 2, 2, 2, 3};
     char *candidats[] = {"Candidat 1", "Candidat 2", "Candidat 3"};
     int nombrecandidat = 3;
     int nombreVotant = 10 ;
-    printf("Probleme 1  \n");
+
+    //char*teste = valeur_matrice_char_indice(mat, 1, 4);
+    //printf("Teste %s  \n" , teste);
     traitement_uninominal_1tours(mat,entete);
     //electionUninominale(votes, candidats, nombrecandidat , nombreVotant );
     //electionUninominalDeuxTours(votes, candidats, nombrecandidat , nombreVotant ,votes_deux);
