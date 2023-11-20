@@ -3,10 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "lecture_csv.h"
-<<<<<<< Updated upstream
-=======
 #include "../utils_sd/matrice.h"
->>>>>>> Stashed changes
 
 #define SEPARATEUR ","
 #define BUFF_SIZE 500

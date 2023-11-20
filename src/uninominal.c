@@ -5,10 +5,7 @@
 #include "SHA256/sha256_utils.h"
 #include "CSV/lecture_csv.h"
 #include "utils_sd/matrice.h"
-<<<<<<< Updated upstream:src/uninominal_invasion_cd.c
-=======
 
->>>>>>> Stashed changes:src/uninominal.c
 void electionUninominale(int votes[], char *candidats[], int n , int nombreDeVotes ) {
     int candidatVotes[n];
     for (int i = 0; i < n; i++) {
@@ -162,7 +159,7 @@ void traitement_uninominal_1tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
         vote = recupere_1(entete, mat , num );
         printf("Probleme 7  \n");
         printf("vote : %s  \n", vote);
-         printf("Probleme seg  \n");
+        printf("Probleme seg  \n");
         vote_final = changement(candidats , vote ,nombrecandidat); // le premier candidat est le candidat 1 = 1  , candidat 2 = 2 , . . .
         printf("Probleme 8  \n");
         vote[num-1]=vote_final;
