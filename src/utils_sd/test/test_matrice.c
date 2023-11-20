@@ -7,6 +7,7 @@ int main(int argc, char *argv[])
     /// creation de la matrice
     t_mat_char_star_dyn *ma_matrice = creer_matrice_char(), *m;
     t_mat_int_dyn *mat_duel;
+
     /// insertion des valeurs dans la matrice
     printf("TEST MATRICE:\n");
 
@@ -38,5 +39,6 @@ int main(int argc, char *argv[])
     printf("TEST AFFICHAGE\n");
     afficher_matrice_int(mat_duel);
     printf("TEST OK!\n");
+
     return 0;
 }

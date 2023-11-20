@@ -124,13 +124,19 @@ bool est_matrice_vide(t_mat_char_star_dyn *mat)
 {
     return mat->nb_elem == 0;
 }
-//--------------------------MATRICE INT----------------------------
-typedef struct t_mat_int
+
+char **recuperer_candidats(t_mat_char_star_dyn *mat)
 {
-    int ligne;
-    int col;
-    int **matrice;
-} t_mat_int_dyn;
+
+    char **candidats = (char **)malloc(((mat->col) - 4) * sizeof(char *));
+
+    for (int i = 4; i < mat->col; i++)
+    {
+        candidats[i - 4] = mat->matrice[0][i];
+    }
+    return candidats;
+}
+//--------------------------MATRICE INT----------------------------
 
 t_mat_int_dyn *creer_matrice_int(int ligne, int colonne)
 {
@@ -147,6 +153,7 @@ t_mat_int_dyn *creer_matrice_int(int ligne, int colonne)
 
 t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat)
 {
+
     int ligne = mat->ligne;
     int colonne = mat->col, val1, val2;
     t_mat_int_dyn *mat_duel = creer_matrice_int(colonne - 4, colonne - 4);
@@ -218,4 +225,9 @@ void supprimer_matrice_int(t_mat_int_dyn *mat)
     }
     free(M);
     free(mat);
+}
+
+int recuperer_nb_colonnes_int(t_mat_int_dyn *mat)
+{
+    return mat->col;
 }

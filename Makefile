@@ -30,10 +30,11 @@ PROG_PRINCIPAL = $(EXECDIR)/scrutin
 TESTSHA = $(EXECDIR)/test_sha
 TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
+TESTGRAPH=$(EXECDIR)/testStructGraph
 
 #Objets
 OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
-OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
+OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o $(OBJDIR)/graph.o
 
 #Exécutables
 
@@ -51,6 +52,11 @@ test_matrice: dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
 	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
 	@./$(TESTMAT) fich_tests/vote10.csv
+
+test_graph: dirs $(OBJET_UTILS)
+	@$(CC) -o $(TESTGRAPH) $(OBJET_UTILS) $(MATDIR)/test/test_graph.c
+		@echo "succès ! L'exécutable $(TESTGRAPH) est situé dans $(TESTGRAPH)"
+	@./$(TESTGRAPH) fich_tests/vote10.csv
 
 test_lecture_csv : dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c
