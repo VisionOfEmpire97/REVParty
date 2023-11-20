@@ -49,7 +49,7 @@ test_sha: dirs $(OBJ_SHA_UTILS)
 	@./$(TESTSHA)
 
 test_matrice: dirs $(OBJET_UTILS)
-	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
+	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c -ggdb3
 	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
 	@./$(TESTMAT) fich_tests/vote10.csv
 
