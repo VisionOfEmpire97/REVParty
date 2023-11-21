@@ -2,7 +2,7 @@
  * \author Équipe 001
  * \date 23 Septembre 2023
  * \brief Programme principal de décompte de voix.
- * \file src/scrutin.c 
+ * \file src/scrutin.c
  * Le fichier scrutin s'occupe d'analyser les balises et les paramètres,
  * appelle la méthode de scrutin appropriée, et crée un fichier de vote anonymisé
  */
@@ -21,31 +21,32 @@
 
 /**
  * \defgroup scrutin Programme principal
- * Analyse des balises et arguments passés en paramètre et appel des 
+ * Analyse des balises et arguments passés en paramètre et appel des
  * différentes méthodes de scrutins
  * \{
 */
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
-#include "arg_parse_util.h"
-#include "util_log.h"
+#include "utils_sd/arg_parse_util.h"
+#include "utils_sd/util_log.h"
 #define NAMELENGHT 60
 
+
 /**
- * @brief utilise getopt() afin de récupérer les arguments de la ligne de commande 
- * 
- * @param[in] argc 
- * @param[in] argv 
+ * @brief utilise getopt() afin de récupérer les arguments de la ligne de commande
+ *
+ * @param[in] argc
+ * @param[in] argv
  * @return retourne zéro en cas de succès
  */
 int main(int argc, char **argv)
 {
     int balise[5], n = 0;
-    char *nom_csv;
-    char *nom_log;
-    char *methode;
-    while ((balise[n] = getopt(argc, argc, "i:d:o:m:")) != -1)
+    char *nom_csv = NULL;
+    char *nom_log = NULL;
+    char *methode = NULL;
+    while ((balise[n] = getopt(argc, argv, "i:d:o:m:")) != -1)
     {
         switch (balise[n])
         {
@@ -69,16 +70,21 @@ int main(int argc, char **argv)
             n++;
             break;
         default:
-            printf("usage : ./REVparty -i/-d [nom_du_csv] -o [nom_du_log] -m [méthodes]\n");
+            printf("usage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\n");
             exit(EXIT_FAILURE);
         }
-    };
-    begin_to_log(nom_log);
+    }
+    if (nom_csv == NULL || methode == NULL)
+    {
+        printf("usage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\n");
+        exit(EXIT_FAILURE);
+    }
+
+    FILE* log_file = begin_to_log(nom_log);
 
     lancer_methode(methode);
-    //more things here 
-
-    close_log_file(nom_log);
+    //more things here
+    close_log_file(log_file);
     
     return 0;
 }
