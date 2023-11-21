@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <arg_parse_util.h>
+#include "arg_parse_util.h"
 
 void check_compatibility(int *tab, int len_tab)
 {
@@ -17,8 +17,8 @@ void check_compatibility(int *tab, int len_tab)
 
 void lancer_methode(char *methode)
 {
-    int methode_id = 0;
-    for (methode_id; methode_id < 7; methode_id++)
+    int methode_id;
+    for (methode_id = 0; methode_id < 7; methode_id++)
     {
         if (strcmp(methode, valid_methods[methode_id]) == 0)
             break;

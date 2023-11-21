@@ -28,8 +28,8 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
-#include "arg_parse_util.h"
-#include "util_log.h"
+#include "utils_sd/arg_parse_util.h"
+#include "utils_sd/util_log.h"
 #define NAMELENGHT 60
 
 
@@ -80,12 +80,12 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    //begin_to_log(nom_log);
+    FILE *log_file = begin_to_log(nom_log);
 
     lancer_methode(methode);
     //more things here
 
-    close_log_file(nom_log);
+    close_log_file(log_file);
     
     return 0;
 }
