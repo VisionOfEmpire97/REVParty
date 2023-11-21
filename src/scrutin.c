@@ -28,7 +28,8 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
-#include "utils_sd/arg_parse_util.h"
+#include "arg_parse_util.h"
+#include "util_log.h"
 #define NAMELENGHT 60
 
 
@@ -84,7 +85,8 @@ int main(int argc, char **argv)
     lancer_methode(methode);
     //more things here
 
-    if (nom_log != NULL) fclose(nom_log);
+    close_log_file(nom_log);
+    
     return 0;
 }
 
