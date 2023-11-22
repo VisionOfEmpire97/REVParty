@@ -2,10 +2,21 @@
 # Authored by ROSET Nathan for use during the REV party project (Autumn 2023)
 
 CC = gcc
-COMPILEARGS = -std=c11 -Wall
-#INC = -I.
+CFLAGS = -std=c11 -Wall
+#-Werror -Wextra -pedantic
+#LDFLAGS = -I.
+#INC_FLAGS = -I./src
+
+ifeq ($(DEBUG),yes)
+	CFLAGS += -g
+	LDFLAGS +=
+else
+	CFLAGS += -O3 -DNDEBUG
+	LDFLAGS +=
+endif
 
 TEAMNAME = REVParty_Equipe_001
+
 
 # Couleurs
 RED = \033[1;31m
@@ -20,7 +31,8 @@ LOGDIR = log
 SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
 METDIR = $(SRCDIR)/methodes_votes
-MATDIR = $(SRCDIR)/utils_sd
+UTILDIR = $(SRCDIR)/utils_sd
+TESTDIR = $(UTILDIR)/test
 PATHTOCSVFILE = fichiers_votes/
 DOXYGENDIR = documentation/
 
@@ -32,10 +44,15 @@ TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
 TESTGRAPH = $(EXECDIR)/testStructGraph
 UNI = $(EXECDIR)/uninominal
+JGM = $(EXECDIR)/JugementMajoritaire
+
+#Fichiers de test
+TESTCLASSEMENT = fich_tests/vote10.csv
+CLASSEMENT = fichiers_votes/VoteCondorcet.csv
 
 #Objets
 OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
-OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
+OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o $(OBJDIR)/util_log.o $(OBJDIR)/graph.o $(OBJDIR)/jugement.o
 
 #Exécutables
 
@@ -50,34 +67,43 @@ test_sha: dirs $(OBJ_SHA_UTILS)
 	@./$(TESTSHA)
 
 test_matrice: dirs $(OBJET_UTILS)
-	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(MATDIR)/test/test_matrice.c
+	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(TESTDIR)/test_matrice.c
 	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
-	@./$(TESTMAT) fich_tests/vote10.csv
+	@./$(TESTMAT) $(TESTCLASSEMENT)
+
+test_graph: dirs $(OBJET_UTILS)
+	@$(CC) -o $(TESTGRAPH) $(OBJET_UTILS) $(TESTDIR)/test_graph.c
+		@echo "succès ! L'exécutable $(TESTGRAPH) est situé dans $(TESTGRAPH)"
+	@./$(TESTGRAPH) $(TESTCLASSEMENT)
 
 test_lecture_csv : dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c
 	@echo "succès ! L'exécutable $(TESTCSV) est situé dans $(TESTCSV)"
-	@./$(TESTCSV) fichiers_votes/VoteCondorcet.csv
+	@./$(TESTCSV) $(CLASSEMENT)
 
 test_vmv : vmv
 	@echo "**********************************************"
 	@echo "$(GREEN)test 1 avec VoteCondorcet.csv: retour attendu: ligne du vote trouvée$(END_C)" 
-	@./$(VERIFY_MY_VOTE) roset nathan e9RkoTAH $(PATHTOCSVFILE)VoteCondorcet.csv
+	@./$(VERIFY_MY_VOTE) roset nathan e9RkoTAH $(CLASSEMENT)
 	@echo "**********************************************"
 	@echo "$(GREEN)test 2 avec jugement.csv : retour attendu: ligne du vote trouvée$(END_C)"
 	@./$(VERIFY_MY_VOTE) roset nathan IXtE5L46o0T $(PATHTOCSVFILE)jugement.csv
 	@echo "**********************************************"
 	@echo "$(GREEN)test 3 avec code érroné: retour attendu: pas de ligne trouvée$(END_C)"
-	@./$(VERIFY_MY_VOTE) roset nathan abcdefgh $(PATHTOCSVFILE)VoteCondorcet.csv
+	@./$(VERIFY_MY_VOTE) roset nathan abcdefgh $(CLASSEMENT)
 	@echo "\n**************** FIN DU PROGRAMME ***************\n"
 	@echo "Vous pouvez tester les fuites mémoires avec \
-	\"$(RED)valgrind --leak-check=full $(verify_my_vote) roset nathan e9RkoTAH $(PATHTOCSVFILE)VoteCondorcet.csv$(END_C)\""
+	\"$(RED)valgrind --leak-check=full $(verify_my_vote) roset nathan e9RkoTAH $(CLASSEMENT)$(END_C)\""
 	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
 
 test_graph : dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTGRAPH) $(SRCDIR)/test_graph.c $(OBJET_UTILS)
-#... TODO
 
+test_jgm : $(OBJET_UTILS)
+	@$(CC) -o $(JGM) $(OBJET_UTILS) $(TESTDIR)/test_jugement.c -ggdb
+	@./$(JGM) $(TESTCLASSEMENT)
+
+#... TODO
 #scrutin: dirs... TODO
 #	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
 
@@ -87,10 +113,11 @@ uninominal: dirs $(OBJET_UTILS)
 test_uni: uninominal
 	@./$(UNI) fich_tests/vote10.csv
 
-vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
+vpath %.c $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
+vpath %.h $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
 
 $(OBJDIR)/%.o: %.c
-	@$(CC) -o $@ -c $< $(COMPILEARGS)
+	$(CC) $(CFLAGS) -o $@ -c $< 
 
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
