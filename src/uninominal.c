@@ -30,7 +30,7 @@ void electionUninominale(int votes[], char *candidats[], int n , int nombreDeVot
     int score = ( maxVotes*100) / nombreDeVotes;
     printf("Mode de scrutin : uninominal à un tour, %d candidats, %d votants, vainqueur = %s, score = %.2d%% \n", n, nombreDeVotes, vainqueur, score);
 }
-void electionUninominalDeuxTours(int votes[], char *candidats[], int n, int nombreDeVotes,int votes_deux[]) { // n nombre de candidats 
+void electionUninominalDeuxTours(int votes[], char *candidats[], int n, int nombreDeVotes,t_mat_char_star_dyn *mat) { // n nombre de candidats 
     int candidatVotes[n];
     for (int i = 0; i < n; i++) {
         candidatVotes[i] = 0;
@@ -58,32 +58,39 @@ void electionUninominalDeuxTours(int votes[], char *candidats[], int n, int nomb
         deuxiemeGagnant = i;
         }
     }
- 
+    
     int pourcentagePremierGagnant = (premierTour[premierGagnant] * 100) / nombreDeVotes;
     printf("Mode de scrutin : uninominal à deux tours, tour 1, %d candidats, %d votants, vainqueur = %s, score = %.2d%%\n", n, nombreDeVotes, candidats[premierGagnant], pourcentagePremierGagnant);
     if (pourcentagePremierGagnant <= 50) {
-        int deuxiemeTourVotes[2] = {0, 0};
-        int deuxiemeTourGagnant = -1;
-        int compteur = 0 ;
 
-        for (int i = 0; i < nombreDeVotes; i++) {
-            if (votes_deux[i] == premierGagnant+1) {
+        int deuxiemeTourVotes[2] = {0, 0};
+        int deuxiemeTourGagnant = -1 ;
+    	int compteur = 0 ; // Traite en vote blanc les égalités 
+        for (int ligne=1 ;  ligne<nombreDeVotes+1 ; ligne++){
+            if (atoi(valeur_matrice_char_indice(mat,ligne,premierGagnant+4))<atoi(valeur_matrice_char_indice(mat,ligne,deuxiemeGagnant+4)))
+            {
                 deuxiemeTourVotes[0]++;
                 compteur++;
-            } else if (votes_deux[i] == deuxiemeGagnant+1) {
+            }else if (atoi(valeur_matrice_char_indice(mat,ligne,premierGagnant+4))>atoi(valeur_matrice_char_indice(mat,ligne,deuxiemeGagnant+4))){
                 deuxiemeTourVotes[1]++;
-                compteur++;
+                compteur++; 
             }
-        }
+       }
+
+        int IndiceVainqueur = 0 ; 
+    	
         if (deuxiemeTourVotes[0]>= deuxiemeTourVotes[1]){
-            deuxiemeTourGagnant = 0 ;
+            deuxiemeTourGagnant = premierGagnant;
+            IndiceVainqueur = 0 ;
         }
         else{
-             deuxiemeTourGagnant = 1 ;
+            deuxiemeTourGagnant = deuxiemeGagnant;
+            IndiceVainqueur = 1 ;
         }
-        int pourcentageDeuxiemeTourGagnant = (deuxiemeTourVotes[deuxiemeTourGagnant] * 100) /compteur;
+        int  pourcentageDeuxiemeTourGagnant = (deuxiemeTourVotes[IndiceVainqueur] * 100)/compteur;
 
         printf("Mode de scrutin : uninominal à deux tours, tour 2, 2 candidats, %d votants, vainqueur = %s, score = %.2d%%\n", nombreDeVotes, candidats[deuxiemeTourGagnant], pourcentageDeuxiemeTourGagnant);
+
     }
 }
 
@@ -180,7 +187,6 @@ void traitement_uninominal_2tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
     char *candidats[nombrecandidat];
     recupere_candidat(entete,candidats);
     int votes[nombreVotant];
-    int votes_deux[nombreVotant];
     char *vote;
     int vote_final = 0 ;
     for (int num=1 ;  num<nombreVotant+1 ; num++ )
@@ -188,9 +194,6 @@ void traitement_uninominal_2tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
         vote = recupere_1(entete, mat , num );
         vote_final = changement(candidats , vote ,nombrecandidat);
         votes[num-1]=vote_final;
-        vote = recupere_2(entete, mat , num );
-        vote_final = changement(candidats , vote ,nombrecandidat);
-        votes_deux[num-1]=vote_final;
     }
     /*
     for (int i = 0; i < 10; i++) {
@@ -199,7 +202,7 @@ void traitement_uninominal_2tours(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *
     for (int i = 0; i < 10; i++) {
         printf("Vote deux %d : %d \n ",i,votes_deux[i]);
     }*/
-    electionUninominalDeuxTours(votes, candidats, nombrecandidat , nombreVotant ,votes_deux);
+    electionUninominalDeuxTours(votes, candidats, nombrecandidat , nombreVotant ,mat);
 }
 int main(int argc, char *argv[])
 {   
