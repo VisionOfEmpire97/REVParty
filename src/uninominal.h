@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "CSV\lecture_csv.h"
+#include "CSV/lecture_csv.h"
 #include "utils_sd/matrice.h"
 
 /**

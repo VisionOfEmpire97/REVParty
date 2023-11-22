@@ -64,12 +64,15 @@ void electionUninominalDeuxTours(int votes[], char *candidats[], int n, int nomb
     if (pourcentagePremierGagnant <= 50) {
         int deuxiemeTourVotes[2] = {0, 0};
         int deuxiemeTourGagnant = -1;
+        int compteur = 0 ;
 
         for (int i = 0; i < nombreDeVotes; i++) {
             if (votes_deux[i] == premierGagnant+1) {
                 deuxiemeTourVotes[0]++;
+                compteur++;
             } else if (votes_deux[i] == deuxiemeGagnant+1) {
                 deuxiemeTourVotes[1]++;
+                compteur++;
             }
         }
         if (deuxiemeTourVotes[0]>= deuxiemeTourVotes[1]){
@@ -78,7 +81,7 @@ void electionUninominalDeuxTours(int votes[], char *candidats[], int n, int nomb
         else{
              deuxiemeTourGagnant = 1 ;
         }
-        int pourcentageDeuxiemeTourGagnant = (deuxiemeTourVotes[deuxiemeTourGagnant] * 100) /nombreDeVotes;
+        int pourcentageDeuxiemeTourGagnant = (deuxiemeTourVotes[deuxiemeTourGagnant] * 100) /compteur;
 
         printf("Mode de scrutin : uninominal à deux tours, tour 2, 2 candidats, %d votants, vainqueur = %s, score = %.2d%%\n", nombreDeVotes, candidats[deuxiemeTourGagnant], pourcentageDeuxiemeTourGagnant);
     }
