@@ -28,18 +28,18 @@ FILE *begin_to_log(const char *filename)
     {
         logfp = stdout;
     }
-    fprintf(logfp, "**\tDébut du programme\n\n**");
+    fprintf(logfp, "*****\tDébut du programme\t*****\n\n");
     return logfp;
 }
 
 void append_to_log_file(const char *textToLog, FILE *logfp)
 {
-    fprintf(logfp, "%s", textToLog);
+    fprintf(logfp, "%s\n", textToLog);
 }
 
 void close_log_file(FILE *logfp)
 {
-    fprintf(logfp, "**\n\tFin du programme\n**");
+    fprintf(logfp, "\n*****\tFin du programme\t*****\n");
     if (logfp != stdout)
     {
         fclose(logfp);
