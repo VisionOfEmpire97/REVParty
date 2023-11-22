@@ -74,26 +74,18 @@ void afficher_matrice_char(t_mat_char_star_dyn *mat)
 
 void supprimer_matrice_char(t_mat_char_star_dyn *mat)
 {
-
+    char ***M = mat->matrice;
     int lig = mat->ligne;
     int col = mat->col;
-    if (lig == 0)
-    {
-        free((mat->matrice)[0]);
-    }
     for (int i = 0; i < lig; i++)
     {
         for (int j = 0; j < col; j++)
         {
-
-            free((mat->matrice)[i][j]);
+            free(M[i][j]);
         }
-
-        free((mat->matrice)[i]);
+        free(M[i]);
     }
-
-    free(mat->matrice);
-
+    free(M);
     free(mat);
 }
 
