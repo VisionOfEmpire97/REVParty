@@ -54,16 +54,6 @@ void electionUninominalDeuxTours(int votes[], char *candidats[], int n, int nomb
 char *recupere_1(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *mat, int num_ligne);
 
 /**
- * @brief Fonction qui cherche le deuxième vote le plus favorable d'un électeur pour un candidat dans une ligne de la matrice et retourne le nom du candidat en question.
- *
- * @param entete Matrice d'entête
- * @param mat Matrice de votes
- * @param num_ligne Numéro de ligne
- * @return Nom du candidat
- */
-char *recupere_2(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *mat, int num_ligne);
-
-/**
  * @brief Fonction qui récupère le nom des candidats présents dans l'entête et les range dans une liste.
  *
  * @param entete Matrice d'entête
