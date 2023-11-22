@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-// #include <condorcet.h>
+#include <condorcet.h>
 #include "utils_sd/graph.h"
 
 sommet *vainqueurCondorcet(graph *graph)
@@ -20,6 +20,7 @@ sommet *vainqueurCondorcet(graph *graph)
 }
 
 sommet *vainqueurCondorcetMinimax(graph *graph){
+
 
     int maxmin = 0;
     sommet *s, *t, *res;
@@ -43,5 +44,14 @@ sommet *vainqueurCondorcetMinimax(graph *graph){
     }
     /*TODO : Print logs*/
     return res;
+
+}
+
+sommet *vainqueurCondorcetSchulze(graph *graph){
+
+}
+
+sommet *vainqueurCondorcetPaires(graph *graph){
+
 
 }
