@@ -12,9 +12,11 @@
 #include <stdlib.h>
 #include "util_log.h"
 
+FILE *logfp;
+
 FILE *begin_to_log(const char *filename)
 {
-    FILE *logfp;
+    
     if (filename != NULL)
     {
         logfp = fopen(filename, "w");
@@ -32,12 +34,12 @@ FILE *begin_to_log(const char *filename)
     return logfp;
 }
 
-void append_to_log_file(const char *textToLog, FILE *logfp)
+void append_to_log_file(const char *textToLog)
 {
     fprintf(logfp, "%s\n", textToLog);
 }
 
-void close_log_file(FILE *logfp)
+void close_log_file()
 {
     fprintf(logfp, "\n*****\tFin du programme\t*****\n");
     if (logfp != stdout)
