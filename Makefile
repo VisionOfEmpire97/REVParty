@@ -8,7 +8,7 @@ CFLAGS = -std=c11 -Wall
 #INC_FLAGS = -I./src
 
 ifeq ($(DEBUG),yes)
-	CFLAGS += -g
+	CFLAGS += -ggdb
 	LDFLAGS +=
 else
 	CFLAGS += -O3 -DNDEBUG
@@ -96,11 +96,8 @@ test_vmv : vmv
 	\"$(RED)valgrind --leak-check=full $(verify_my_vote) roset nathan e9RkoTAH $(CLASSEMENT)$(END_C)\""
 	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
 
-test_graph : dirs $(OBJET_UTILS)
-	@$(CC) -o $(TESTGRAPH) $(SRCDIR)/test_graph.c $(OBJET_UTILS)
-
 test_jgm : $(OBJET_UTILS)
-	@$(CC) -o $(JGM) $(OBJET_UTILS) $(TESTDIR)/test_jugement.c -ggdb
+	@$(CC) -o $(JGM) $(OBJET_UTILS) $(TESTDIR)/test_jugement.c
 	@./$(JGM) $(TESTCLASSEMENT)
 
 #... TODO
