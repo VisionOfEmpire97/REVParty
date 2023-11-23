@@ -1,3 +1,4 @@
+
 /**
  * \author Équipe 001 (JOSEPH REMY)
  * \date 16 Octobre 2023
@@ -26,17 +27,21 @@
  * \struct t_mat_char_star_dyn une structure
  * Matrice de n lignes , m colonnes de taille non statique
  */
+/**
+ * \defgroup Matrice de chaine de charactere
+ * @{
+ */
+
 typedef struct t_mat_char t_mat_char_star_dyn;
-/** @} */
 
 /** \defgroup Constructeur Constructeurs et destructeurs de matrice
  *@{
- */
-/**
+
+
  * \brief Creation d'une matrice vide.
  * \return Une matrice de caractères vide
  */
-t_mat_char_star_dyn *creer_matrice();
+t_mat_char_star_dyn *creer_matrice_char();
 
 /**
  * \brief Insertion dans une matrice de chaîne
@@ -53,11 +58,12 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat);
 void afficher_matrice_char(t_mat_char_star_dyn *mat);
 
 /**
- * \brief Supprime la matrice et libère la mémoire allouée 
+ * \brief Supprime la matrice et libère la mémoire allouée
  * \param mat La structure à libérer
  */
 void supprimer_matrice_char(t_mat_char_star_dyn *mat);
 
+char **recuperer_candidats(t_mat_char_star_dyn *mat);
 /**
  * \brief Ajoute une ligne a la matrice
  * \param mat
