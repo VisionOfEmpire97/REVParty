@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 
     lancer_methode(methode, nom_csv);
     //more things here
-    close_log_file(log_file);
+    close_log_file();
     
     return 0;
 }
