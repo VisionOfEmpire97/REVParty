@@ -9,7 +9,7 @@
 #define __MATRICE_H__
 #include "stdbool.h"
 #include "stdbool.h"
-#define MAX_CHAR 500
+#define MAX_CHAR 70
 
 /** \defgroup ADTMatrice Matrice
  Documentation de l'implémentation de la structure de données Matrice

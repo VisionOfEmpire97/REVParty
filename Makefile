@@ -75,14 +75,14 @@ test_sha: dirs $(OBJ_SHA_UTILS)
 	@./$(TESTSHA)
 
 test_matrice: dirs $(OBJET_UTILS)
-	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(TESTDIR)/test_matrice.c
+	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(TESTDIR)/test_matrice.c -ggdb3
 	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
 	@./$(TESTMAT) $(TESTCLASSEMENT)
 
-# test_graph: dirs $(OBJETS_UTILS_EXTRAS)
-# 	@$(CC) -o $(TESTGRAPH) $(OBJETS_UTILS_EXTRAS) $(TESTDIR)/test_graph.c
-# 	@echo "succès ! L'exécutable $(TESTGRAPH) est situé dans $(TESTGRAPH)"
-# 	@./$(TESTGRAPH) $(TESTCLASSEMENT)
+test_graph: dirs $(OBJETS_UTILS_EXTRAS)
+	@$(CC) -o $(TESTGRAPH) $(OBJETS_UTILS_EXTRAS) $(TESTDIR)/test_graph.c
+	@echo "succès ! L'exécutable $(TESTGRAPH) est situé dans $(TESTGRAPH)"
+	@./$(TESTGRAPH) $(TESTCLASSEMENT)
 
 test_lecture_csv : dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c

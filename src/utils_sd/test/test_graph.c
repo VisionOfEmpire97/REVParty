@@ -17,5 +17,7 @@ int main(int argc, char *argv[])
     printf("Affichage Graph!\n");
     afficher_graph(g);
     printf("TEST OK!\n");
+    liberer_graph(g);
+    supprimer_matrice_char(m);
     return 0;
 }
