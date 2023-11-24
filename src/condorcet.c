@@ -21,22 +21,28 @@ sommet *vainqueurCondorcet(graph *graph)
 
 sommet *vainqueurCondorcetMinimax(graph *graph)
 {
+    /**
+     * On regarde les arcs sortants de chaque sommet
+     * Celui avec le poids le plus elevé, et donc celui avec la pire défaite
+     * le sommet avec la pire défaite la plus basse remporte le scrutin
+    */
 
     int maxmin = 0;
-    sommet *s, *t, *res;
-    arc *a = graph->arcs;
+    sommet *sommet_depart, *sommet_arrivee, *res;
+    arc **a;
+    *a = graph->arcs;
     for (unsigned i = 0; i < graph->nbSommet; i++)
     {
-        s = graph->sommets[i];
-        a->depart = s;
+        sommet_depart = graph->sommets[i];
+        (*a)->depart = sommet_depart;
         for (unsigned j = 0; j < (graph->nbSommet - 1); j++)
         {
-            t = graph->sommets[j];
-            a->arrivee = j;
-            if (a->poids < maxmin)
+            sommet_arrivee = graph->sommets[j];
+            (*a)->arrivee = sommet_arrivee;
+            if ((*a)->poids < maxmin)
             {
-                maxmin = a->poids;
-                res = s;
+                maxmin = (*a)->poids;
+                res = sommet_depart;
             }
         }
     }
@@ -46,9 +52,13 @@ sommet *vainqueurCondorcetMinimax(graph *graph)
 
 sommet *vainqueurCondorcetSchulze(graph *graph)
 {
+    /**
+     * Retirer successivements les arcs de poids minimal jusqu'à retrouver un vainqueur de Condorcet
+    
+    */
 
     sommet *vainqueur;
-    arc *a;
+    arc **a;
     for (unsigned i = 0; i < graph->nbSommet; i++)
     {
         if (graph->sommets[i]->nbPredecesseur != 0)
@@ -81,10 +91,11 @@ arc *arcDePoidsMinimal(graph *graph)
     {
         return NULL;
     }
-    arc *arcPoidsMin = graph->arcs[0];
+    arc **arcPoidsMin;
+    *arcPoidsMin = graph->arcs[0];
     for (int i = 1; i < graph->nbArc; i++)
     {
-        if (graph->arcs[i]->poids < arcPoidsMin->poids)
+        if (graph->arcs[i]->poids < (*arcPoidsMin)->poids)
         {
             arcPoidsMin = graph->arcs[i];
         }
