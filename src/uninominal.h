@@ -44,6 +44,14 @@ void electionUninominal(int votes[], char *candidats[], int n, int nombreDeVotes
 int recupere_numeroCandidat(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *mat, int num_ligne);
 
 /**
+ * @brief Fonction qui crée la liste des candidats à partir de l'entete 
+ *
+ * @param entete Matrice d'entête
+ * @param liste_candidat Tableau des candidats
+ */
+void recupere_candidat(t_mat_char_star_dyn *entete,char *liste_candidat[])
+
+/**
  * @brief Récupère les matrices de votes, les traite pour pouvoir appeler la méthode uninominal à un ou deux tours, et fait l'appel de la méthode.
  *
  * @param mat Matrice de votes
