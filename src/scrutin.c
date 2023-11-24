@@ -82,10 +82,9 @@ int main(int argc, char **argv)
 
     FILE *log_file = begin_to_log(nom_log);
 
-    lancer_methode(methode);
+    lancer_methode(methode, nom_csv);
     //more things here
-
-    close_log_file(log_file);
+    close_log_file();
     
     return 0;
 }

@@ -3,6 +3,7 @@
 #include <string.h>
 #include "CSV/lecture_csv.h"
 #include "utils_sd/matrice.h"
+#include "uninominal.h"
 
 int main(int argc, char *argv[])
 {   

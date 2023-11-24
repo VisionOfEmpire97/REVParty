@@ -5,22 +5,23 @@
 #include "string.h"
 
 //------------------MATRICE CHAR------------------------
+typedef char ***t_matrice;
 typedef struct t_mat_char
 {
     int ligne;
     int col;
     int nb_elem;
-    char ***matrice;
+    t_matrice matrice;
 } t_mat_char_star_dyn;
 
 t_mat_char_star_dyn *creer_matrice_char()
 {
+
     t_mat_char_star_dyn *m = malloc(sizeof(struct t_mat_char));
     m->ligne = 0;
     m->col = 0;
     m->nb_elem = 0;
-    m->matrice = (char ***)malloc(sizeof(char **));
-    m->matrice[0] = (char **)malloc(sizeof(char *));
+    m->matrice = NULL;
     return m;
 }
 
@@ -31,7 +32,6 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
 
     if ((mat->ligne) == 1)
     {
-
         mat->col++;
 
         mat->matrice[0] = (char **)realloc(mat->matrice[0], (mat->col) * sizeof(char *));
@@ -45,7 +45,6 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
         int l = no / colonne;
         int c = no % colonne;
         char *element;
-
         element = (char *)malloc(MAX_CHAR);
         strcpy(element, chaine);
         mat->matrice[l][c] = element;
@@ -60,7 +59,7 @@ int inserer_matrice_char(char *chaine, t_mat_char_star_dyn *mat)
 
 void afficher_matrice_char(t_mat_char_star_dyn *mat)
 {
-    char ***M = mat->matrice;
+    t_matrice M = mat->matrice;
     int L = mat->ligne;
     int C = mat->col;
     for (int i = 0; i < L; i++)
@@ -94,18 +93,21 @@ t_mat_char_star_dyn *ajouter_ligne(t_mat_char_star_dyn *mat)
 {
     (mat->ligne)++;
 
-    (mat->matrice) = (char ***)realloc((mat->matrice), ((mat->ligne) * sizeof(char **)));
-
-    mat->matrice[(mat->ligne) - 1] = (char **)malloc((mat->col) * sizeof(char *));
-    for (int j = 0; j < (mat->col); j++)
+    (mat->matrice) = (t_matrice)realloc((mat->matrice), ((mat->ligne) * sizeof(char **)));
+    if ((mat->ligne) == 1)
     {
-        mat->matrice[(mat->ligne) - 1][j] = "";
+        mat->matrice[(mat->ligne) - 1] = NULL;
+    }
+    else
+    {
+        mat->matrice[(mat->ligne) - 1] = malloc((mat->col) * sizeof(char *));
     }
     return mat;
 }
 char *valeur_matrice_char_indice(t_mat_char_star_dyn *mat, int ligne, int colonne)
 {
     if ((ligne >= 0 && ligne < (mat->ligne)) && (colonne >= 0 && colonne < (mat->col)))
+
     {
         return mat->matrice[ligne][colonne];
     }
@@ -123,13 +125,12 @@ bool est_matrice_vide(t_mat_char_star_dyn *mat)
 {
     return mat->nb_elem == 0;
 }
-//--------------------------MATRICE INT----------------------------
-typedef struct t_mat_int
+
+char **recuperer_candidats(t_mat_char_star_dyn *mat)
 {
-    int ligne;
-    int col;
-    int **matrice;
-} t_mat_int_dyn;
+    return mat->matrice[0] + 4;
+}
+//--------------------------MATRICE INT----------------------------
 
 t_mat_int_dyn *creer_matrice_int(int ligne, int colonne)
 {
@@ -146,6 +147,7 @@ t_mat_int_dyn *creer_matrice_int(int ligne, int colonne)
 
 t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat)
 {
+
     int ligne = mat->ligne;
     int colonne = mat->col, val1, val2;
     t_mat_int_dyn *mat_duel = creer_matrice_int(colonne - 4, colonne - 4);
@@ -211,9 +213,12 @@ void supprimer_matrice_int(t_mat_int_dyn *mat)
 {
     int **M = mat->matrice;
     int lig = mat->ligne;
+
     for (int i = 0; i < lig; i++)
     {
-        free(M[i]);
+        {
+            free(M[i]);
+        }
     }
     free(M);
     free(mat);

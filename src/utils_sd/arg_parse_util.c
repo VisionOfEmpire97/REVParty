@@ -15,7 +15,7 @@ void check_compatibility(int *tab, int len_tab)
     }
 }
 
-void lancer_methode(char *methode)
+void lancer_methode(char *methode, char *nom_csv)
 {
     int methode_id;
     for (methode_id = 0; methode_id < 7; methode_id++)

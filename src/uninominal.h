@@ -30,7 +30,7 @@
  * @param tours Nombre de tours (1 ou 2)
  * @return Affiche le vainqueur
  */
-void electionUninominal(int votes[], char *candidats[], int n, int nombreDeVotes,t_mat_char_star_dyn *mat , int tours)
+void electionUninominal(int votes[], char *candidats[], int n, int nombreDeVotes,t_mat_char_star_dyn *mat , int tours);
 
 
 /**
@@ -50,7 +50,7 @@ int recupere_numeroCandidat(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *ma
  * @param entete Matrice d'entête
  * @param tours choix de la méthode 1 tours ou 2 tours 
  */
-void traitement_uninominal(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *entete, int tours )
+void traitement_uninominal(t_mat_char_star_dyn *mat,t_mat_char_star_dyn *entete, int tours );
 
 
 /** @} */

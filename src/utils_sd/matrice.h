@@ -9,7 +9,7 @@
 #define __MATRICE_H__
 #include "stdbool.h"
 #include "stdbool.h"
-#define MAX_CHAR 500
+#define MAX_CHAR 70
 
 /** \defgroup ADTMatrice Matrice
  Documentation de l'implémentation de la structure de données Matrice
@@ -63,6 +63,7 @@ void afficher_matrice_char(t_mat_char_star_dyn *mat);
  */
 void supprimer_matrice_char(t_mat_char_star_dyn *mat);
 
+char **recuperer_candidats(t_mat_char_star_dyn *mat);
 /**
  * \brief Ajoute une ligne a la matrice
  * \param mat
@@ -108,7 +109,22 @@ int recuperer_nb_lignes(t_mat_char_star_dyn *mat);
  * @{
  */
 
-typedef struct t_mat_int t_mat_int_dyn;
+typedef struct t_mat_int
+{
+    int ligne;
+    int col;
+    int **matrice;
+} t_mat_int_dyn;
+
+/**
+ * @brief crée une matrice d'entier
+ * 
+ * @param ligne 
+ * @param colonne 
+ * @return t_mat_int_dyn* 
+ */
+t_mat_int_dyn *creer_matrice_int(int ligne, int colonne);
+
 /**
  * \brief Transforme une matrice de chaine lu du CSV en matrice de duel
  *
@@ -124,7 +140,7 @@ t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat);
  * @param mat
  */
 void afficher_matrice_int(t_mat_int_dyn *mat);
-
+int recuperer_nb_colonnes_int(t_mat_int_dyn *mat);
 /**
  * @brief supprime une matrice et libere la memoire occupee par celle ci
  *
