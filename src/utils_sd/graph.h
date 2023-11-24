@@ -32,7 +32,7 @@ typedef struct t_arc
     sommet *arrivee;
     int poids;
 } arc;
-
+typedef struct t_arc **ptr_arc;
 typedef struct t_graph
 {
     sommet **sommets;
@@ -95,4 +95,12 @@ void afficher_graph(graph *g);
 /// @brief libere la memoire alloue a la strcture graph et les sous structures
 /// @param g Un graph
 void liberer_graph(graph *g);
+/// @brief Enleve un arc d'un Graph
+/// @param g Le Graph
+/// @param a L'adresse de l'arc
+/// @return Le nombre d'arcs du graph
+int enlever_arc(graph *g, arc *a);
+/**
+ * @}
+ */
 #endif
