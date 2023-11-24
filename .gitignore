@@ -65,3 +65,7 @@ documentation/
 
 #log
 log/*
+
+#clang-format
+*.clang-format
+*_clang-format

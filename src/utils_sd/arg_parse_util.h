@@ -49,6 +49,6 @@ void check_compatibility(int *tab, int len_tab);
  * 
  * @param[in] methode nom du paramètre associé à la méthode à appeler
 */
-void lancer_methode(char *methode);
+void lancer_methode(char *methode, char *nom_csv);
 /**\}*/
 /**\}*/

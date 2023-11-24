@@ -10,6 +10,20 @@ sommet *creer_sommet(char *nom)
     s->nbSuccesseur = 0;
     return s;
 }
+void liberer_graph(graph *g)
+{
+    for (int i = 0; i < (g->nbSommet); i++)
+    {
+        free((g->sommets)[i]);
+    }
+    for (int i = 0; i < (g->nbArc); i++)
+    {
+        free((g->arcs)[i]);
+    }
+    free(g->arcs);
+    free(g->sommets);
+    free(g);
+}
 
 arc *creer_arc(sommet *arrivee, sommet *depart, int poids)
 {
@@ -25,9 +39,9 @@ graph *creer_graph()
 {
 
     graph *g = malloc(sizeof(graph));
-    g->sommets = malloc(0 * sizeof(sommet *));
+    g->sommets = NULL;
     g->nbSommet = 0;
-    g->arcs = malloc(0 * sizeof(arc *));
+    g->arcs = NULL;
     g->nbArc = 0;
     return g;
 }
@@ -99,15 +113,17 @@ graph *creer_graphe_de_matrice_duel(t_mat_int_dyn *mat_duel, char **listeNomSomm
     graph *g = creer_graph();
     initialiser_sommet(g, listeNomSommets, nbCandidats);
     initialiser_arc(g, mat_duel);
-
     return g;
 }
+
 graph *creer_graphe_de_matrice_char(t_mat_char_star_dyn *mat)
 {
-
+    graph *g;
     char **entete = recuperer_candidats(mat);
     t_mat_int_dyn *mat_duel = construire_mat_duel(mat);
-    return creer_graphe_de_matrice_duel(mat_duel, entete);
+    g = creer_graphe_de_matrice_duel(mat_duel, entete);
+    supprimer_matrice_int(mat_duel);
+    return g;
 }
 
 void afficher_graph(graph *g)
@@ -125,4 +141,31 @@ void afficher_graph(graph *g)
     {
         printf("(%s) ---%d---> (%s)\n", (((g->arcs[j])->depart)->nom), ((g->arcs[j])->poids), (((g->arcs[j])->arrivee)->nom));
     }
+}
+int enlever_arc(graph *g, arc *a)
+{
+    int nbArc = (g->nbArc) - 1;
+    arc **nouvelListe = NULL;
+    int temp = 0;
+    if (nbArc > 0)
+    {
+        nouvelListe = (arc **)malloc(nbArc * sizeof(arc *));
+        for (int i = 0; i < (g->nbArc); i++)
+        {
+            if ((g->arcs[i]) != a)
+            {
+                nouvelListe[temp] = (g->arcs[i]);
+                temp += 1;
+            }
+            else
+            {
+                free((g->arcs[i]));
+            }
+        }
+    }
+    free(g->arcs);
+    g->arcs = nouvelListe;
+    (g->nbArc)--;
+
+    return nbArc;
 }

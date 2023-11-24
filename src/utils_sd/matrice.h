@@ -9,7 +9,7 @@
 #define __MATRICE_H__
 #include "stdbool.h"
 #include "stdbool.h"
-#define MAX_CHAR 500
+#define MAX_CHAR 70
 
 /** \defgroup ADTMatrice Matrice
  Documentation de l'implémentation de la structure de données Matrice
@@ -115,6 +115,16 @@ typedef struct t_mat_int
     int col;
     int **matrice;
 } t_mat_int_dyn;
+
+/**
+ * @brief crée une matrice d'entier
+ * 
+ * @param ligne 
+ * @param colonne 
+ * @return t_mat_int_dyn* 
+ */
+t_mat_int_dyn *creer_matrice_int(int ligne, int colonne);
+
 /**
  * \brief Transforme une matrice de chaine lu du CSV en matrice de duel
  *
