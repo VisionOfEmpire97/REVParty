@@ -32,7 +32,6 @@
 #include "utils_sd/util_log.h"
 #define NAMELENGHT 60
 
-
 /**
  * @brief utilise getopt() afin de récupérer les arguments de la ligne de commande
  *
@@ -58,7 +57,7 @@ int main(int argc, char **argv)
         case 'd':
             check_compatibility(balise, n);
             nom_csv = optarg;
-            printf("%sAttention, la balise -d désactive l'emploi des arguments uni1 et uni2%s\n", RED, END_COLOR);
+            printf("\033[1;31mAttention, la balise -d désactive l'emploi des arguments uni1 et uni2\e[00m\n");
             n++;
             break;
         case 'o':
@@ -70,13 +69,13 @@ int main(int argc, char **argv)
             n++;
             break;
         default:
-            printf("usage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\n");
+            printf("\033[1;31musage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\e[00m\n");
             exit(EXIT_FAILURE);
         }
     }
     if (nom_csv == NULL || methode == NULL)
     {
-        printf("usage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\n");
+        printf("\033[1;31musage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\e[00m\n");
         exit(EXIT_FAILURE);
     }
 

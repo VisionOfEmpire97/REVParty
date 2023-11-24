@@ -57,9 +57,10 @@ OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o
 OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o 
 # Nécessaire pour compiler le programme "scrutin" et les méthodes
 OBJETS_UTILS_EXTRAS = $(OBJET_UTILS) $(OBJDIR)/util_log.o $(OBJDIR)/graph.o 
-REQUIRED_JUGEMENT = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/jugement.o
+# REQUIRED_JUGEMENT = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/jugement.o
 REQUIRED_UNI = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/uninominal.o
 # REQUIRED_CONDORCET = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/condorcet.o
+REQUIRED_SCRUTIN = $(REQUIRED_UNI) $(OBJDIR)/arg_parse_util.o
 
 
 #Exécutablespremier
@@ -113,19 +114,17 @@ test_uni: dirs $(REQUIRED_UNI)
 	@./$(UNI) fich_tests/vote10.csv
 
 #... TODO
-#scrutin: dirs... TODO
-#	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
+scrutin: dirs $(REQUIRED_SCRUTIN)
+	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c
+
+test_scrutin: scrutin
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2
 
 vpath %.c $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
 vpath %.h $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
 
 uninominal: dirs $(OBJET_UTILS)
 	@$(CC) -o $(UNI) $(SRCDIR)/$@.c $(OBJET_UTILS)
-
-# test_uni: uninominal
-# 	@./$(UNI) fich_tests/vote10.csv
-
-vpath %.c $(MATDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR)
 
 $(OBJDIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $< 
