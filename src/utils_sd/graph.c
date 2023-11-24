@@ -142,3 +142,30 @@ void afficher_graph(graph *g)
         printf("(%s) ---%d---> (%s)\n", (((g->arcs[j])->depart)->nom), ((g->arcs[j])->poids), (((g->arcs[j])->arrivee)->nom));
     }
 }
+int enlever_arc(graph *g, arc *a)
+{
+    int nbArc = (g->nbArc) - 1;
+    arc **nouvelListe = NULL;
+    int temp = 0;
+    if (nbArc > 0)
+    {
+        nouvelListe = (arc **)malloc(nbArc * sizeof(arc *));
+        for (int i = 0; i < (g->nbArc); i++)
+        {
+            if ((g->arcs[i]) != a)
+            {
+                nouvelListe[temp] = (g->arcs[i]);
+                temp += 1;
+            }
+            else
+            {
+                free((g->arcs[i]));
+            }
+        }
+    }
+    free(g->arcs);
+    g->arcs = nouvelListe;
+    (g->nbArc)--;
+
+    return nbArc;
+}
