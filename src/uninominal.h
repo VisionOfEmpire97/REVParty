@@ -49,7 +49,7 @@ int recupere_numeroCandidat(t_mat_char_star_dyn *entete, t_mat_char_star_dyn *ma
  * @param entete Matrice d'entête
  * @param liste_candidat Tableau des candidats
  */
-void recupere_candidat(t_mat_char_star_dyn *entete,char *liste_candidat[])
+void recupere_candidat(t_mat_char_star_dyn *entete,char *liste_candidat[]);
 
 /**
  * @brief Récupère les matrices de votes, les traite pour pouvoir appeler la méthode uninominal à un ou deux tours, et fait l'appel de la méthode.
