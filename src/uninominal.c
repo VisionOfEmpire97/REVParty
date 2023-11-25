@@ -54,7 +54,7 @@ int compter_voixCandidats_tour2(int resultat[], int nombreDeVotes, t_mat_char_st
             sprintf(buffer, "Le votant %d à voter pour %s au deuxieme tours \n", ligne, candidats[indice]);
         }
 
-        // append_to_log_file(buffer);
+        append_to_log_file(buffer);
     }
     return compteur;
 }
@@ -70,11 +70,11 @@ void electionUninominal(int votes[], char *candidats[], int nbCandidats, int nom
 
     compter_voixCandidats_tour1(votes, nombreDeVotes, premierTour, nbCandidats);
 
-    /*for (int i = 0; i < n; i++)
+    for (int i = 0; i < nbCandidats; i++)
     {
         sprintf(buffer, "Le Candidat %s à eu %d votes au premier tours \n", candidats[i], premierTour[i]);
-         append_to_log_file(buffer);
-    }*/
+        append_to_log_file(buffer);
+    }
 
     for (int i = 1; i < nbCandidats; i++)
     {
@@ -99,10 +99,10 @@ void electionUninominal(int votes[], char *candidats[], int nbCandidats, int nom
         deuxiemeTourGagnant = premierGagnant;
         compteur = compter_voixCandidats_tour2(deuxiemeTourVotes, nombreDeVotes, mat, premierGagnant, deuxiemeGagnant, candidats);
 
-        /*sprintf(buffer, "Le Candidat %s à eu %d votes au deuxieme tours \n ", candidats[premierGagnant], deuxiemeTourVotes[0]);
+        sprintf(buffer, "Le Candidat %s à eu %d votes au deuxieme tours \n ", candidats[premierGagnant], deuxiemeTourVotes[0]);
         append_to_log_file(buffer);
         sprintf(buffer, "Le Candidat %s à eu %d votes au deuxieme tours \n ", candidats[deuxiemeGagnant], deuxiemeTourVotes[1]);
-        append_to_log_file(buffer);*/
+        append_to_log_file(buffer);
 
         if (deuxiemeTourVotes[0] < deuxiemeTourVotes[1])
         {
@@ -146,7 +146,7 @@ void traitement_uninominal(t_mat_char_star_dyn *mat, int tours) // 1 == 1 tours 
     {
         vote_numéro = recupere_numeroCandidat(mat, num + 1);
         sprintf(buffer, "Le votant %d à voter pour %s au premier tours \n", num + 1, candidats[vote_numéro]);
-        // append_to_log_file(buffer);
+        append_to_log_file(buffer);
         votes[num] = vote_numéro;
         buffer[0] = '\0';
     }
