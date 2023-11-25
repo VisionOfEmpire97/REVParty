@@ -30,7 +30,7 @@ FILE *begin_to_log(const char *filename)
     {
         logfp = stdout;
     }
-    fprintf(logfp, "*****\tDébut du programme\t*****\n\n");
+    fprintf(logfp, "\033[1;32m*****\tDébut du programme\t*****\e[00m\n\n");
     return logfp;
 }
 
@@ -41,7 +41,7 @@ void append_to_log_file(const char *textToLog)
 
 void close_log_file()
 {
-    fprintf(logfp, "\n*****\tFin du programme\t*****\n");
+    fprintf(logfp, "\n\033[1;32m*****\tFin du programme\t*****\e[00m\n");
     if (logfp != stdout)
     {
         fclose(logfp);
