@@ -125,7 +125,7 @@ int recupere_numeroCandidat(t_mat_char_star_dyn *mat, int num_ligne)
     for (int i = 5; i < nbColonne; i++)
     {
         val = atoi(valeur_matrice_char_indice(mat, num_ligne, i));
-        if (val < min)
+        if (val >= 0 && val < min)
         {
             min = val;
             indice_min = i - 4;
