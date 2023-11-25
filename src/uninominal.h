@@ -11,7 +11,7 @@
 #include <string.h>
 #include "CSV/lecture_csv.h"
 #include "utils_sd/matrice.h"
-
+#define CHARMAX 500
 /**
  * \defgroup ADTMethodeVote Uninominal
  * @brief Documentation de l'implémentation de la méthode de vote uninominal

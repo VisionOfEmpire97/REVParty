@@ -4,6 +4,10 @@
 #include "CSV/lecture_csv.h"
 #include "utils_sd/matrice.h"
 #include "uninominal.h"
+#include "utils_sd/util_log.h"
+
+char buffer[CHARMAX];
+
 void electionUninominal(int votes[], char *candidats[], int n, int nombreDeVotes, t_mat_char_star_dyn *mat, int tours)
 {
     int premierTour[n];
@@ -20,8 +24,12 @@ void electionUninominal(int votes[], char *candidats[], int n, int nombreDeVotes
             continue;
         }
         premierTour[vote - 1]++;
-    }
+    } 
 
+    for (int i = 0; i < n; i++){
+        sprintf(buffer, "Le Candidat %s à eu %d votes au premier tours \n", valeur_matrice_char_indice(mat, 0, 4+i), premierTour[i]);
+        append_to_log_file(buffer);
+    }
     int premierGagnant = 0;
     int deuxiemeGagnant = -1; // Initialisation à une valeur non valide
 
@@ -49,17 +57,29 @@ void electionUninominal(int votes[], char *candidats[], int n, int nombreDeVotes
         {
             if (atoi(valeur_matrice_char_indice(mat, ligne, premierGagnant + 4)) < atoi(valeur_matrice_char_indice(mat, ligne, deuxiemeGagnant + 4)))
             {
+                sprintf(buffer, "Le votant %d à voter pour %s au deuxieme tours \n", ligne , valeur_matrice_char_indice(mat, 0, premierGagnant+4));
+                append_to_log_file(buffer);
                 deuxiemeTourVotes[0]++;
                 compteur++;
             }
             else if (atoi(valeur_matrice_char_indice(mat, ligne, premierGagnant + 4)) > atoi(valeur_matrice_char_indice(mat, ligne, deuxiemeGagnant + 4)))
             {
+                sprintf(buffer, "Le votant %d à voter pour %s au deuxieme tours \n", ligne, valeur_matrice_char_indice(mat, 0, deuxiemeGagnant+4));
+                append_to_log_file(buffer);
                 deuxiemeTourVotes[1]++;
                 compteur++;
+            }else{
+                sprintf(buffer, "Le votant %d à voter blanc au deuxieme tours \n", ligne);
+                append_to_log_file(buffer);
             }
         }
 
         int IndiceVainqueur = 0;
+
+        sprintf(buffer, "Le Candidat %s à eu %d votes au deuxieme tours \n ", valeur_matrice_char_indice(mat, 0, premierGagnant+4), deuxiemeTourVotes[0]);
+        append_to_log_file(buffer);
+        sprintf(buffer, "Le Candidat %s à eu %d votes au deuxieme tours \n ", valeur_matrice_char_indice(mat, 0, deuxiemeGagnant+4), deuxiemeTourVotes[1]);
+        append_to_log_file(buffer);
 
         if (deuxiemeTourVotes[0] >= deuxiemeTourVotes[1])
         {
@@ -95,20 +115,25 @@ int recupere_numeroCandidat(t_mat_char_star_dyn *mat, int num_ligne)
 
 void traitement_uninominal(t_mat_char_star_dyn *mat, int tours) // 1 == 1 tours , 2 == 2 tours
 {
-    int nombrecandidat = recuperer_nb_lignes(mat) - 4;
+
+    int nombrecandidat = recuperer_nb_colonnes(mat) - 4;
     int nombreVotant = recuperer_nb_lignes(mat) - 1;
     char **candidats = recuperer_candidats(mat);
     int votes[nombreVotant];
     int vote_numéro = 0;
 
+
     for (int num = 1; num < nombreVotant + 1; num++)
     {
         vote_numéro = recupere_numeroCandidat(mat, num);
+        sprintf(buffer, "Le votant %d à voter pour %s au premier tours \n", num, valeur_matrice_char_indice(mat, 0, vote_numéro+3));
+        append_to_log_file(buffer);
         votes[num - 1] = vote_numéro;
+        buffer[0] = '\0';
     }
-
     /*for (int i = 0; i < 10; i++) {
         printf("Vote %d : %d \n ",i,votes[i]);
     }*/
     electionUninominal(votes, candidats, nombrecandidat, nombreVotant, mat, tours);
+
 }

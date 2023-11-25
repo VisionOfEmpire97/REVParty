@@ -1,0 +1,24 @@
+*****	Début du programme	*****
+
+Le votant 1 à voter pour le candidat 5 
+
+Le votant 2 à voter pour le candidat 3 
+
+Le votant 3 à voter pour le candidat 1 
+
+Le votant 4 à voter pour le candidat 2 
+
+Le votant 5 à voter pour le candidat 1 
+
+Le votant 6 à voter pour le candidat 1 
+
+Le votant 7 à voter pour le candidat 1 
+
+Le votant 8 à voter pour le candidat 4 
+
+Le votant 9 à voter pour le candidat 1 
+
+Le votant 10 à voter pour le candidat 5 
+
+
+*****	Fin du programme	*****
