@@ -38,7 +38,7 @@ int compter_voixCandidats_tour2(int resultat[], int nombreDeVotes, t_mat_char_st
         valGagnant2 = atoi(valeur_matrice_char_indice(mat, ligne, deuxiemeGagnant + 4));
         if (valGagnant1 == valGagnant2)
         {
-            sprintf(buffer, "Le votant %d à voter blanc au deuxieme tours \n", ligne);
+            sprintf(buffer, "Le votant %d à voter blanc au deuxieme tour \n", ligne);
         }
         else
         {
@@ -51,7 +51,7 @@ int compter_voixCandidats_tour2(int resultat[], int nombreDeVotes, t_mat_char_st
             }
             compteur++;
             resultat[i_resultat]++;
-            sprintf(buffer, "Le votant %d à voter pour %s au deuxieme tours \n", ligne, candidats[indice]);
+            sprintf(buffer, "Le votant %d à voter pour %s au deuxieme tour \n", ligne, candidats[indice]);
         }
 
         append_to_log_file(buffer);
@@ -72,7 +72,7 @@ void electionUninominal(int votes[], char *candidats[], int nbCandidats, int nom
 
     for (int i = 0; i < nbCandidats; i++)
     {
-        sprintf(buffer, "Le Candidat %s à eu %d votes au premier tours \n", candidats[i], premierTour[i]);
+        sprintf(buffer, "Le Candidat %s à eu %d votes au premier tour \n", candidats[i], premierTour[i]);
         append_to_log_file(buffer);
     }
 
@@ -99,9 +99,9 @@ void electionUninominal(int votes[], char *candidats[], int nbCandidats, int nom
         deuxiemeTourGagnant = premierGagnant;
         compteur = compter_voixCandidats_tour2(deuxiemeTourVotes, nombreDeVotes, mat, premierGagnant, deuxiemeGagnant, candidats);
 
-        sprintf(buffer, "Le Candidat %s à eu %d votes au deuxieme tours \n ", candidats[premierGagnant], deuxiemeTourVotes[0]);
+        sprintf(buffer, "Le Candidat %s à eu %d votes au deuxieme tour \n ", candidats[premierGagnant], deuxiemeTourVotes[0]);
         append_to_log_file(buffer);
-        sprintf(buffer, "Le Candidat %s à eu %d votes au deuxieme tours \n ", candidats[deuxiemeGagnant], deuxiemeTourVotes[1]);
+        sprintf(buffer, "Le Candidat %s à eu %d votes au deuxieme tour \n ", candidats[deuxiemeGagnant], deuxiemeTourVotes[1]);
         append_to_log_file(buffer);
 
         if (deuxiemeTourVotes[0] < deuxiemeTourVotes[1])
@@ -111,7 +111,7 @@ void electionUninominal(int votes[], char *candidats[], int nbCandidats, int nom
         }
         pourcentageDeuxiemeTourGagnant = (deuxiemeTourVotes[IndiceVainqueur] * 100) / compteur;
 
-        printf("Mode de scrutin : uninominal à deux tours, tour 2, 2 candidats, %d votants, vainqueur = %s, score = %.2d%%\n",
+        printf("Mode de scrutin : uninominal à 2 tours, tour 2, 2 candidats, %d votants, vainqueur = %s, score = %.2d%%\n",
                compteur, candidats[deuxiemeTourGagnant], pourcentageDeuxiemeTourGagnant);
     }
 }
@@ -145,7 +145,7 @@ void traitement_uninominal(t_mat_char_star_dyn *mat, int tours) // 1 == 1 tours 
     for (int num = 0; num < nombreVotant; num++)
     {
         vote_numéro = recupere_numeroCandidat(mat, num + 1);
-        sprintf(buffer, "Le votant %d à voter pour %s au premier tours \n", num + 1, candidats[vote_numéro]);
+        sprintf(buffer, "Le votant %d à voter pour %s au premier tour \n", num + 1, candidats[vote_numéro]);
         append_to_log_file(buffer);
         votes[num] = vote_numéro;
         buffer[0] = '\0';
