@@ -21,3 +21,11 @@
 - Vous pouvez également compiler `verify_my_vote` uniquement avec __make vmv__
 - Pour générer la documentation, lancez __make doxygen__
 - Pour se débarrasser des exécutables et fichiers objets; lancez __make clean__, et __make mrproper__ afin de supprimer la documentation également 
+
+## CC3
+- Appelez __make test_scrutin__ pour compiler et tester directement la méthode uninominale ainsi que le programme principal.
+- Compilez le programme principal avec __make scrutin__ et fournissez les arguments sous la forme suivante : `./scrutin  [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]`
+- Il est également possible de tester la méthode uninominale uniquement avec __make uninominal__ ou __make test_uni__
+- **Important** :
+    - Au deuxième tour, on considère que si le vote de préférence est le même pour les deux candidants, alors c'est un vote blanc que ne sera pas compté.
+

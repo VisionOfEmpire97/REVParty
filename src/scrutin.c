@@ -69,13 +69,13 @@ int main(int argc, char **argv)
             n++;
             break;
         default:
-            printf("\033[1;31musage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\e[00m\n");
+            printf("\033[1;31musage : ./scrutin [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\e[00m\n");
             exit(EXIT_FAILURE);
         }
     }
     if (nom_csv == NULL || methode == NULL)
     {
-        printf("\033[1;31musage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\e[00m\n");
+        printf("\033[1;31musage : ./scrutin [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\e[00m\n");
         exit(EXIT_FAILURE);
     }
 
