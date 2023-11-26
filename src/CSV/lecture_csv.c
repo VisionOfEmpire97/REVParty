@@ -15,11 +15,10 @@ t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
     t_mat_char_star_dyn *mat = creer_matrice_char();
     char buffer[BUFF_SIZE];
 
-    if (fgets(buffer, sizeof(buffer), file) == NULL)
+    if (fgets(buffer, sizeof(buffer), file) != NULL)
     {
-        perror("fichier vide");
-        exit(EXIT_FAILURE); 
-    };
+        //suppress a warning because we ignore fgets' return value
+    }
     ajouter_ligne(mat);
     inserer_ligne_matrice(buffer, mat);
     fclose(file);

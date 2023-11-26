@@ -32,7 +32,6 @@
 #include "utils_sd/util_log.h"
 #define NAMELENGHT 60
 
-
 /**
  * @brief utilise getopt() afin de récupérer les arguments de la ligne de commande
  *
@@ -40,6 +39,7 @@
  * @param[in] argv
  * @return retourne zéro en cas de succès
  */
+
 int main(int argc, char **argv)
 {
     int balise[5], n = 0;
@@ -58,32 +58,32 @@ int main(int argc, char **argv)
         case 'd':
             check_compatibility(balise, n);
             nom_csv = optarg;
-            printf("%sAttention, la balise -d désactive l'emploi des arguments uni1 et uni2%s\n", RED, END_COLOR);
+            printf("%sAttention, la balise -d désactive l'emploi des arguments uni1 et uni2%s\n",RED,END_COLOR);
             n++;
             break;
         case 'o':
             nom_log = optarg;
             n++;
             break;
-        case 'm': // ne prend qu'un argument ?
+        case 'm': // ne prend qu'un argument 
             methode = optarg;
             n++;
             break;
         default:
-            printf("usage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\n");
+            printf("%susage : ./scrutin [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]%s\n",RED,END_COLOR);
             exit(EXIT_FAILURE);
         }
     }
     if (nom_csv == NULL || methode == NULL)
     {
-        printf("usage : ./REVparty [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]\n");
+        printf("%susage : ./scrutin [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]%s\n",RED,END_COLOR);
         exit(EXIT_FAILURE);
     }
 
-    FILE* log_file = begin_to_log(nom_log);
+    FILE *log_file = begin_to_log(nom_log);
 
     lancer_methode(methode, nom_csv);
-    //more things here
+
     close_log_file();
     
     return 0;
