@@ -5,16 +5,12 @@
  * @version 1
  * @date 2023-11-05
  */
- #ifndef ARG_PARSE_UTILS_H
- #define ARG_PARSE_UTILS_H
+ #ifndef __ARG_PARSE_UTILS_H__
+ #define __ARG_PARSE_UTILS_H__
 #include <stdio.h>
 #include <stdlib.h>
 
-/* char *RED = "\033[1;31m";
-char *GREEN = "\033[1;32m";
-char *END_COLOR = "\e[00m";
-char *valid_methods[7] = {"uni1", "uni2", "cm", "cp", "cs", "jm", "all"};
- */
+
 /**
  * @addtogroup scrutin
  * 
@@ -22,17 +18,19 @@ char *valid_methods[7] = {"uni1", "uni2", "cm", "cp", "cs", "jm", "all"};
  * @defgroup arg_parse Utilitaire d'extraction d'arguments
  * \{
  * \var char* RED 
- * Variables qui changent la couleur de stdout en rouge
+ * Variable qui change la couleur de stdout en rouge
  * 
  * \var char* GREEN 
- * Variables qui changent la couleur de stdout en vert
+ * Variable qui change la couleur de stdout en vert
  * 
  * \var char* END_COLOR 
- * Variables qui réinitialise la couleur de stdout
+ * Variable qui réinitialise la couleur de stdout
  * 
- * \var char** valid_methods 
- * liste des méthodes de votes acceptées par -m
  */ 
+
+extern char *RED;
+extern char *GREEN;
+extern char *END_COLOR;
 
 /**
  * @brief Vérifie que seul -i ou -d est présent lors de l'appel 

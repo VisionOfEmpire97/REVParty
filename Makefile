@@ -2,8 +2,8 @@
 # Authored by ROSET Nathan for use during the REV party project (Autumn 2023)
 
 CC = gcc
-CFLAGS = -std=c17 -Wall
-#-Werror -Wextra -pedantic
+CFLAGS = -std=c17 
+#CFLAGS += -Wall -Werror -Wextra -pedantic
 #LDFLAGS = -I.
 #INC_FLAGS = -I./src
 
@@ -30,10 +30,11 @@ EXECDIR = bin
 LOGDIR = log
 SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
-METDIR = $(SRCDIR)/methodes_votes
+# METDIR = $(SRCDIR)/methodes_votes
 UTILDIR = $(SRCDIR)/utils_sd
 TESTDIR = $(UTILDIR)/test
 PATHTOCSVFILE = fichiers_votes/
+PATHTOCSVTEST = fich_tests/
 DOXYGENDIR = documentation/
 
 #Exécutables
@@ -43,7 +44,7 @@ TESTSHA = $(EXECDIR)/test_sha
 TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
 TESTGRAPH = $(EXECDIR)/testStructGraph
-UNI = $(EXECDIR)/uninominal
+TESTUNI = $(EXECDIR)/uninominal
 JGM = $(EXECDIR)/JugementMajoritaire
 
 #Fichiers de test
@@ -63,7 +64,7 @@ REQUIRED_UNI = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/uninominal.o
 REQUIRED_SCRUTIN = $(REQUIRED_UNI) $(OBJDIR)/arg_parse_util.o
 
 
-#Exécutablespremier
+#Exécutables
 
 vmv: dirs $(OBJ_SHA_UTILS) $(OBJET_UTILS)
 	@$(CC) -o $(VERIFY_MY_VOTE) $(OBJET_UTILS) $(SRCDIR)/verify_my_vote.c $(OBJ_SHA_UTILS)
@@ -76,7 +77,7 @@ test_sha: dirs $(OBJ_SHA_UTILS)
 	@./$(TESTSHA)
 
 test_matrice: dirs $(OBJET_UTILS)
-	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(TESTDIR)/test_matrice.c -ggdb3
+	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(TESTDIR)/test_matrice.c
 	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
 	@./$(TESTMAT) $(TESTCLASSEMENT)
 
@@ -110,27 +111,24 @@ test_vmv : vmv
 #	# @./$(JGM) $(TESTCLASSEMENT)
 
 test_uni: dirs $(REQUIRED_UNI)
-	@$(CC) -o $(UNI) $(SRCDIR)/test_uninominal.c $(REQUIRED_UNI)
-	@./$(UNI) fich_tests/vote10.csv
+	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c -ggdb
+	@./$(TESTUNI) fich_tests/vote10.csv
 
-#... TODO
 scrutin: dirs $(REQUIRED_SCRUTIN)
 	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c
 
 test_scrutin: scrutin
-	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o log/test_log.txt
+	@echo "$(GREEN)Vous pouvez consulter le fichier de log dans log/test_log.txt$(END_C)"
 
-vpath %.c $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
-vpath %.h $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
-
-uninominal: dirs $(OBJET_UTILS)
-	@$(CC) -o $(UNI) $(SRCDIR)/$@.c $(OBJET_UTILS)
+vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
+vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
 
 $(OBJDIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $< 
 
-all_utils: vmv test_sha test_graph test_lecture_csv test_matrice 
-all_methods: test_jgm test_uni test_uni
+all_utils: test_vmv test_sha test_graph test_lecture_csv test_matrice 
+all_methods: test_jgm test_uni 
 
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
@@ -158,10 +156,11 @@ remove_doc: dirs
 mrproper: dirs clean remove_doc remove_logs
 	@echo "Tous les fichiers générés ont été retirés"
 
-deliverCC2:
+deliverCC:
 	@if [ ! -d "./$(TEAMNAME)" ]; then mkdir $(TEAMNAME); fi
 	cp -r $(SRCDIR) $(TEAMNAME)
 	cp -r $(PATHTOCSVFILE) $(TEAMNAME)
+	cp -r $(PATHTOCSVTEST) $(TEAMNAME)
 	cp Makefile Doxyfile $(TEAMNAME)
 	cp README_DELIVER.md $(TEAMNAME)
 	zip -r $(TEAMNAME).zip $(TEAMNAME)

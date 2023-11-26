@@ -10,9 +10,13 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include "arg_parse_util.h"
 #include "util_log.h"
 
 FILE *logfp;
+char *RED = "\033[1;31m";
+char *GREEN = "\033[1;32m";
+char *END_COLOR = "\e[00m";
 
 FILE *begin_to_log(const char *filename)
 {
@@ -30,7 +34,7 @@ FILE *begin_to_log(const char *filename)
     {
         logfp = stdout;
     }
-    fprintf(logfp, "\033[1;32m*****\tDébut du programme\t*****\e[00m\n\n");
+    fprintf(logfp, "%s*****\tDébut du programme\t*****%s\n",GREEN,END_COLOR);
     return logfp;
 }
 
@@ -41,7 +45,7 @@ void append_to_log_file(const char *textToLog)
 
 void close_log_file()
 {
-    fprintf(logfp, "\n\033[1;32m*****\tFin du programme\t*****\e[00m\n");
+    fprintf(logfp, "\n%s*****\tFin du programme\t*****%s\n",GREEN,END_COLOR);
     if (logfp != stdout)
     {
         fclose(logfp);
