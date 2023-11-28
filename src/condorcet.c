@@ -1,15 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <condorcet.h>
+#include <string.h>
+#include "condorcet.h"
 #include "utils_sd/graph.h"
 
-sommet *vainqueurCondorcet(graph *graph)
+sommet *vainqueurCondorcet(graph *graphe)
 {
 
     sommet *vainqueur = NULL;
-    for (unsigned i = 0; i < graph->nbSommet; i++)
+    for (unsigned i = 0; i < graphe->nbSommet; i++)
     {
-        sommet *s = graph->sommets[i];
+        sommet *s = graphe->sommets[i];
         if (s->nbPredecesseur == 0)
             vainqueur = s;
     }
@@ -19,55 +20,64 @@ sommet *vainqueurCondorcet(graph *graph)
     return vainqueur;
 }
 
-sommet *vainqueurCondorcetMinimax(graph *graph)
+sommet *vainqueurCondorcetMinimax(graph *graphe)
 {
     /**
-     * On regarde les arcs sortants de chaque sommet
+     * On regarde les arcs entrants de chaque sommet (représentant les défaites)
      * Celui avec le poids le plus elevé, et donc celui avec la pire défaite
      * le sommet avec la pire défaite la plus basse remporte le scrutin
-    */
+     */
 
-    int maxmin = 0;
-    sommet *sommet_depart, *sommet_arrivee, *res;
-    arc **a;
-    *a = graph->arcs;
-    for (unsigned i = 0; i < graph->nbSommet; i++)
+    int nbSommets = graphe->nbSommet;
+    int pireDefaite[nbSommets]; /*Tableau initialisé à une tres grande valeur?*/
+
+    sommet *vainqueur;
+
+    for (unsigned i = 0; i < graphe->nbSommet; i++)
     {
-        sommet_depart = graph->sommets[i];
-        (*a)->depart = sommet_depart;
-        for (unsigned j = 0; j < (graph->nbSommet - 1); j++)
+        for (unsigned j = 0; i < graphe->nbArc; i++)
         {
-            sommet_arrivee = graph->sommets[j];
-            (*a)->arrivee = sommet_arrivee;
-            if ((*a)->poids < maxmin)
+            if (graphe->arcs[j]->arrivee == graphe->sommets[i])
             {
-                maxmin = (*a)->poids;
-                res = sommet_depart;
+                
+                if (graphe->arcs[j]->poids < pireDefaite)
+                {
+                    pireDefaite[i] = graphe->arcs[j]->poids; /*?*/
+                }
+                
             }
+            
         }
+        
     }
+    /*Faire le minimum de pireDefaite*/
+    
     /*TODO : Print logs*/
-    return res;
+    return vainqueur;
 }
 
-sommet *vainqueurCondorcetSchulze(graph *graph)
+sommet *vainqueurCondorcetSchulze(graph *graphe)
 {
     /**
      * Retirer successivements les arcs de poids minimal jusqu'à retrouver un vainqueur de Condorcet
-    
+
     */
+
+
+    graph *g;
+    memcpy(g, graphe, sizeof(graph));
 
     sommet *vainqueur;
     arc **a;
-    for (unsigned i = 0; i < graph->nbSommet; i++)
+    for (unsigned i = 0; i < g->nbSommet; i++)
     {
-        if (graph->sommets[i]->nbPredecesseur != 0)
+        if (g->sommets[i]->nbPredecesseur != 0)
         {
-            // graph = retirerArc(graph, arcDePoidsMinimal(graph));
+            enlever_arc(g, arcDePoidsMinimal(g));
         }
         else
         {
-            vainqueur = graph->sommets[i];
+            vainqueur = g->sommets[i];
             break;
         }
     }
@@ -81,7 +91,7 @@ sommet *vainqueurCondorcetPaires(graph *graph)
      * (*) Verifier si un cycle est formé
      * (*) Supprimer l'arc de poids minimal de ce cycle
      * (*) Répeter jusqu'a obtenir un vainqueur de condorcet (P- == 0)
-    */
+     */
 }
 
 arc *arcDePoidsMinimal(graph *graph)
