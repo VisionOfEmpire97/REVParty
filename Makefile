@@ -2,13 +2,13 @@
 # Authored by ROSET Nathan for use during the REV party project (Autumn 2023)
 
 CC = gcc
-CFLAGS = -std=c11 -Wall
-#-Werror -Wextra -pedantic
+CFLAGS = -std=c17 
+#CFLAGS += -Wall -Werror -Wextra -pedantic
 #LDFLAGS = -I.
-INC_FLAGS = -I./src
+#INC_FLAGS = -I./src
 
 ifeq ($(DEBUG),yes)
-	CFLAGS += -g
+	CFLAGS += -ggdb
 	LDFLAGS +=
 else
 	CFLAGS += -O3 -DNDEBUG
@@ -30,10 +30,11 @@ EXECDIR = bin
 LOGDIR = log
 SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
-METDIR = $(SRCDIR)/methodes_votes
+# METDIR = $(SRCDIR)/methodes_votes
 UTILDIR = $(SRCDIR)/utils_sd
 TESTDIR = $(UTILDIR)/test
 PATHTOCSVFILE = fichiers_votes/
+PATHTOCSVTEST = fich_tests/
 DOXYGENDIR = documentation/
 
 #Exécutables
@@ -42,16 +43,26 @@ PROG_PRINCIPAL = $(EXECDIR)/scrutin
 TESTSHA = $(EXECDIR)/test_sha
 TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
-TESTGRAPH=$(EXECDIR)/testStructGraph
+TESTGRAPH = $(EXECDIR)/testStructGraph
+TESTUNI = $(EXECDIR)/uninominal
 JGM = $(EXECDIR)/JugementMajoritaire
 
 #Fichiers de test
 TESTCLASSEMENT = fich_tests/vote10.csv
 CLASSEMENT = fichiers_votes/VoteCondorcet.csv
 
-#Objets
+##### Objets
+# Nécessaire pour compiler verify_my_vote
 OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o 
-OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o $(OBJDIR)/util_log.o $(OBJDIR)/graph.o $(OBJDIR)/jugement.o
+# Nécessaire pour compiler tous (?) les exécutables
+OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o 
+# Nécessaire pour compiler le programme "scrutin" et les méthodes
+OBJETS_UTILS_EXTRAS = $(OBJET_UTILS) $(OBJDIR)/util_log.o $(OBJDIR)/graph.o 
+# REQUIRED_JUGEMENT = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/jugement.o
+REQUIRED_UNI = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/uninominal.o
+# REQUIRED_CONDORCET = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/condorcet.o
+REQUIRED_SCRUTIN = $(REQUIRED_UNI) $(OBJDIR)/arg_parse_util.o
+
 
 #Exécutables
 
@@ -70,9 +81,9 @@ test_matrice: dirs $(OBJET_UTILS)
 	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
 	@./$(TESTMAT) $(TESTCLASSEMENT)
 
-test_graph: dirs $(OBJET_UTILS)
-	@$(CC) -o $(TESTGRAPH) $(OBJET_UTILS) $(TESTDIR)/test_graph.c
-		@echo "succès ! L'exécutable $(TESTGRAPH) est situé dans $(TESTGRAPH)"
+test_graph: dirs $(OBJETS_UTILS_EXTRAS)
+	@$(CC) -o $(TESTGRAPH) $(OBJETS_UTILS_EXTRAS) $(TESTDIR)/test_graph.c
+	@echo "succès ! L'exécutable $(TESTGRAPH) est situé dans $(TESTGRAPH)"
 	@./$(TESTGRAPH) $(TESTCLASSEMENT)
 
 test_lecture_csv : dirs $(OBJET_UTILS)
@@ -95,20 +106,29 @@ test_vmv : vmv
 	\"$(RED)valgrind --leak-check=full $(verify_my_vote) roset nathan e9RkoTAH $(CLASSEMENT)$(END_C)\""
 	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
 
-test_jgm : $(OBJET_UTILS)
-	@pwd
-	@$(CC) -o $(JGM) $(OBJET_UTILS) $(TESTDIR)/test_jugement.c -ggdb
-	@./$(JGM) $(TESTCLASSEMENT)
+# test_jgm : $(REQUIRED_JUGEMENT)
+# 	@$(CC) -o $(JGM) $(REQUIRED_JUGEMENT) $(TESTDIR)/test_jugement.c
+#	# @./$(JGM) $(TESTCLASSEMENT)
 
-#... TODO
-#scrutin: dirs... TODO
-#	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
+test_uni: dirs $(REQUIRED_UNI)
+	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c -ggdb
+	@./$(TESTUNI) fich_tests/vote10.csv
 
-vpath %.c $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
-vpath %.h $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
+scrutin: dirs $(REQUIRED_SCRUTIN)
+	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c
+
+test_scrutin: scrutin
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o log/test_log.txt
+	@echo "$(GREEN)Vous pouvez consulter le fichier de log dans log/test_log.txt$(END_C)"
+
+vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
+vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
 
 $(OBJDIR)/%.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $< 
+	@$(CC) $(CFLAGS) -o $@ -c $< 
+
+all_utils: test_vmv test_sha test_graph test_lecture_csv test_matrice 
+all_methods: test_jgm test_uni 
 
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
@@ -136,10 +156,11 @@ remove_doc: dirs
 mrproper: dirs clean remove_doc remove_logs
 	@echo "Tous les fichiers générés ont été retirés"
 
-deliverCC2:
+deliverCC:
 	@if [ ! -d "./$(TEAMNAME)" ]; then mkdir $(TEAMNAME); fi
 	cp -r $(SRCDIR) $(TEAMNAME)
 	cp -r $(PATHTOCSVFILE) $(TEAMNAME)
+	cp -r $(PATHTOCSVTEST) $(TEAMNAME)
 	cp Makefile Doxyfile $(TEAMNAME)
 	cp README_DELIVER.md $(TEAMNAME)
 	zip -r $(TEAMNAME).zip $(TEAMNAME)
