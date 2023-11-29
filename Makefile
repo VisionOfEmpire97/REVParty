@@ -44,6 +44,7 @@ TESTSHA = $(EXECDIR)/test_sha
 TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
 TESTGRAPH = $(EXECDIR)/testStructGraph
+TESTCONDORCET = $(EXECDIR)/testCondorcet
 TESTUNI = $(EXECDIR)/uninominal
 JGM = $(EXECDIR)/JugementMajoritaire
 
@@ -60,7 +61,7 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 OBJETS_UTILS_EXTRAS = $(OBJET_UTILS) $(OBJDIR)/util_log.o $(OBJDIR)/graph.o 
 REQUIRED_JUGEMENT = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/jugement.o
 REQUIRED_UNI = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/uninominal.o
-# REQUIRED_CONDORCET = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/condorcet.o
+REQUIRED_CONDORCET = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/condorcet.o
 METHODS_ONLY = $(OBJDIR)/uninominal.o $(OBJDIR)/jugement.o
 REQUIRED_SCRUTIN = $(OBJETS_UTILS_EXTRAS) $(METHODS_ONLY) $(OBJDIR)/arg_parse_util.o 
 
@@ -125,6 +126,10 @@ scrutin: dirs $(REQUIRED_SCRUTIN)
 test_scrutin: scrutin
 	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o log/test_log.txt
 	@echo "$(GREEN)Vous pouvez consulter le fichier de log dans log/test_log.txt$(END_C)"
+
+test_condorcet: dirs $(REQUIRED_CONDORCET)
+	@$(CC) -o $(TESTCONDORCET) $(REQUIRED_CONDORCET) $(TESTDIR)/test_condorcet.c -ggdb
+	@./$(TESTCONDORCET) fich_tests/vote10.csv
 
 vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
 vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
