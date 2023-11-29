@@ -223,7 +223,3 @@ void supprimer_matrice_int(t_mat_int_dyn *mat)
     free(M);
     free(mat);
 }
-int recuperer_nb_colonnes_int(t_mat_int_dyn *mat)
-{
-    return mat->col;
-}

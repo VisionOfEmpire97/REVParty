@@ -2,8 +2,8 @@
 # Authored by ROSET Nathan for use during the REV party project (Autumn 2023)
 
 CC = gcc
-CFLAGS = -std=c11 -Wall
-#-Werror -Wextra -pedantic
+CFLAGS = -std=c17 
+#CFLAGS += -Wall -Werror -Wextra -pedantic
 #LDFLAGS = -I.
 #INC_FLAGS = -I./src
 
@@ -30,10 +30,11 @@ EXECDIR = bin
 LOGDIR = log
 SHADIR = $(SRCDIR)/SHA256
 CSVDIR = $(SRCDIR)/CSV
-METDIR = $(SRCDIR)/methodes_votes
+# METDIR = $(SRCDIR)/methodes_votes
 UTILDIR = $(SRCDIR)/utils_sd
 TESTDIR = $(UTILDIR)/test
 PATHTOCSVFILE = fichiers_votes/
+PATHTOCSVTEST = fich_tests/
 DOXYGENDIR = documentation/
 
 #Exécutables
@@ -43,7 +44,7 @@ TESTSHA = $(EXECDIR)/test_sha
 TESTMAT = $(EXECDIR)/testStructMatrice
 TESTCSV = $(EXECDIR)/lecture_csv
 TESTGRAPH = $(EXECDIR)/testStructGraph
-UNI = $(EXECDIR)/uninominal
+TESTUNI = $(EXECDIR)/uninominal
 JGM = $(EXECDIR)/JugementMajoritaire
 
 #Fichiers de test
@@ -58,8 +59,10 @@ OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o
 # Nécessaire pour compiler le programme "scrutin" et les méthodes
 OBJETS_UTILS_EXTRAS = $(OBJET_UTILS) $(OBJDIR)/util_log.o $(OBJDIR)/graph.o 
 REQUIRED_JUGEMENT = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/jugement.o
-# REQUIRED_UNI = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/uninominal.o
+REQUIRED_UNI = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/uninominal.o
 # REQUIRED_CONDORCET = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/condorcet.o
+METHODS_ONLY = $(OBJDIR)/uninominal.o $(OBJDIR)/jugement.o
+REQUIRED_SCRUTIN = $(OBJETS_UTILS_EXTRAS) $(METHODS_ONLY) $(OBJDIR)/arg_parse_util.o 
 
 
 #Exécutables
@@ -75,7 +78,7 @@ test_sha: dirs $(OBJ_SHA_UTILS)
 	@./$(TESTSHA)
 
 test_matrice: dirs $(OBJET_UTILS)
-	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(TESTDIR)/test_matrice.c -ggdb3
+	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(TESTDIR)/test_matrice.c
 	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
 	@./$(TESTMAT) $(TESTCLASSEMENT)
 
@@ -104,26 +107,33 @@ test_vmv : vmv
 	\"$(RED)valgrind --leak-check=full $(verify_my_vote) roset nathan e9RkoTAH $(CLASSEMENT)$(END_C)\""
 	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
 
-# test_jgm : $(REQUIRED_JUGEMENT)
+#  test_jgm : $(REQUIRED_JUGEMENT)
 # 	@$(CC) -o $(JGM) $(REQUIRED_JUGEMENT) $(TESTDIR)/test_jugement.c
-#	# @./$(JGM) $(TESTCLASSEMENT)
+# 	@./$(JGM) $(TESTCLASSEMENT)
 
-# test_uni: dirs $(REQUIRED_UNI)
-# 	@$(CC) -o $(UNI) $(SRCDIR)/$@.c $(REQUIRED_UNI)
-# 	@./$(UNI) fich_tests/vote10.csv
+test_jgm: scrutin
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENT) -m jm
+	
 
-#... TODO
-#scrutin: dirs... TODO
-#	@$(CC) -o $(PROG_PRINCIPAL) $(OBJET_UTILS)
+test_uni: dirs $(REQUIRED_UNI)
+	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c -ggdb
+	@./$(TESTUNI) fich_tests/vote10.csv
 
-vpath %.c $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
-vpath %.h $(UTILDIR) $(SRCDIR) $(METDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
+scrutin: dirs $(REQUIRED_SCRUTIN)
+	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c -ggdb
+
+test_scrutin: scrutin
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o log/test_log.txt
+	@echo "$(GREEN)Vous pouvez consulter le fichier de log dans log/test_log.txt$(END_C)"
+
+vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
+vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
 
 $(OBJDIR)/%.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< 
+	@$(CC) $(CFLAGS) -o $@ -c $< -ggdb
 
-all_utils: vmv test_sha test_graph test_lecture_csv test_matrice 
-all_methods: test_jgm test_uni test_uni
+all_utils: test_vmv test_sha test_graph test_lecture_csv test_matrice 
+all_methods: test_jgm test_uni 
 
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
@@ -151,10 +161,11 @@ remove_doc: dirs
 mrproper: dirs clean remove_doc remove_logs
 	@echo "Tous les fichiers générés ont été retirés"
 
-deliverCC2:
+deliverCC:
 	@if [ ! -d "./$(TEAMNAME)" ]; then mkdir $(TEAMNAME); fi
 	cp -r $(SRCDIR) $(TEAMNAME)
 	cp -r $(PATHTOCSVFILE) $(TEAMNAME)
+	cp -r $(PATHTOCSVTEST) $(TEAMNAME)
 	cp Makefile Doxyfile $(TEAMNAME)
 	cp README_DELIVER.md $(TEAMNAME)
 	zip -r $(TEAMNAME).zip $(TEAMNAME)
