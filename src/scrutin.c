@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include "utils_sd/arg_parse_util.h"
 #include "utils_sd/util_log.h"
+#include "CSV/lecture_csv.h"
 #define NAMELENGHT 60
 
 /**

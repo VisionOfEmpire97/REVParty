@@ -4,6 +4,7 @@
 #include "arg_parse_util.h"
 #include "../CSV/lecture_csv.h"
 #include "../uninominal.h"
+#include "../jugement.h"
 #include "matrice.h"
 
 void check_compatibility(int *tab, int len_tab)
@@ -48,7 +49,7 @@ void lancer_methode(char *methode, char *nom_csv)
         // fonction qui appelle la méthode de vote
         break;
     case 5: // jugement majoritaire
-        // fonction qui appelle la méthode de vote
+        methode_jugement(matrice_de_vote);
         break;
     case 6: // toutes le méthodes
         // fonction qui appelle TOUT
