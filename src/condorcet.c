@@ -4,6 +4,12 @@
 #include "condorcet.h"
 #include "utils_sd/graph.h"
 
+/**
+ * Créer le graph localement?
+ *
+ * 
+*/
+
 sommet *vainqueurCondorcet(graph *graphe)
 {
 
@@ -30,28 +36,36 @@ sommet *vainqueurCondorcetMinimax(graph *graphe)
 
     int nbSommets = graphe->nbSommet;
     int pireDefaite[nbSommets]; /*Tableau initialisé à une tres grande valeur?*/
-
+    int max, min, indiceSommetCourant;
     sommet *vainqueur;
 
     for (unsigned i = 0; i < graphe->nbSommet; i++)
     {
         for (unsigned j = 0; i < graphe->nbArc; i++)
         {
+            max = 0;
             if (graphe->arcs[j]->arrivee == graphe->sommets[i])
             {
-                
-                if (graphe->arcs[j]->poids < pireDefaite)
+                if (graphe->arcs[j]->poids > max)
                 {
-                    pireDefaite[i] = graphe->arcs[j]->poids; /*?*/
+                    max = graphe->arcs[j]->poids;
                 }
-                
             }
-            
+        }
+        pireDefaite[i] = max;
+    }
+    /*Faire le minimum de pireDefaite*/
+    min = pireDefaite[0];
+    vainqueur = graphe->sommets[0];
+    for (unsigned i = 1; i < nbSommets; i++)
+    {
+        if (pireDefaite[i]<min)
+        {
+            min = pireDefaite[i];
+            vainqueur = graphe->sommets[i];
         }
         
     }
-    /*Faire le minimum de pireDefaite*/
-    
     /*TODO : Print logs*/
     return vainqueur;
 }
@@ -60,9 +74,8 @@ sommet *vainqueurCondorcetSchulze(graph *graphe)
 {
     /**
      * Retirer successivements les arcs de poids minimal jusqu'à retrouver un vainqueur de Condorcet
-
+     * Si égalité, renvoyer tous les sommets restants après avoir retiré tous les arcs
     */
-
 
     graph *g;
     memcpy(g, graphe, sizeof(graph));
@@ -88,7 +101,7 @@ sommet *vainqueurCondorcetSchulze(graph *graphe)
 sommet *vainqueurCondorcetPaires(graph *graph)
 {
     /**
-     * (*) Verifier si un cycle est formé
+     * (*) Verifier si un cycle est formé (voire algorithmes de dijkstra et bellman-ford)
      * (*) Supprimer l'arc de poids minimal de ce cycle
      * (*) Répeter jusqu'a obtenir un vainqueur de condorcet (P- == 0)
      */

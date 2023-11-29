@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
-#include "util_log.h"
+#include "../util_log.h"
 
 int main(int argc, char const *argv[])
 {
