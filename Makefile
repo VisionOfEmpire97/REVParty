@@ -58,10 +58,11 @@ OBJ_SHA_UTILS = $(OBJDIR)/sha256_utils.o $(OBJDIR)/sha256.o
 OBJET_UTILS = $(OBJDIR)/matrice.o $(OBJDIR)/lecture_csv.o 
 # Nécessaire pour compiler le programme "scrutin" et les méthodes
 OBJETS_UTILS_EXTRAS = $(OBJET_UTILS) $(OBJDIR)/util_log.o $(OBJDIR)/graph.o 
-# REQUIRED_JUGEMENT = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/jugement.o
+REQUIRED_JUGEMENT = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/jugement.o
 REQUIRED_UNI = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/uninominal.o
 # REQUIRED_CONDORCET = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/condorcet.o
-REQUIRED_SCRUTIN = $(REQUIRED_UNI) $(OBJDIR)/arg_parse_util.o
+METHODS_ONLY = $(OBJDIR)/uninominal.o $(OBJDIR)/jugement.o
+REQUIRED_SCRUTIN = $(OBJETS_UTILS_EXTRAS) $(METHODS_ONLY) $(OBJDIR)/arg_parse_util.o 
 
 
 #Exécutables
@@ -106,16 +107,20 @@ test_vmv : vmv
 	\"$(RED)valgrind --leak-check=full $(verify_my_vote) roset nathan e9RkoTAH $(CLASSEMENT)$(END_C)\""
 	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
 
-# test_jgm : $(REQUIRED_JUGEMENT)
+#  test_jgm : $(REQUIRED_JUGEMENT)
 # 	@$(CC) -o $(JGM) $(REQUIRED_JUGEMENT) $(TESTDIR)/test_jugement.c
-#	# @./$(JGM) $(TESTCLASSEMENT)
+# 	@./$(JGM) $(TESTCLASSEMENT)
+
+test_jgm: scrutin
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENT) -m jm
+	
 
 test_uni: dirs $(REQUIRED_UNI)
 	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c -ggdb
 	@./$(TESTUNI) fich_tests/vote10.csv
 
 scrutin: dirs $(REQUIRED_SCRUTIN)
-	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c
+	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c -ggdb
 
 test_scrutin: scrutin
 	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o log/test_log.txt
@@ -125,7 +130,7 @@ vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
 vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
 
 $(OBJDIR)/%.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< 
+	@$(CC) $(CFLAGS) -o $@ -c $< -ggdb
 
 all_utils: test_vmv test_sha test_graph test_lecture_csv test_matrice 
 all_methods: test_jgm test_uni 
