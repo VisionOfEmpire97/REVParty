@@ -97,9 +97,13 @@ void initialiser_arc(graph *g, t_mat_int_dyn *mat_duel)
             depart = g->sommets[i];
             if (poids < poids2)
             {
-                poids = poids2;
+                poids = poids2 - poids;
                 arrivee = g->sommets[i];
                 depart = g->sommets[j];
+            }
+            else
+            {
+                poids = poids - poids2;
             }
             pa = creer_arc(arrivee, depart, poids);
             ajouter_arc(g, pa);
