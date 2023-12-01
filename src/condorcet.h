@@ -16,11 +16,11 @@
  * \brief Retourne le vainqueur du suffrage selon la méthode de Condorcet. Si vainqueurCondorcet == NULL,
  * on doit faire appel aux fonctions de résolution du paradoxe de Condorcet.
  * 
- * \param[in] graph La matrice de duels sous forme de graph.
+ * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
  * \param[out] vainqueur Le vainqueur, s'il existe, selon la méthode Condorcet.
  *
  */
-sommet *vainqueurCondorcet(graph *graph);
+sommet *vainqueurCondorcet(t_mat_char_star_dyn *matrice);
 
 /**
  * \brief Première proposition de résolution du paradoxe de Condorcet: la méthode Minimax.
@@ -28,10 +28,10 @@ sommet *vainqueurCondorcet(graph *graph);
  * \details Pour chacun des candidats, on regarde le pire des scores qu’il ferait dans ses
  * différents faces-à-faces, puis on déclare élu celui des candidats dont le pire des scores est le meilleur.
  * 
- * \param[in] graph Le graphe pondéré des duels.
+ * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
  * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Minimax.
  */
-sommet *vainqueurCondorcetMinimax(graph *graph);
+sommet *vainqueurCondorcetMinimax(t_mat_char_star_dyn *matrice);
 
 /**
  * \brief Seconde proposition de résolution du paradoxe de Condorcet: la méthode Paires.
@@ -43,10 +43,10 @@ sommet *vainqueurCondorcetMinimax(graph *graph);
  * (*) Supprimer l'arc de poids minimal de ce cycle
  * (*) Répeter jusqu'a obtenir un vainqueur de Condorcet (P- == 0)
  * 
- * \param[in] graph Le graphe pondéré des duels.
+ * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
  * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Paires.
 */
-sommet *vainqueurCondorcetPaires(graph *graph);
+sommet *vainqueurCondorcetPaires(t_mat_char_star_dyn *matrice);
 
 /**
  * \brief Troisième proposition de résolution du paradoxe de Condorcet: la méthode Schulze.
@@ -55,10 +55,10 @@ sommet *vainqueurCondorcetPaires(graph *graph);
  * les arcs de poids minimal jusqu'à ce qu'un des sommets gagne tous ses duels (ou n'en perd aucun), est donc
  * se désigne comme vainqueur de Condorcet.
  * 
- * \param[in] graph Le graphe pondéré des duels.
+ * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
  * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Schulze.
 */
-sommet *vainqueurCondorcetSchulze(graph *graph);
+sommet *vainqueurCondorcetSchulze(t_mat_char_star_dyn *matrice);
 
 /**
  * \brief Fonction permettant de retrouver l'arc de poids minimal d'un graphe.
