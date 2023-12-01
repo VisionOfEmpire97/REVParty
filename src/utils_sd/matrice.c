@@ -164,11 +164,11 @@ t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat)
 
                     if (val1 > val2)
                     {
-                        mat_duel->matrice[j - 4][k - 4]++;
+                        mat_duel->matrice[k - 4][j - 4]++;
                     }
                     else if (val1 < val2)
                     {
-                        mat_duel->matrice[k - 4][j - 4]++;
+                        mat_duel->matrice[j - 4][k - 4]++;
                     }
                     else
                     {
