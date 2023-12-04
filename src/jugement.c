@@ -11,6 +11,7 @@
  */
 
 #include "jugement.h"
+#include "utils_sd/arg_parse_util.h"
 #include "utils_sd/util_log.h"
 #include "utils_sd/matrice.h"
 #include "CSV/lecture_csv.h"
@@ -72,14 +73,14 @@ void afficher_tab_mentions(t_mat_int_dyn *mentions, char ** noms_candidats, int 
     //pour s'assurer du bon alignement il faudrait convertir en ASCII ? les "é" et "à" ne passent pas...
     char *nom_methode = " **** Jugement majoritaire ****";
     printf("%s\n",nom_methode);
-    printf("%-25s","");
+    printf("%-40s","");
     for (int i = 0; i < NB_MENTIONS; i++) {
         printf("%7s",str_mentions[i]);
     }
     printf("\n");
     for (int i = 0; i < nb_candidats; i++) 
     {   
-        printf("%-25s",noms_candidats[i]);
+        printf("%-40s",noms_candidats[i]);
         for (int j = 0; j < NB_MENTIONS;j++ ) 
         {
             printf("%7d",mentions->matrice[i][j]);
@@ -101,7 +102,7 @@ int mediane(int number)
 void classer_cand(t_mat_int_dyn *m, int nb_candidats, int nb_electeurs,char ** noms_c, int *best_result, int *rank)
 {
     int electeur_median = mediane(nb_electeurs);
-    int compteur = 0, j = 0;
+    int compteur = 0, j = NB_MENTIONS - 1;
     for (int i = 0; i < nb_candidats; i++)
     {
         //s'assurer que les candidats éliminés le reste
@@ -110,16 +111,26 @@ void classer_cand(t_mat_int_dyn *m, int nb_candidats, int nb_electeurs,char ** n
             while (compteur < electeur_median)
             {
                 compteur += m->matrice[i][j];
-                if (compteur < electeur_median) j++;
+                if (compteur < electeur_median) j--; //"inférieur" ou "inférieur ou égal" ??
             }
             rank[i] = j;
             if (j < *best_result) *best_result = j; // on récupère dans best_result la mention la plus haute
             sprintf(buff,"[JGM] Le candidat %s reçoit la mention majoritaire %s",noms_c[i],str_mentions[j]);
             append_to_log_file(buff);
-        j = 0;
+        j = NB_MENTIONS - 1;
         compteur = 0;
         }
     }
+    // cas ou les mentions empirent pour tous les candidats ex aequo non éliminés:
+    int j2 = 5;
+    for (int i = 0; i < nb_candidats; i++) 
+    {
+        if (rank[i] < j2)
+        {
+            j2 = rank[i];
+        }
+    }
+    *best_result = j2;
     append_to_log_file("\n");
 }
 /**
@@ -214,5 +225,6 @@ void methode_jugement (t_mat_char_star_dyn *mat)
     int vainqueur = declarer_vainqueur(classement_candidat, nb_candidats, &meilleure_mention);
     sprintf(buff, "[JGM] Le candidat %s a été déclaré vainqueur par méthode de jugement majoritaire", nom_candidats[vainqueur]);
     append_to_log_file(buff);
+    printf("%s%s%s\n",GREEN, buff, END_COLOR);
     supprimer_matrice_int(mentions);
 }

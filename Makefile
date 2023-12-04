@@ -113,6 +113,7 @@ test_vmv : vmv
 
 test_jgm: scrutin
 	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENT) -m jm -o $(LOGDIR)/log_jgm.txt
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m jm -o $(LOGDIR)/log_jgm2.txt
 	
 test_uni: dirs $(REQUIRED_UNI)
 	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c 
