@@ -44,8 +44,10 @@ void check_compatibility(int *tab, int len_tab);
  * @brief Appelle la méthode de scrutin passée en paramètres 
  * 
  * @param[in] methode nom du paramètre associé à la méthode à appeler
-*/
-void lancer_methode(char *methode, char *nom_csv);
+ * @param nom_csv nom du fichier csv passé en argument
+ * @param type_csv type du csv passé en argument (i ou d)
+ */
+void lancer_methode(char *methode, char *nom_csv, char *type_csv);
 /**\}*/
 /**\}*/
 #endif
