@@ -61,11 +61,11 @@ void eval_mention(t_mat_int_dyn *m,t_mat_char_star_dyn *mat, char **noms_candida
 }
 
 /**
- * @brief affiche le tableau de mentions reçu par chaque candidat à l'utilisateur 
- * avant de lancer la vote en lui-même 
+ * @brief affiche le tableau de mentions reçu par chaque candidat à l'utilisateur
+ * avant de lancer la vote en lui-même
  * @param mentions matrice qui récupère les votes de chaque électeur
  * @param liste_candidats noms des candidats
- * @param nb_candidats 
+ * @param nb_candidats
  */
 void afficher_tab_mentions(t_mat_int_dyn *mentions, char ** noms_candidats, int nb_candidats)
 {
@@ -89,7 +89,6 @@ void afficher_tab_mentions(t_mat_int_dyn *mentions, char ** noms_candidats, int 
 }
 /**
  * @brief retourne la médiane du nombre d'électeur. Cet électeur décidera de la mention obtenue par le candidat
- * 
  * @param number Le nombre d'électeur
  * @return mediane
  */
@@ -99,8 +98,8 @@ int mediane(int number)
 }
 
 /**
- * @brief algorithme qui attribue à chaque étape, à chaque candidat non éliminé une mention, et 
- * modifie la variable contenant la plus meilleure mention 
+ * @brief algorithme qui attribue à chaque étape, à chaque candidat non éliminé une mention, et
+ * modifie la variable contenant la plus meilleure mention
  * @param m matrice qui récupère les votes de chaque électeur
  * @param nb_candidats le nombre de candidat (invariant)
  * @param nb_electeurs nb d'electeurs à cette étape
@@ -132,7 +131,7 @@ void classer_cand(t_mat_int_dyn *m, int nb_candidats, int nb_electeurs,char ** n
     }
     // cas ou les mentions empirent pour tous les candidats ex aequo non éliminés:
     int j2 = 5;
-    for (int i = 0; i < nb_candidats; i++) 
+    for (int i = 0; i < nb_candidats; i++)
     {
         if (rank[i] < j2)
         {
@@ -144,9 +143,8 @@ void classer_cand(t_mat_int_dyn *m, int nb_candidats, int nb_electeurs,char ** n
 }
 /**
  * @brief on retire un électeur dans la colonne meilleure_mention pour chaque candidat
- * 
  * @param mentions matrice d'entier ou chaque
- * @param meilleure_mention colonne dans laquelle on retire un électeur 
+ * @param meilleure_mention colonne dans laquelle on retire un électeur
  * @param nb_electeurs nb d'electeurs à cette étape
  */
 void retirer_mediane(t_mat_int_dyn *mentions, int meilleure_mention,int *nb_electeurs)

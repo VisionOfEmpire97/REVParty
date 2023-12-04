@@ -116,11 +116,11 @@ test_jgm: scrutin
 	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m jm -o $(LOGDIR)/log_jgm2.txt
 	
 test_uni: dirs $(REQUIRED_UNI)
-	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c 
+	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c
 	@./$(TESTUNI) $(PATHTOCSVTEST)/vote10.csv
 
 scrutin: dirs $(REQUIRED_SCRUTIN)
-	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c 
+	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c
 
 test_scrutin: scrutin
 	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o $(LOGDIR)/test_log.txt
@@ -130,7 +130,7 @@ vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
 vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
 
 $(OBJDIR)/%.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< 
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 all_utils: test_vmv test_sha test_graph test_lecture_csv test_matrice 
 all_methods: test_jgm test_uni 
