@@ -19,7 +19,7 @@ void check_compatibility(int *tab, int len_tab)
     }
 }
 
-void lancer_methode(char *methode, char *nom_csv)
+void lancer_methode(char *methode, char *nom_csv, char *type_csv)
 {   
     t_mat_char_star_dyn *matrice_de_vote  = lecture_fichier(nom_csv);
     int methode_id;
@@ -55,6 +55,14 @@ void lancer_methode(char *methode, char *nom_csv)
         // fonction qui appelle TOUT
         // - si -i (vote par classement), alors on lance toutes les méthodes 
         // - si -d(matrice de duel), alors on lance toutes les méthodes sauf uni1 et uni2
+        if (*type_csv == 'i')
+        {
+            methode_jugement(matrice_de_vote);
+        }
+        else 
+        {
+            // methode_jugement(matrice_de_vote);
+        }        
         break;
     default:
         printf("%sargument de méthode invalides, arguments reconnus :\n      ",RED);
