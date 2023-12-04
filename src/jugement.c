@@ -123,7 +123,7 @@ void classer_cand(t_mat_int_dyn *m, int nb_candidats, int nb_electeurs,char ** n
             }
             rank[i] = j;
             if (j < *best_result) *best_result = j; // on récupère dans best_result la mention la plus haute
-            sprintf(buff,"[JGM] Le candidat %s reçoit la mention majoritaire %s",noms_c[i],str_mentions[j]);
+            sprintf(buff,"[JGM] Le candidat %s reçoit la mention majoritaire %s\n",noms_c[i],str_mentions[j]);
             append_to_log_file(buff);
         j = NB_MENTIONS - 1;
         compteur = 0;
@@ -172,7 +172,7 @@ void eliminer_candidats(int *classement_candidat, int nb_candidats, int *best_re
     {
         if (classement_candidat[i] > *best_result)
         {
-            sprintf(buff, "[JGM] Le candidat %s a été éliminé",nom_candidats[i]);
+            sprintf(buff, "[JGM] Le candidat %s a été éliminé\n",nom_candidats[i]);
             append_to_log_file(buff);
             classement_candidat[i] = 99;
         }
