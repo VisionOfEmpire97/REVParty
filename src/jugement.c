@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 #define NB_MENTIONS 6
 
 char *str_mentions[NB_MENTIONS] ={"TB","B","AB","P","M","A fuir"};
@@ -65,7 +64,7 @@ void eval_mention(t_mat_int_dyn *m,t_mat_char_star_dyn *mat, char **noms_candida
  * @brief affiche le tableau de mentions reçu par chaque candidat à l'utilisateur 
  * avant de lancer la vote en lui-même 
  * @param mentions matrice qui récupère les votes de chaque électeur
- * @param liste_candidats 
+ * @param liste_candidats noms des candidats
  * @param nb_candidats 
  */
 void afficher_tab_mentions(t_mat_int_dyn *mentions, char ** noms_candidats, int nb_candidats)
@@ -99,6 +98,16 @@ int mediane(int number)
     return ((number % 2 == 0) ? (number / 2) : (number / 2 + 1));
 }
 
+/**
+ * @brief algorithme qui attribue à chaque étape, à chaque candidat non éliminé une mention, et 
+ * modifie la variable contenant la plus meilleure mention 
+ * @param m matrice qui récupère les votes de chaque électeur
+ * @param nb_candidats le nombre de candidat (invariant)
+ * @param nb_electeurs nb d'electeurs à cette étape
+ * @param noms_c nom des candidats
+ * @param best_result la plus haute mention observée pour cette étape
+ * @param rank tableau de candidat avec l'entier correspondant à leur mention
+ */
 void classer_cand(t_mat_int_dyn *m, int nb_candidats, int nb_electeurs,char ** noms_c, int *best_result, int *rank)
 {
     int electeur_median = mediane(nb_electeurs);
@@ -136,7 +145,7 @@ void classer_cand(t_mat_int_dyn *m, int nb_candidats, int nb_electeurs,char ** n
 /**
  * @brief on retire un électeur dans la colonne meilleure_mention pour chaque candidat
  * 
- * @param mentions 
+ * @param mentions matrice d'entier ou chaque
  * @param meilleure_mention colonne dans laquelle on retire un électeur 
  * @param nb_electeurs nb d'electeurs à cette étape
  */
@@ -151,6 +160,14 @@ void retirer_mediane(t_mat_int_dyn *mentions, int meilleure_mention,int *nb_elec
     *nb_electeurs = *nb_electeurs - 1;
 }
 
+/**
+ * @brief on s'assure que certains candidats éliminés ne faussent pas les résultats lorque
+ * l'on modifie le nombre d'électeur
+ * @param classement_candidat tableau de candidat avec l'entier correspondant à leur mention
+ * @param nb_candidats le nombre de candidat (invariant)
+ * @param best_result la plus haute mention observée pour cette étape
+ * @param nom_candidats 
+ */
 void eliminer_candidats(int *classement_candidat, int nb_candidats, int *best_result, char ** nom_candidats)
 {
     for (int i = 0; i < nb_candidats; i++) 
@@ -165,6 +182,14 @@ void eliminer_candidats(int *classement_candidat, int nb_candidats, int *best_re
     append_to_log_file("\n");
 }
 
+/**
+ * @brief vérifie si plusieurs vainqueurs existent, si oui, on continue l'algo
+ * 
+ * @param best_result la plus haute mention observée pour ce tour
+ * @param classement_candidat tableau de candidat avec l'entier correspondant à leur mention
+ * @param nb_candidats le nombre de candidat (invariant)
+ * @return nb_vainqueurs si il est supérieur à 1, on continue l'algo 
+ */
 int plusieurs_vainqueurs(int *best_result,int* classement_candidat, int nb_candidats)
 {   
     int exaeq = 0;
@@ -179,6 +204,14 @@ int plusieurs_vainqueurs(int *best_result,int* classement_candidat, int nb_candi
     return exaeq;
 }
 
+/**
+ * @brief 
+ * 
+ * @param classement_candidat tableau de candidat avec l'entier correspondant à leur mention
+ * @param nb_candidats le nombre de candidat (invariant)
+ * @param best_result 
+ * @return int 
+ */
 int declarer_vainqueur(int *classement_candidat, int nb_candidats, int *best_result)
 {
     for (int i = 0; i < nb_candidats; i++) {
@@ -187,6 +220,11 @@ int declarer_vainqueur(int *classement_candidat, int nb_candidats, int *best_res
     return -1;
 }
 
+/**
+ * @brief algorithme de jugement majoritaire
+ * 
+ * @param mat la matrice de vote
+ */
 void methode_jugement (t_mat_char_star_dyn *mat)
 {   
     int nb_candidats = recuperer_nb_colonnes(mat) - 4;
