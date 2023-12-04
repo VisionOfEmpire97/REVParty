@@ -4,12 +4,12 @@
 CC = gcc
 CFLAGS = -std=c17 
 #CFLAGS += -Wall -Werror -Wextra -pedantic
-#LDFLAGS = -I.
+LDFLAGS =
 #INC_FLAGS = -I./src
 
 ifeq ($(DEBUG),yes)
 	CFLAGS += -ggdb
-	LDFLAGS +=
+	LDFLAGS += -rdynamic
 else
 	CFLAGS += -O3 -DNDEBUG
 	LDFLAGS +=
@@ -112,25 +112,24 @@ test_vmv : vmv
 # 	@./$(JGM) $(TESTCLASSEMENT)
 
 test_jgm: scrutin
-	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENT) -m jm
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENT) -m jm -o $(LOGDIR)/log_jgm.txt
 	
-
 test_uni: dirs $(REQUIRED_UNI)
-	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c -ggdb
-	@./$(TESTUNI) fich_tests/vote10.csv
+	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c 
+	@./$(TESTUNI) $(PATHTOCSVTEST)/vote10.csv
 
 scrutin: dirs $(REQUIRED_SCRUTIN)
-	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c -ggdb
+	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c 
 
 test_scrutin: scrutin
-	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o log/test_log.txt
-	@echo "$(GREEN)Vous pouvez consulter le fichier de log dans log/test_log.txt$(END_C)"
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o $(LOGDIR)/test_log.txt
+	@echo "$(GREEN)Vous pouvez consulter le fichier de log dans $(LOGDIR)/test_log.txt$(END_C)"
 
 vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
 vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
 
 $(OBJDIR)/%.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< -ggdb
+	@$(CC) $(CFLAGS) -o $@ -c $< 
 
 all_utils: test_vmv test_sha test_graph test_lecture_csv test_matrice 
 all_methods: test_jgm test_uni 

@@ -2,6 +2,7 @@
  * @file jugement.c
  * @author ROSET Nathan
  * @brief implémentation de la méthode de jugement majoritaire
+ * Il était possible d'utiliser une unique structure mais pas besoin
  * @version 0.1
  * @date 2023-11-21
  * 
@@ -16,18 +17,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #define NB_MENTIONS 6
 
 char *str_mentions[NB_MENTIONS] ={"TB","B","AB","P","M","A fuir"};
+char buff[200];
 
 /**
- * @brief 
+ * @brief transforme les valeurs attribuées à chaque candidat en une mention entre 0 (TB) et 5 (A fuir)
  * 
  * @param m tableau d'équivalences des mentions
  * @param mat CSV converti en matrice
  * @param liste_candidats Le nom des candidats par ordre d'apparence dans le CSV
  */
-void eval_mention(t_mat_int_dyn *m,t_mat_char_star_dyn *mat, char **liste_candidats)
+void eval_mention(t_mat_int_dyn *m,t_mat_char_star_dyn *mat, char **noms_candidats)
 {
     int val;
     char *cur_value;
@@ -40,17 +43,16 @@ void eval_mention(t_mat_int_dyn *m,t_mat_char_star_dyn *mat, char **liste_candid
         {   
             cur_value = valeur_matrice_char_indice(mat, i, j);
             val = strtol(cur_value, NULL, 10);
-            // remplacer le switch case par val // 2 ?
             int equiv_mention = val / 2; //division entière ???
             if (val < 0) //traite les vals négatives
             {
                 m->matrice[j - 4][5] += 1 ;
-                sprintf(buf,"[JGM] Electeur %d: le candidat %s a reçu la mention %s\n", i, liste_candidats[j-4],str_mentions[5]);
+                sprintf(buf,"[JGM] Electeur %d: le candidat %s a reçu la mention %s\n", i, noms_candidats[j-4],str_mentions[5]);
             } 
             else 
             {
                 m->matrice[j - 4][equiv_mention] += 1 ; 
-                sprintf(buf,"[JGM] Electeur %d: le candidat %s a reçu la mention %s\n", i, liste_candidats[j-4],str_mentions[equiv_mention]);
+                sprintf(buf,"[JGM] Electeur %d: le candidat %s a reçu la mention %s\n", i, noms_candidats[j-4],str_mentions[equiv_mention]);
             }
             append_to_log_file(buf);
             //ajouter le log pour chaque vote lu
@@ -59,16 +61,16 @@ void eval_mention(t_mat_int_dyn *m,t_mat_char_star_dyn *mat, char **liste_candid
 }
 
 /**
- * @brief affiche le tableau de mention à l'utilisateur avant de lancer la vote en lui-même
- * 
- * @param mentions 
- * @param candidats 
+ * @brief affiche le tableau de mentions reçu par chaque candidat à l'utilisateur 
+ * avant de lancer la vote en lui-même 
+ * @param mentions matrice qui récupère les votes de chaque électeur
+ * @param liste_candidats 
  * @param nb_candidats 
  */
-void afficher_tab_mentions(t_mat_int_dyn *mentions, char ** candidats, int nb_candidats)
+void afficher_tab_mentions(t_mat_int_dyn *mentions, char ** noms_candidats, int nb_candidats)
 {
-    //pour s'assurer du bon alignement il faudrait convertir en ASCII ? les "é" et à ne passent pas...
-    char *nom_methode = " **** Jugement majoritaire";
+    //pour s'assurer du bon alignement il faudrait convertir en ASCII ? les "é" et "à" ne passent pas...
+    char *nom_methode = " **** Jugement majoritaire ****";
     printf("%s\n",nom_methode);
     printf("%-25s","");
     for (int i = 0; i < NB_MENTIONS; i++) {
@@ -77,7 +79,7 @@ void afficher_tab_mentions(t_mat_int_dyn *mentions, char ** candidats, int nb_ca
     printf("\n");
     for (int i = 0; i < nb_candidats; i++) 
     {   
-        printf("%-25s",candidats[i]);
+        printf("%-25s",noms_candidats[i]);
         for (int j = 0; j < NB_MENTIONS;j++ ) 
         {
             printf("%7d",mentions->matrice[i][j]);
@@ -85,19 +87,132 @@ void afficher_tab_mentions(t_mat_int_dyn *mentions, char ** candidats, int nb_ca
         printf("\n");
     }
 }
+/**
+ * @brief retourne la médiane du nombre d'électeur. Cet électeur décidera de la mention obtenue par le candidat
+ * 
+ * @param number Le nombre d'électeur
+ * @return mediane
+ */
+int mediane(int number)
+{
+    return ((number % 2 == 0) ? (number / 2) : (number / 2 + 1));
+}
+
+void classer_cand(t_mat_int_dyn *m, int nb_candidats, int nb_electeurs,char ** noms_c, int *best_result, int *rank)
+{
+    int electeur_median = mediane(nb_electeurs);
+    int compteur = 0, j = 0;
+    for (int i = 0; i < nb_candidats; i++)
+    {
+        //s'assurer que les candidats éliminés le reste
+        if (rank[i] <= 5)
+        {
+            while (compteur < electeur_median)
+            {
+                compteur += m->matrice[i][j];
+                if (compteur < electeur_median) j++;
+            }
+            rank[i] = j;
+            if (j < *best_result) *best_result = j; // on récupère dans best_result la mention la plus haute
+            sprintf(buff,"[JGM] Le candidat %s reçoit la mention majoritaire %s",noms_c[i],str_mentions[j]);
+            append_to_log_file(buff);
+        j = 0;
+        compteur = 0;
+        }
+    }
+    append_to_log_file("\n");
+}
+/**
+ * @brief on retire un électeur dans la colonne meilleure_mention pour chaque candidat
+ * 
+ * @param mentions 
+ * @param meilleure_mention colonne dans laquelle on retire un électeur 
+ * @param nb_electeurs nb d'electeurs à cette étape
+ */
+void retirer_mediane(t_mat_int_dyn *mentions, int meilleure_mention,int *nb_electeurs)
+{
+    int nb_l = mentions->ligne;
+    // int electeur_median = mediane(*nb_electeurs); //why is this here
+    for (int i = 0; i < nb_l; i++) 
+    {
+        mentions->matrice[i][meilleure_mention]--;
+    }
+    *nb_electeurs = *nb_electeurs - 1;
+}
+
+void eliminer_candidats(int *classement_candidat, int nb_candidats, int *best_result, char ** nom_candidats)
+{
+    for (int i = 0; i < nb_candidats; i++) 
+    {
+        if (classement_candidat[i] > *best_result)
+        {
+            sprintf(buff, "[JGM] Le candidat %s a été éliminé",nom_candidats[i]);
+            append_to_log_file(buff);
+            classement_candidat[i] = 99;
+        }
+    }
+    append_to_log_file("\n");
+}
+
+int plusieurs_vainqueurs(int *best_result,int* classement_candidat, int nb_candidats)
+{   
+    int exaeq = 0;
+    for (int i = 0 ; i < nb_candidats;i++) 
+    {
+        if (classement_candidat[i] == *best_result)
+        {
+            exaeq++;
+        }
+        if (exaeq > 1) return exaeq;
+    }
+    return exaeq;
+}
+
+int declarer_vainqueur(int *classement_candidat, int nb_candidats, int *best_result)
+{
+    for (int i = 0; i < nb_candidats; i++) {
+        if (classement_candidat[i] == *best_result) return i;
+    }
+    return -1;
+}
 
 void methode_jugement (t_mat_char_star_dyn *mat)
 {   
     int nb_candidats = recuperer_nb_colonnes(mat) - 4;
-    char **candidats = recuperer_candidats(mat);
+    int nb_electeurs = recuperer_nb_lignes(mat) - 1; //nb_electeur = 2N
+    char **nom_candidats = recuperer_candidats(mat);
     
     t_mat_int_dyn *mentions = creer_matrice_int(nb_candidats, NB_MENTIONS);
 
-    eval_mention(mentions, mat, candidats);
+    eval_mention(mentions, mat, nom_candidats);
 
-    afficher_tab_mentions(mentions, candidats, nb_candidats);
-    // afficher_matrice_int(mentions);
+    afficher_tab_mentions(mentions, nom_candidats, nb_candidats);
 
-    // IL FAUT MAINTENANT TRAITER le tableau
+    int meilleure_mention = 5;
+    // attribue à chaque candidat une mention et renvoie 
+    // dans meilleure_mention la mention la plus haute observée
+    int classement_candidat[nb_candidats];
+    //memset ne marche pas ??
+    for (int i = 0; i < nb_candidats; i++) {
+        classement_candidat[i] = 5;
+    };
+
+    classer_cand(mentions, nb_candidats, nb_electeurs, nom_candidats, &meilleure_mention,classement_candidat);
+    
+    eliminer_candidats(classement_candidat,nb_candidats,&meilleure_mention, nom_candidats);
+
+    while (plusieurs_vainqueurs(&meilleure_mention, classement_candidat, nb_candidats) > 1)
+    {
+        //retirer l'electeur median de la matrice mention, et refaire le vote
+        retirer_mediane(mentions,meilleure_mention,&nb_electeurs);
+        //re-classer les candidats
+        classer_cand(mentions, nb_candidats, nb_electeurs, nom_candidats, &meilleure_mention,classement_candidat);
+
+        eliminer_candidats(classement_candidat,nb_candidats,&meilleure_mention, nom_candidats);
+    }
+    //déclarer le vainqueur en sortie de boucle
+    int vainqueur = declarer_vainqueur(classement_candidat, nb_candidats, &meilleure_mention);
+    sprintf(buff, "[JGM] Le candidat %s a été déclaré vainqueur par méthode de jugement majoritaire", nom_candidats[vainqueur]);
+    append_to_log_file(buff);
     supprimer_matrice_int(mentions);
 }
