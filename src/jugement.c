@@ -261,6 +261,9 @@ void methode_jugement (t_mat_char_star_dyn *mat)
     int vainqueur = declarer_vainqueur(classement_candidat, nb_candidats, &meilleure_mention);
     sprintf(buff, "[JGM] Le candidat %s a été déclaré vainqueur par méthode de jugement majoritaire", nom_candidats[vainqueur]);
     append_to_log_file(buff);
-    printf("%s%s%s\n",GREEN, buff, END_COLOR);
+    printf("%s",GREEN);
+    nb_electeurs = recuperer_nb_lignes(mat) - 1;
+    afficher_res("Jugement Majoritaire", nb_candidats, nb_electeurs, nom_candidats[vainqueur], str_mentions[meilleure_mention]);
+    printf("%s",END_COLOR);
     supprimer_matrice_int(mentions);
 }
