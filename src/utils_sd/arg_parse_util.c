@@ -22,6 +22,17 @@ void check_compatibility(int *tab, int len_tab)
 void lancer_methode(char *methode, char *nom_csv, char *type_csv)
 {   
     t_mat_char_star_dyn *matrice_de_vote  = lecture_fichier(nom_csv);
+    char **entete;
+    t_mat_int_dyn *mat_duel;
+    if (*type_csv == 'd')
+    {
+        entete = recuperer_candidats(matrice_de_vote, 0); //mat de duel == 0
+        mat_duel = transformer_mat_char_mat_duel(matrice_de_vote);
+    } else 
+    {
+        entete = recuperer_candidats(matrice_de_vote, 1); // mat de vote == 1
+        mat_duel = construire_mat_duel(matrice_de_vote);
+    }
     int methode_id;
     char *valid_methods[7] = {"uni1", "uni2", "cm", "cp",\
                                 "cs", "jm", "all"};
@@ -41,6 +52,9 @@ void lancer_methode(char *methode, char *nom_csv, char *type_csv)
         break;
     case 2: // Condorcet + minimax
         // fonction qui appelle la méthode de vote
+            
+            // vainqueur_condorcet prendra en param mat_duel et entete A CHANGER
+
         break;
     case 3: // Condorcet + paires
         // fonction qui appelle la méthode de vote
@@ -73,4 +87,21 @@ void lancer_methode(char *methode, char *nom_csv, char *type_csv)
         exit(EXIT_FAILURE);
     }
     supprimer_matrice_char(matrice_de_vote);
-};
+}
+
+void afficher_res(char* nom_methode, int nb_candidats, int nb_electeurs, char* nom_vainqueur, char *score)
+{
+    printf("Mode de scrutin : %s, %d candidats, %d votants", nom_methode, nb_candidats, nb_electeurs);
+    if (nom_vainqueur != NULL) 
+    {
+        printf(", vainqueur = %s", nom_vainqueur);
+    } else {
+        printf(", vainqueur = pas de vainqueur");
+    }
+    if (score != NULL)
+    {
+        printf(", score = %s", score );
+    }
+    printf("\n");
+}
+;

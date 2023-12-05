@@ -227,7 +227,7 @@ void methode_jugement (t_mat_char_star_dyn *mat)
 {   
     int nb_candidats = recuperer_nb_colonnes(mat) - 4;
     int nb_electeurs = recuperer_nb_lignes(mat) - 1; //nb_electeur = 2N
-    char **nom_candidats = recuperer_candidats(mat);
+    char **nom_candidats = recuperer_candidats(mat,1);
     
     t_mat_int_dyn *mentions = creer_matrice_int(nb_candidats, NB_MENTIONS);
 

@@ -83,9 +83,9 @@ int main(int argc, char **argv)
         printf("%susage : ./scrutin [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]%s\n",RED,END_COLOR);
         exit(EXIT_FAILURE);
     }
-    if (type_csv == 'd' && (strcmp(methode, "uni1") || strcmp(methode, "uni2")))
+    if (type_csv == 'd' && (strcmp(methode, "uni1") || strcmp(methode, "uni2") || strcmp(methode, "jm")))
     {
-        printf("%sAttention, la balise -d désactive l'emploi des arguments uni1 et uni2%s\n",RED,END_COLOR);
+        printf("%sAttention, la balise -d désactive l'emploi des arguments uni1,uni2 et jm%s\n",RED,END_COLOR);
         exit(EXIT_FAILURE);
     };
 

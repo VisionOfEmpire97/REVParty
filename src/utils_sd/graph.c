@@ -138,7 +138,7 @@ graph *creer_graphe_de_matrice_duel(t_mat_int_dyn *mat_duel, char **listeNomSomm
 graph *creer_graphe_de_matrice_char(t_mat_char_star_dyn *mat)
 {
     graph *g;
-    char **entete = recuperer_candidats(mat);
+    char **entete = recuperer_candidats(mat,1);
     t_mat_int_dyn *mat_duel = construire_mat_duel(mat);
     g = creer_graphe_de_matrice_duel(mat_duel, entete);
     supprimer_matrice_int(mat_duel);
