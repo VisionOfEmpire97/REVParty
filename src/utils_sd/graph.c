@@ -8,12 +8,16 @@ sommet *creer_sommet(char *nom)
     s->nom = nom;
     s->nbPredecesseur = 0;
     s->nbSuccesseur = 0;
+    s->tabSuccesseur = NULL;
+    s->tabPredecesseur = NULL;
     return s;
 }
 void liberer_graph(graph *g)
 {
     for (int i = 0; i < (g->nbSommet); i++)
     {
+        free((g->sommets)[i]->tabPredecesseur);
+        free((g->sommets)[i]->tabSuccesseur);
         free((g->sommets)[i]);
     }
     for (int i = 0; i < (g->nbArc); i++)
@@ -55,16 +59,27 @@ int ajouter_sommet(graph *g, sommet *s)
     return nbs;
 }
 
+void ajouter_Successeur(sommet *depart, sommet *arrivee)
+{
+    int indicepPred = (arrivee->nbPredecesseur)++;
+    int indicepSucc = (depart->nbSuccesseur)++;
+    depart->tabSuccesseur = (sommet **)realloc((depart)->tabSuccesseur, (indicepSucc + 1) * sizeof(sommet *));
+    arrivee->tabPredecesseur = (sommet **)realloc((arrivee)->tabPredecesseur, (indicepPred + 1) * sizeof(sommet *));
+
+    depart->tabSuccesseur[indicepSucc] = arrivee;
+    arrivee->tabPredecesseur[indicepPred] = depart;
+}
+
 int ajouter_arc(graph *g, arc *a)
 {
     int nba = (++(g->nbArc));
 
     g->arcs = realloc(g->arcs, nba * sizeof(arc *));
     g->arcs[nba - 1] = a;
-    (a->arrivee)->nbPredecesseur++;
-    (a->depart)->nbSuccesseur++;
+    ajouter_Successeur(a->depart, a->arrivee);
     return nba;
 }
+
 void initialiser_sommet(graph *g, char *listeNomSommets[], int nbCandidats)
 {
 
@@ -123,7 +138,7 @@ graph *creer_graphe_de_matrice_duel(t_mat_int_dyn *mat_duel, char **listeNomSomm
 graph *creer_graphe_de_matrice_char(t_mat_char_star_dyn *mat)
 {
     graph *g;
-    char **entete = recuperer_candidats(mat);
+    char **entete = recuperer_candidats(mat,1);
     t_mat_int_dyn *mat_duel = construire_mat_duel(mat);
     g = creer_graphe_de_matrice_duel(mat_duel, entete);
     supprimer_matrice_int(mat_duel);
@@ -146,11 +161,28 @@ void afficher_graph(graph *g)
         printf("(%s) ---%d---> (%s)\n", (((g->arcs[j])->depart)->nom), ((g->arcs[j])->poids), (((g->arcs[j])->arrivee)->nom));
     }
 }
+void enlever_sommet(int taille, sommet **tableau, sommet *sEnlever)
+{
+    int i = 0;
+    while (i < taille && tableau[i] != sEnlever)
+    {
+        i++;
+    };
+
+    for (int j = i; j < taille - 1; j++)
+    {
+        tableau[j] = tableau[j + 1];
+    }
+    tableau[taille - 1] = NULL;
+}
+
 int enlever_arc(graph *g, arc *a)
 {
     int nbArc = (g->nbArc) - 1;
     arc **nouvelListe = NULL;
     int temp = 0;
+    enlever_sommet(((a->arrivee)->nbPredecesseur)--, (a->arrivee)->tabPredecesseur, a->depart);
+    enlever_sommet(((a->depart)->nbSuccesseur)--, (a->depart)->tabSuccesseur, a->arrivee);
     if (nbArc > 0)
     {
         nouvelListe = (arc **)malloc(nbArc * sizeof(arc *));

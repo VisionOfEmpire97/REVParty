@@ -40,7 +40,7 @@ FILE *begin_to_log(const char *filename)
 
 void append_to_log_file(const char *textToLog)
 {
-    fprintf(logfp, "%s\n", textToLog);
+    fprintf(logfp, "%s", textToLog);
 }
 
 void close_log_file()

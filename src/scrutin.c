@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include <string.h>
 #include "utils_sd/arg_parse_util.h"
 #include "utils_sd/util_log.h"
 #include "CSV/lecture_csv.h"
@@ -47,6 +48,7 @@ int main(int argc, char **argv)
     char *nom_csv = NULL;
     char *nom_log = NULL;
     char *methode = NULL;
+    char type_csv;
     while ((balise[n] = getopt(argc, argv, "i:d:o:m:")) != -1)
     {
         switch (balise[n])
@@ -54,12 +56,13 @@ int main(int argc, char **argv)
         case 'i': /*i and d are mutually exclusive  */
             check_compatibility(balise, n);
             nom_csv = optarg;
+            type_csv = 'i';
             n++;
             break;
         case 'd':
             check_compatibility(balise, n);
             nom_csv = optarg;
-            printf("%sAttention, la balise -d désactive l'emploi des arguments uni1 et uni2%s\n",RED,END_COLOR);
+            type_csv = 'd';
             n++;
             break;
         case 'o':
@@ -80,10 +83,15 @@ int main(int argc, char **argv)
         printf("%susage : ./scrutin [-i|d nom_du_csv] [-o nom_du_log] [-m méthodes]%s\n",RED,END_COLOR);
         exit(EXIT_FAILURE);
     }
+    if (type_csv == 'd' && (strcmp(methode, "uni1") || strcmp(methode, "uni2") || strcmp(methode, "jm")))
+    {
+        printf("%sAttention, la balise -d désactive l'emploi des arguments uni1,uni2 et jm%s\n",RED,END_COLOR);
+        exit(EXIT_FAILURE);
+    };
 
     FILE *log_file = begin_to_log(nom_log);
 
-    lancer_methode(methode, nom_csv);
+    lancer_methode(methode, nom_csv, &type_csv);
 
     close_log_file();
     

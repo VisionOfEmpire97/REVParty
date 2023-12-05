@@ -44,8 +44,22 @@ void check_compatibility(int *tab, int len_tab);
  * @brief Appelle la méthode de scrutin passée en paramètres 
  * 
  * @param[in] methode nom du paramètre associé à la méthode à appeler
-*/
-void lancer_methode(char *methode, char *nom_csv);
+ * @param nom_csv nom du fichier csv passé en argument
+ * @param type_csv type du csv passé en argument (i ou d)
+ */
+void lancer_methode(char *methode, char *nom_csv, char *type_csv);
+
+/**
+ * @brief formate la sortie finale
+ * 
+ * @param nom_methode nom de la méthode
+ * @param nb_candidats nombre de candidats
+ * @param nb_electeurs nb de votants
+ * @param nom_vainqueur nom du vainqueur
+ * @param score score du vainqueur
+ */
+void afficher_res(char* nom_methode, int nb_candidats, int nb_electeurs, char* nom_vainqueur, char *score);
+
 /**\}*/
 /**\}*/
 #endif

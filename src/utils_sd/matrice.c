@@ -126,9 +126,10 @@ bool est_matrice_vide(t_mat_char_star_dyn *mat)
     return mat->nb_elem == 0;
 }
 
-char **recuperer_candidats(t_mat_char_star_dyn *mat)
+char **recuperer_candidats(t_mat_char_star_dyn *mat, int type)
 {
-    return mat->matrice[0] + 4;
+
+    return type == 1 ? mat->matrice[0] + 4 : mat->matrice[0];
 }
 //--------------------------MATRICE INT----------------------------
 

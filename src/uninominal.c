@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "CSV/lecture_csv.h"
+#include "utils_sd/arg_parse_util.h"
 #include "utils_sd/matrice.h"
 #include "uninominal.h"
 #include "utils_sd/util_log.h"
@@ -93,9 +94,12 @@ void electionUninominal(int votes[], char *candidats[], int nbCandidats, int nom
 
     printf("Mode de scrutin : uninominal à %d tours, tour 1, %d candidats, %d votants, vainqueur = %s, score = %.2d%%\n",
            tours, nbCandidats, nombreDeVotes, candidats[premierGagnant], pourcentagePremierGagnant);
-
     if (pourcentagePremierGagnant <= 50 && tours == 2)
     {
+        pourcentageDeuxiemeTourGagnant = (premierTour[deuxiemeGagnant] * 100) / nombreDeVotes;
+        printf("Mode de scrutin : uninominal à %d tours, tour 1, %d candidats, %d votants, vainqueur = %s, score = %.2d%%\n",
+           tours, nbCandidats, nombreDeVotes, candidats[deuxiemeGagnant], pourcentageDeuxiemeTourGagnant);
+           
         deuxiemeTourGagnant = premierGagnant;
         compteur = compter_voixCandidats_tour2(deuxiemeTourVotes, nombreDeVotes, mat, premierGagnant, deuxiemeGagnant, candidats);
 
@@ -112,7 +116,7 @@ void electionUninominal(int votes[], char *candidats[], int nbCandidats, int nom
         pourcentageDeuxiemeTourGagnant = (deuxiemeTourVotes[IndiceVainqueur] * 100) / compteur;
 
         printf("Mode de scrutin : uninominal à 2 tours, tour 2, 2 candidats, %d votants, vainqueur = %s, score = %.2d%%\n",
-               compteur, candidats[deuxiemeTourGagnant], pourcentageDeuxiemeTourGagnant);
+               nbCandidats, candidats[deuxiemeTourGagnant], pourcentageDeuxiemeTourGagnant);
     }
 }
 
@@ -138,7 +142,7 @@ void traitement_uninominal(t_mat_char_star_dyn *mat, int tours) // 1 == 1 tours 
 {
     int nombrecandidat = recuperer_nb_colonnes(mat) - 4;
     int nombreVotant = recuperer_nb_lignes(mat) - 1;
-    char **candidats = recuperer_candidats(mat);
+    char **candidats = recuperer_candidats(mat,1);
     int votes[nombreVotant];
     int vote_numéro = 0;
     for (int num = 0; num < nombreVotant; num++)

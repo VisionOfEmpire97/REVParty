@@ -18,12 +18,14 @@
  * Types de données utilisés afin de manipuler des graph
  *@{
  */
+
 typedef struct t_sommet
 {
     char *nom;
     int nbSuccesseur;
     int nbPredecesseur;
-
+    struct t_sommet **tabSuccesseur;
+    struct t_sommet **tabPredecesseur;
 } sommet;
 
 typedef struct t_arc
@@ -32,7 +34,7 @@ typedef struct t_arc
     sommet *arrivee;
     int poids;
 } arc;
-typedef struct t_arc **ptr_arc;
+
 typedef struct t_graph
 {
     sommet **sommets;
@@ -95,6 +97,13 @@ void afficher_graph(graph *g);
 /// @brief libere la memoire alloue a la strcture graph et les sous structures
 /// @param g Un graph
 void liberer_graph(graph *g);
+
+/// @brief Enleve un sommet du tableau passee en parametre
+/// @param taille La taille du tbleau
+/// @param tableau Le tableau
+/// @param sEnlever Le sommet a enlever
+void enlever_sommet(int taille, sommet **tableau, sommet *sEnlever);
+
 /// @brief Enleve un arc d'un Graph
 /// @param g Le Graph
 /// @param a L'adresse de l'arc
