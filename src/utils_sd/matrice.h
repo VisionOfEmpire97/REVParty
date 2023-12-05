@@ -62,8 +62,11 @@ void afficher_matrice_char(t_mat_char_star_dyn *mat);
  * \param mat La structure à libérer
  */
 void supprimer_matrice_char(t_mat_char_star_dyn *mat);
-
-char **recuperer_candidats(t_mat_char_star_dyn *mat);
+/// @brief recupere l'entete de la matrice avec seulement les candidats
+/// @param mat une matrice de duel ou une matrice de votes
+/// @param type 1 pour une matrice de vote  0 pour une matrice de duel
+/// @return une liste de noms des candidats
+char **recuperer_candidats(t_mat_char_star_dyn *mat, int type);
 /**
  * \brief Ajoute une ligne a la matrice
  * \param mat
