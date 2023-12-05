@@ -3,57 +3,81 @@
 #include <string.h>
 #include "condorcet.h"
 #include "utils_sd/graph.h"
+#include "utils_sd/util_log.h"
 
+// void printLogsVote(t_mat_int_dyn *matrice, char **entete){
+//     char buff[100];
+//     int nbCandidats = recuperer_nb_colonnes(matrice) - 4;
+//     char **candidats = entete;
+//     int indicesOrdonnes[recuperer_nb_lignes(matrice) - 1];
 
-/**
- * Créer le graph localement?
- *
- * 
-*/
+//     for (unsigned i = 1; i < recuperer_nb_lignes(matrice); i++)
+//     {
 
-sommet *vainqueurCondorcet(t_mat_char_star_dyn *matrice)
+//     }
+
+//     for (unsigned i = 1; i < recuperer_nb_lignes(matrice) ; i++)
+//     {
+//         sprintf(buff, "[CDC] Electeur %d => À voté dans l'ordre de préférence suivant : ", atoi(valeur_matrice_char_indice(matrice, i, 0)));
+//         append_to_log_file(buff);
+//         for (unsigned j = 0; j<nbCandidats; j++)
+//         {
+//             sprintf(buff, "%d/%s ", atoi(valeur_matrice_char_indice(matrice, i, j+4)), candidats[j]);
+//             append_to_log_file(buff);
+//         }
+//         append_to_log_file("\n");
+//     }
+// }
+
+char *vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete)
 {
-
     graph *graphe;
-    graphe = creer_graphe_de_matrice_char(matrice);
-    sommet *vainqueur = NULL;
+    graphe = creer_graphe_de_matrice_duel(matrice, entete);
+    char *vainqueur = NULL;
     for (unsigned i = 0; i < graphe->nbSommet; i++)
     {
         sommet *s = graphe->sommets[i];
         if (s->nbPredecesseur == 0)
-            vainqueur = s;
+            vainqueur = s->nom;
     }
 
     /*TODO : Print logs*/
-
+    liberer_graph(graphe);
     return vainqueur;
 }
 
-sommet *vainqueurCondorcetMinimax(t_mat_char_star_dyn *matrice)
+char *vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete)
 {
     /**
-     * On regarde les arcs entrants de chaque sommet (représentant les défaites)
-     * Celui avec le poids le plus elevé, et donc celui avec la pire défaite
-     * le sommet avec la pire défaite la plus basse remporte le scrutin
+     * On regarde, pour les arcs entrants de chaque sommet (représentant les défaites),
+     * celui avec le poids le plus elevé, et donc celui avec la pire défaite.
+     * Le sommet avec la pire défaite la plus basse remporte le scrutin
      */
 
     graph *graphe;
-    graphe = creer_graphe_de_matrice_char(matrice);
+    sommet *vainqueur;
+    graphe = creer_graphe_de_matrice_duel(matrice, entete);
     int nbSommets = graphe->nbSommet;
     int pireDefaite[nbSommets];
-    int max, min;
-    sommet *vainqueur;
+    int min;
+    char *vainqueurMinimax;
 
     for (unsigned i = 0; i < nbSommets; i++)
     {
+        /*Initialisation du tableau des pires défaites (leur défaite avec le poids le plus élevé)*/
+
         pireDefaite[i] = 0;
+        /**
+         * Remarque : si un sommet n'a aucune défaite, sa valeur reste à 0, il est donc déclaré vainqueur car sa pire défaite
+         * sera la plus basse.
+         */
     }
-    for (unsigned i = 0; i < graphe->nbSommet; i++)
+
+    for (unsigned i = 0; i < nbSommets; i++)
     {
-        for (unsigned j = 0; i < graphe->nbArc; i++)
+        for (unsigned j = 0; j < graphe->nbArc; j++)
         {
-            max = 0;
-            if (graphe->arcs[j]->arrivee == graphe->sommets[i])
+            if (graphe->arcs[j]->arrivee == graphe->sommets[i]) /*Le sommet représente-t-il l'arrivée d'un arc? (donc perd un duel)*/
             {
                 if (graphe->arcs[j]->poids > pireDefaite[i])
                 {
@@ -62,34 +86,39 @@ sommet *vainqueurCondorcetMinimax(t_mat_char_star_dyn *matrice)
             }
         }
     }
+
     /*Faire le minimum de pireDefaite*/
     min = pireDefaite[0];
     vainqueur = graphe->sommets[0];
     for (unsigned i = 1; i < nbSommets; i++)
     {
-        if (pireDefaite[i]<min)
+        if (pireDefaite[i] < min)
         {
             min = pireDefaite[i];
             vainqueur = graphe->sommets[i];
         }
-        
     }
+
     /*TODO : Print logs*/
-    return vainqueur;
+    vainqueurMinimax = vainqueur->nom;
+    liberer_graph(graphe);
+
+    return vainqueurMinimax;
 }
 
-sommet *vainqueurCondorcetSchulze(t_mat_char_star_dyn *matrice)
+char *vainqueurCondorcetSchulzeSimpl(t_mat_int_dyn *matrice, char **entete)
 {
     /**
      * Retirer successivements les arcs de poids minimal jusqu'à retrouver un vainqueur de Condorcet
      * Si égalité, renvoyer tous les sommets restants après avoir retiré tous les arcs
-    */
+     */
 
     graph *graphe;
-    graphe = creer_graphe_de_matrice_char(matrice);
-    sommet *vainqueur = NULL;
-    arc **a;
-    for (unsigned i = 0; i < graphe->nbSommet; i++)
+    graphe = creer_graphe_de_matrice_duel(matrice, entete);
+    int n = graphe->nbSommet;
+    sommet *vainqueur;
+    char *vainqueurSchulze;
+    for (unsigned i = 0; i < n; i++)
     {
         if (graphe->sommets[i]->nbPredecesseur != 0)
         {
@@ -101,39 +130,135 @@ sommet *vainqueurCondorcetSchulze(t_mat_char_star_dyn *matrice)
             break;
         }
     }
+
     /*TODO : Print logs*/
-    return vainqueur;
+    vainqueurSchulze = vainqueur->nom;
+    liberer_graph(graphe);
+
+    return vainqueurSchulze;
 }
 
-sommet *vainqueurCondorcetPaires(t_mat_char_star_dyn *matrice)
-{
-    /**
-     * (*) Verifier si un cycle est formé (voire algorithmes de dijkstra et bellman-ford)
-     * (*) Supprimer l'arc de poids minimal de ce cycle
-     * (*) Répeter jusqu'a obtenir un vainqueur de condorcet (P- == 0)
-     */
-    graph *graphe;
-    graphe = creer_graphe_de_matrice_char(matrice);
-    sommet *vainqueur = NULL;
-    return vainqueur;
-}
+// // sommet *vainqueurCondorcetSchulze(t_mat_char_star_dyn *matrice)
+// // {
+// //     graph *graphe;
+// //     graphe = creer_graphe_de_matrice_char(matrice);
 
-arc *arcDePoidsMinimal(graph *graph)
+// //     for (unsigned i = 0; i < graphe->nbSommet; i++)
+// //     {
+// //         if (!appartientEnsembleDeSchwartz(graphe->sommets[i], ensembleDeSchwartz(graphe, graphe->nbSommet), graphe->nbSommet))
+// //         {
+// //             free(graphe->sommets[i]);
+// //             for (unsigned j = 0; j < graphe->nbArc; j++)
+// //             {
+// //                 if (graphe->arcs[j]->depart == NULL || graphe->arcs[j]->arrivee == NULL)
+// //                 {
+// //                     enlever_arc(graphe, graphe->arcs[j]);
+// //                 }
+
+// //             }
+
+// //         }
+// //     }
+// // }
+
+// sommet *vainqueurCondorcetPaires(t_mat_int_dyn *matrice, char **entete)
+// {
+//     /**
+//      * (*) Verifier si un cycle est formé (voire algorithmes de dijkstra et bellman-ford)
+//      * (*) Supprimer l'arc de poids minimal de ce cycle
+//      * (*) Répeter jusqu'a obtenir un vainqueur de condorcet (P- == 0)
+//      */
+//     graph *graphe;
+//     // graphe = creer_graphe_de_matrice_char(matrice);
+//     sommet *vainqueur = NULL;
+//     return vainqueur;
+// }
+
+arc *arcDePoidsMinimal(graph *graphe)
 {
 
-    if (graph->nbArc == 0)
+    if (graphe->nbArc == 0)
     {
         return NULL;
     }
-    arc **arcPoidsMin;
-    *arcPoidsMin = graph->arcs[0];
-    for (int i = 1; i < graph->nbArc; i++)
+    arc *arcPoidsMin = graphe->arcs[0];
+    for (int i = 1; i < graphe->nbArc; i++)
     {
-        if (graph->arcs[i]->poids < (*arcPoidsMin)->poids)
+        if (graphe->arcs[i]->poids < arcPoidsMin->poids)
         {
-            *arcPoidsMin = graph->arcs[i];
+            arcPoidsMin = graphe->arcs[i];
         }
     }
 
-    return *arcPoidsMin;
+    return arcPoidsMin;
 }
+
+// int appartientEnsembleDeSchwartz(sommet *candidat, sommet **groupeDeTete, int tailleGroupeDeTete)
+// {
+
+//     /*Le candidat n'a perdu aucune confrontation contre un membre du groupe de tête*/
+//     for (unsigned i = 0; i < tailleGroupeDeTete; i++)
+//     {
+//         for (unsigned j = 0; j < candidat->nbPredecesseur; j++)
+//         {
+//             if (groupeDeTete[i] == candidat->tabPredecesseur[i])
+//             {
+//                 return 0;
+//             }
+//         }
+//     }
+
+//     /*Le candidat appartient à un groupe de tête minimal*/
+//     for (unsigned i = 0; i < tailleGroupeDeTete; i++)
+//     {
+//         for (unsigned j = 0; j < candidat->nbSuccesseur; j++)
+//         {
+//             if (groupeDeTete[i] == candidat->tabSuccesseur[i])
+//             {
+//                 return 0;
+//             }
+//         }
+//     }
+
+//     /*Vérifier si tout candidat qui "bat indirectement" A est aussi "battu indirectement" par A*/
+//     for (int i = 0; i < tailleGroupeDeTete; i++)
+//     {
+//         for (int j = 0; j < candidat->nbPredecesseur; j++)
+//         {
+//             sommet *concurrent = candidat->tabPredecesseur[j];
+
+//             /*Vérifier si le concurrent "bat indirectement" A*/
+//             if (!appartientEnsembleDeSchwartz(concurrent, groupeDeTete, tailleGroupeDeTete))
+//             {
+//                 /*Vérifier si A "battu indirectement" le concurrent*/
+//                 for (int k = 0; k < candidat->nbSuccesseur; k++)
+//                 {
+//                     if (candidat->tabSuccesseur[k] == concurrent)
+//                     {
+//                         return 0;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     return 1;
+// }
+
+// sommet **ensembleDeSchwartz(graph *graphe, int *tailleEnsemble)
+// {
+
+//     int nbSommetsMax = graphe->nbSommet;
+//     sommet **ensembleSchwartz = (sommet **)malloc(nbSommetsMax * sizeof(sommet *));
+//     int tailleEnsembleSchwartz = 0;
+
+//     for (unsigned i = 0; i < nbSommetsMax; i++)
+//     {
+//         if (appartientEnsembleDeSchwartz(graphe->sommets[i], graphe->sommets, graphe->nbSommet))
+//         {
+//             ensembleSchwartz[tailleEnsembleSchwartz++] = graphe->sommets[i];
+//         }
+//     }
+//     *tailleEnsemble = tailleEnsembleSchwartz;
+
+//     return ensembleSchwartz;
+// }

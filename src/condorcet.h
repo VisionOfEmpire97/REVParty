@@ -12,6 +12,13 @@
 #include <stdio.h>
 #include "utils_sd/graph.h"
 
+/** \defgroup Condorcet Methodes de Condorcet
+ \{
+ */
+
+/** \defgroup Methods Vainqueurs de Condorcet
+ @{
+ */
 /**
  * \brief Retourne le vainqueur du suffrage selon la méthode de Condorcet. Si vainqueurCondorcet == NULL,
  * on doit faire appel aux fonctions de résolution du paradoxe de Condorcet.
@@ -20,7 +27,7 @@
  * \param[out] vainqueur Le vainqueur, s'il existe, selon la méthode Condorcet.
  *
  */
-sommet *vainqueurCondorcet(t_mat_char_star_dyn *matrice);
+char *vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete);
 
 /**
  * \brief Première proposition de résolution du paradoxe de Condorcet: la méthode Minimax.
@@ -31,22 +38,24 @@ sommet *vainqueurCondorcet(t_mat_char_star_dyn *matrice);
  * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
  * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Minimax.
  */
-sommet *vainqueurCondorcetMinimax(t_mat_char_star_dyn *matrice);
+char *vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete);
 
 /**
  * \brief Seconde proposition de résolution du paradoxe de Condorcet: la méthode Paires.
  * 
  * 
  * \details Pour cette méthode, on devra :
+ * 
  *   
- * (*) Verifier si un cycle est formé
- * (*) Supprimer l'arc de poids minimal de ce cycle
- * (*) Répeter jusqu'a obtenir un vainqueur de Condorcet (P- == 0)
+ * \details (*) Verifier si un cycle est formé 
+ * \details (*) Supprimer l'arc de poids minimal de ce cycle
+ * \details (*) Répeter jusqu'a obtenir un vainqueur de Condorcet (P- == 0)
+ * 
  * 
  * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
  * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Paires.
 */
-sommet *vainqueurCondorcetPaires(t_mat_char_star_dyn *matrice);
+sommet *vainqueurCondorcetPaires(t_mat_int_dyn *matrice, char **entete);
 
 /**
  * \brief Troisième proposition de résolution du paradoxe de Condorcet: la méthode Schulze.
@@ -58,13 +67,48 @@ sommet *vainqueurCondorcetPaires(t_mat_char_star_dyn *matrice);
  * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
  * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Schulze.
 */
-sommet *vainqueurCondorcetSchulze(t_mat_char_star_dyn *matrice);
+char *vainqueurCondorcetSchulzeSimpl(t_mat_int_dyn *matrice, char **entete);
+/**@}*/
 
+/** \defgroup UtilsCondorcet Fonctions utilitaires
+ \{
+ */
 /**
  * \brief Fonction permettant de retrouver l'arc de poids minimal d'un graphe.
  * Fonction utile pour le fonctionnement des méthodes Paires et Schulze.
  * 
  * \param[in] graph Le graphe pondéré des duels.
- * \param[out] arcPoidsMin L'arc de poids minimal.
+ * \returns L'arc de poids minimal du graphe.
 */
-arc *arcDePoidsMinimal(graph *graph);
+arc *arcDePoidsMinimal(graph *graphe);
+
+
+/**
+ * \brief Fonction permettant de voir si un sommet appartient ou non à un ensemble de Schwartz
+ * Fonction utile pour le fonctionnement de la méthode Schulze.
+ * 
+ * \details Pour un graphe des duels donné, l’ensemble de Schwartz est défini formellement de la façon suivante :
+ *
+ * \details(*) Un groupe de tête est un ensemble non-vide E de candidats n’ayant perdu aucune confrontation avec un candidat hors de E ;
+ * \details(*) Un groupe de tête minimal est un groupe de tête qui ne contient pas de groupe de tête strictement plus petit ;
+ * \details(*) L'ensemble de Schwartz est constitué de tous les candidats appartenant à au moins un groupe de tête minimal.
+ * 
+ * \param[in] candidat Le sommet à vérifier.
+ * \param[in] groupeDeTete L'ensemble des candidats n'ayant perdu aucune confrontation avec un candidat en dehors du groupe.
+ * \param[in] tailleGroupeDeTete La taille du groupe de tête.
+ * \returns res 1 si le sommet appartient à un ensemble de Scwhartz, 0 sinon.
+*/
+int appartientEnsembleDeSchwartz(sommet *candidat, sommet **groupeDeTete, int tailleGroupeDeTete);
+
+
+/**
+ * \brief Fonction permettant de retrouver et renvoyer l'ensemble de Schwartz dans un graphe donné
+ * 
+ * \param[in] 
+ * 
+*/
+sommet **ensembleDeSchwartz(graph *graphe, int *tailleEnsemble);
+
+
+// void printLogsVote(t_mat_int_dyn *matrice, char **entete);
+/**@}*/
