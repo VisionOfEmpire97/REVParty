@@ -123,7 +123,10 @@ typedef struct t_mat_int
  * */
 
 t_mat_int_dyn *construire_mat_duel(t_mat_char_star_dyn *mat);
-
+/// @brief tranform une matrice de duel de en forme de matrice de charactere
+/// @param mat la matrice de chaine
+/// @return une matrice de duel de type entier
+t_mat_int_dyn *transformer_mat_char_mat_duel(t_mat_char_star_dyn *mat);
 /**
  * \brief Affiche une matrice d'entiers
  *
