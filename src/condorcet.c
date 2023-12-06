@@ -4,37 +4,53 @@
 #include "condorcet.h"
 #include "utils_sd/graph.h"
 #include "utils_sd/util_log.h"
+#include "utils_sd/arg_parse_util.h"
+#define NOM_METHODE_CDC "Condorcet"
+#define NOM_METHODE_CDC_MNMX "Condorcet minimax"
+#define NOM_METHODE_CDC_SCH "Condorcet Schulze"
+#define NOM_METHODE_CDC_P "Condorcet paires"
 
-// void printLogsVote(t_mat_int_dyn *matrice, char **entete){
-//     char buff[100];
-//     int nbCandidats = recuperer_nb_colonnes(matrice) - 4;
-//     char **candidats = entete;
-//     int indicesOrdonnes[recuperer_nb_lignes(matrice) - 1];
 
-//     for (unsigned i = 1; i < recuperer_nb_lignes(matrice); i++)
-//     {
+void printLogsVote(t_mat_int_dyn *matrice, char **entete){
+    graph *graphe;
+    char **candidats = entete;
+    int nbCandidats = matrice->col;
+    graphe = creer_graphe_de_matrice_duel(matrice, candidats);
+    char buff[100];
+    int compteur = 0;
 
-//     }
+    for (unsigned i = 0; i < nbCandidats; i++)
+    {
+        for (unsigned j = 1; j < nbCandidats; j++)
+        {
+            printf("[CDC] Duel %d => %s (%d victoires) vs %s (%d victoires). Vainqueur : %s.\n", ++compteur, candidats[i], matrice->matrice[i][j], candidats[j], matrice->matrice[j][i], candidats[i]);
+        }
+        
+    }
+    
+    // printf("[CDC] Duel 1 => %s (%d victoires) vs %s (%d victoires). Vainqueur : %s.\n", candidats[0], matrice->matrice[0][1], candidats[1], matrice->matrice[1][0], candidats[0]);
 
-//     for (unsigned i = 1; i < recuperer_nb_lignes(matrice) ; i++)
-//     {
-//         sprintf(buff, "[CDC] Electeur %d => À voté dans l'ordre de préférence suivant : ", atoi(valeur_matrice_char_indice(matrice, i, 0)));
-//         append_to_log_file(buff);
-//         for (unsigned j = 0; j<nbCandidats; j++)
-//         {
-//             sprintf(buff, "%d/%s ", atoi(valeur_matrice_char_indice(matrice, i, j+4)), candidats[j]);
-//             append_to_log_file(buff);
-//         }
-//         append_to_log_file("\n");
-//     }
-// }
 
-char *vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete)
+    // for (unsigned i = 1; i < recuperer_nb_lignes(matrice) ; i++)
+    // {
+    //     sprintf(buff, "[CDC] Duel 1 => %s (%d victoires) vs %s (%d victoires). Vainqueur : %s.", );
+    //     append_to_log_file(buff);
+    //     for (unsigned j = 0; j<nbCandidats; j++)
+    //     {
+    //         sprintf(buff, "%d/%s ", atoi(valeur_matrice_char_indice(matrice, i, j+4)), candidats[j]);
+    //         append_to_log_file(buff);
+    //     }
+    //     append_to_log_file("\n");
+    // }
+}
+
+void vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
 {
     graph *graphe;
+    int nbCandidats = graphe->nbSommet;
     graphe = creer_graphe_de_matrice_duel(matrice, entete);
     char *vainqueur = NULL;
-    for (unsigned i = 0; i < graphe->nbSommet; i++)
+    for (unsigned i = 0; i < nbCandidats; i++)
     {
         sommet *s = graphe->sommets[i];
         if (s->nbPredecesseur == 0)
@@ -43,7 +59,7 @@ char *vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete)
 
     /*TODO : Print logs*/
     liberer_graph(graphe);
-    return vainqueur;
+    afficher_res(NOM_METHODE_CDC, nbCandidats, nbElecteurs, vainqueur != NULL ? vainqueur : "Pas de vainqueur", NULL);
 }
 
 char *vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete)

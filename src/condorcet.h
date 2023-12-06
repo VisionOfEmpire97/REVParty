@@ -27,7 +27,7 @@
  * \param[out] vainqueur Le vainqueur, s'il existe, selon la méthode Condorcet.
  *
  */
-char *vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete);
+void vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
 
 /**
  * \brief Première proposition de résolution du paradoxe de Condorcet: la méthode Minimax.
@@ -110,5 +110,5 @@ int appartientEnsembleDeSchwartz(sommet *candidat, sommet **groupeDeTete, int ta
 sommet **ensembleDeSchwartz(graph *graphe, int *tailleEnsemble);
 
 
-// void printLogsVote(t_mat_int_dyn *matrice, char **entete);
+void printLogsVote(t_mat_int_dyn *matrice, char **entete);
 /**@}*/

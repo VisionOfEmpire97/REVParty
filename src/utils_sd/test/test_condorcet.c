@@ -4,6 +4,7 @@
 #include "../../CSV/lecture_csv.h"
 #include "../../condorcet.h"
 #include "../util_log.h"
+#include "../arg_parse_util.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +15,7 @@ int main(int argc, char *argv[])
     graph *g;
     t_mat_int_dyn *mat_duels;
     m = lecture_fichier(argv[1]);
+    int nbElecteurs = recuperer_nb_colonnes(m);
     char **candidats= recuperer_candidats(m, 1);
     mat_duels = construire_mat_duel(m);
     // printf("----------------------------------------\n");
@@ -29,31 +31,36 @@ int main(int argc, char *argv[])
     // afficher_graph(g);
     // printf("TEST OK!\n");    
 
-    printf("----------------------------------------\n");
+    printf("--------------------------------------------------\n");
 
     
     // close_log_file();
-    printf("\n***************(TEST CONDORCET)****************\n\n");
+    printf("\n***************(TEST CONDORCET)******************\n\n");
     
-    printf("Candidat vainqueur selon Condorcet : %s\n", vainqueurCondorcet(mat_duels, candidats));
-
+    // printf("Candidat vainqueur selon Condorcet : %s\n", vainqueurCondorcet(mat_duels, candidats));
+    vainqueurCondorcet(mat_duels, candidats, nbElecteurs);
     
     
-    printf("\n***************(TEST CONDORCET_MINIMAX)****************\n\n");
+    printf("\n***************(TEST CONDORCET_MINIMAX)**********\n\n");
     printf("Candidat vainqueur selon Condorcet Minimax : %s\n", vainqueurCondorcetMinimax(mat_duels, candidats));
 
     
-    printf("\n***************(TEST CONDORCET_SCHULZE)****************\n\n");
+    printf("\n***************(TEST CONDORCET_SCHULZE)**********\n\n");
     printf("Candidat vainqueur selon Condorcet Schulze : %s\n", vainqueurCondorcetSchulzeSimpl(mat_duels, candidats));
 
-    printf("----------------------------------------\n");
+    printf("--------------------------------------------------\n");
 
-    printf("\n***************(Arc de poids minimal)***********\n\n");
+    
+    printf("\n***************(TEST_LOGS)***********************\n\n");
+    printLogsVote(mat_duels, candidats);
+
+
+    printf("\n***************(Arc de poids minimal)************\n\n");
     printf("Sommet de depart de l'arc de poids minimal: %s\n", arcDePoidsMinimal(g)->depart->nom);
     printf("Sommet d'arrivée de l'arc de poids minimal: %s\n", arcDePoidsMinimal(g)->arrivee->nom);
     printf("Poids de l'arc de poids minimal: %d\n", arcDePoidsMinimal(g)->poids);
-    printf("----------------------------------------\n");
-    printf("\n\n***************(Fin des tests)***********\n\n");
+    printf("--------------------------------------------------\n");
+    printf("\n\n***************(Fin des tests)*******************\n\n");
 
     liberer_graph(g);
     supprimer_matrice_int(mat_duels);
