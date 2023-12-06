@@ -23,6 +23,7 @@ void lancer_methode(char *methode, char *nom_csv, char *type_csv)
 {   
     t_mat_char_star_dyn *matrice_de_vote  = lecture_fichier(nom_csv);
     char **entete;
+    int nb_electeur = recuperer_nb_lignes(matrice_de_vote) - 1;
     t_mat_int_dyn *mat_duel;
     if (*type_csv == 'd')
     {
