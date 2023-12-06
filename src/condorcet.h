@@ -38,7 +38,7 @@ void vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
  * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
  * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Minimax.
  */
-char *vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete);
+void vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
 
 /**
  * \brief Seconde proposition de résolution du paradoxe de Condorcet: la méthode Paires.

@@ -62,7 +62,7 @@ void vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
     afficher_res(NOM_METHODE_CDC, nbCandidats, nbElecteurs, vainqueur != NULL ? vainqueur : "Pas de vainqueur", NULL);
 }
 
-char *vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete)
+void vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
 {
     /**
      * On regarde, pour les arcs entrants de chaque sommet (représentant les défaites),
@@ -77,6 +77,7 @@ char *vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete)
     int pireDefaite[nbSommets];
     int min;
     char *vainqueurMinimax;
+    int nbCandidats = graphe->nbSommet;
 
     for (unsigned i = 0; i < nbSommets; i++)
     {
@@ -117,9 +118,8 @@ char *vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete)
 
     /*TODO : Print logs*/
     vainqueurMinimax = vainqueur->nom;
+    afficher_res(NOM_METHODE_CDC_MNMX, nbCandidats, nbElecteurs, vainqueurMinimax != NULL ? vainqueurMinimax : "Pas de vainqueur", NULL);
     liberer_graph(graphe);
-
-    return vainqueurMinimax;
 }
 
 char *vainqueurCondorcetSchulzeSimpl(t_mat_int_dyn *matrice, char **entete)

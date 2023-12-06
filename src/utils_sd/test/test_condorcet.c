@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     
     
     printf("\n***************(TEST CONDORCET_MINIMAX)**********\n\n");
-    printf("Candidat vainqueur selon Condorcet Minimax : %s\n", vainqueurCondorcetMinimax(mat_duels, candidats));
+    vainqueurCondorcetMinimax(mat_duels, candidats, nbElecteurs);
 
     
     printf("\n***************(TEST CONDORCET_SCHULZE)**********\n\n");
