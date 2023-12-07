@@ -13,21 +13,9 @@
 #include "utils_sd/graph.h"
 
 /** \defgroup Condorcet Methodes de Condorcet
- \{
+ *@{
  */
 
-/** \defgroup Methods Vainqueurs de Condorcet
- @{
- */
-/**
- * \brief Retourne le vainqueur du suffrage selon la méthode de Condorcet. Si vainqueurCondorcet == NULL,
- * on doit faire appel aux fonctions de résolution du paradoxe de Condorcet.
- * 
- * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
- * \param[out] vainqueur Le vainqueur, s'il existe, selon la méthode Condorcet.
- *
- */
-void vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
 
 /**
  * \brief Première proposition de résolution du paradoxe de Condorcet: la méthode Minimax.
@@ -35,10 +23,11 @@ void vainqueurCondorcet(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
  * \details Pour chacun des candidats, on regarde le pire des scores qu’il ferait dans ses
  * différents faces-à-faces, puis on déclare élu celui des candidats dont le pire des scores est le meilleur.
  * 
- * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
- * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Minimax.
+ * \param[in] matrice Le matrice de duels du fichier csv du scrutin, qu'on transformera en graphe.
+ * \param[in] entete La partie de l'entete du fichier csv, où l'on retrouvera les candidats.
+ * \param[in] nbElecteurs Le nombre d'electeurs ayant participé au scrutin.
  */
-void vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
+void condorcet_minimax(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
 
 /**
  * \brief Seconde proposition de résolution du paradoxe de Condorcet: la méthode Paires.
@@ -49,13 +38,13 @@ void vainqueurCondorcetMinimax(t_mat_int_dyn *matrice, char **entete, int nbElec
  *   
  * \details (*) Verifier si un cycle est formé 
  * \details (*) Supprimer l'arc de poids minimal de ce cycle
- * \details (*) Répeter jusqu'a obtenir un vainqueur de Condorcet (P- == 0)
+ * \details (*) Répeter jusqu'a obtenir un vainqueur de Condorcet (d- == 0)
  * 
- * 
- * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
- * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Paires.
+ * \param[in] matrice Le matrice de duels du fichier csv du scrutin, qu'on transformera en graphe.
+ * \param[in] entete La partie de l'entete du fichier csv, où l'on retrouvera les candidats.
+ * \param[in] nbElecteurs Le nombre d'electeurs ayant participé au scrutin.
 */
-sommet *vainqueurCondorcetPaires(t_mat_int_dyn *matrice, char **entete);
+void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
 
 /**
  * \brief Troisième proposition de résolution du paradoxe de Condorcet: la méthode Schulze.
@@ -64,51 +53,10 @@ sommet *vainqueurCondorcetPaires(t_mat_int_dyn *matrice, char **entete);
  * les arcs de poids minimal jusqu'à ce qu'un des sommets gagne tous ses duels (ou n'en perd aucun), est donc
  * se désigne comme vainqueur de Condorcet.
  * 
- * \param[in] matrice Le matrice de char du fichier csv du scrutin, qu'on transformera en graphe
- * \param[out] vainqueur Le vainqueur, selon la méthode Condorcet Schulze.
+ * \param[in] matrice Le matrice de duels du fichier csv du scrutin, qu'on transformera en graphe.
+ * \param[in] entete La partie de l'entete du fichier csv, où l'on retrouvera les candidats.
+ * \param[in] nbElecteurs Le nombre d'electeurs ayant participé au scrutin.
 */
-char *vainqueurCondorcetSchulzeSimpl(t_mat_int_dyn *matrice, char **entete);
-/**@}*/
+void condorcet_Schulze(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
 
-/** \defgroup UtilsCondorcet Fonctions utilitaires
- \{
- */
-/**
- * \brief Fonction permettant de retrouver l'arc de poids minimal d'un graphe.
- * Fonction utile pour le fonctionnement des méthodes Paires et Schulze.
- * 
- * \param[in] graph Le graphe pondéré des duels.
- * \returns L'arc de poids minimal du graphe.
-*/
-arc *arcDePoidsMinimal(graph *graphe);
-
-
-/**
- * \brief Fonction permettant de voir si un sommet appartient ou non à un ensemble de Schwartz
- * Fonction utile pour le fonctionnement de la méthode Schulze.
- * 
- * \details Pour un graphe des duels donné, l’ensemble de Schwartz est défini formellement de la façon suivante :
- *
- * \details(*) Un groupe de tête est un ensemble non-vide E de candidats n’ayant perdu aucune confrontation avec un candidat hors de E ;
- * \details(*) Un groupe de tête minimal est un groupe de tête qui ne contient pas de groupe de tête strictement plus petit ;
- * \details(*) L'ensemble de Schwartz est constitué de tous les candidats appartenant à au moins un groupe de tête minimal.
- * 
- * \param[in] candidat Le sommet à vérifier.
- * \param[in] groupeDeTete L'ensemble des candidats n'ayant perdu aucune confrontation avec un candidat en dehors du groupe.
- * \param[in] tailleGroupeDeTete La taille du groupe de tête.
- * \returns res 1 si le sommet appartient à un ensemble de Scwhartz, 0 sinon.
-*/
-int appartientEnsembleDeSchwartz(sommet *candidat, sommet **groupeDeTete, int tailleGroupeDeTete);
-
-
-/**
- * \brief Fonction permettant de retrouver et renvoyer l'ensemble de Schwartz dans un graphe donné
- * 
- * \param[in] 
- * 
-*/
-sommet **ensembleDeSchwartz(graph *graphe, int *tailleEnsemble);
-
-
-void printLogsVote(t_mat_int_dyn *matrice, char **entete);
 /**@}*/
