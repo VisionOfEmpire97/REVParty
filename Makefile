@@ -62,7 +62,7 @@ OBJETS_UTILS_EXTRAS = $(OBJET_UTILS) $(OBJDIR)/util_log.o $(OBJDIR)/graph.o
 REQUIRED_JUGEMENT = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/jugement.o
 REQUIRED_UNI = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/uninominal.o
 REQUIRED_CONDORCET = $(OBJETS_UTILS_EXTRAS) $(OBJDIR)/condorcet.o
-METHODS_ONLY = $(OBJDIR)/uninominal.o $(OBJDIR)/jugement.o
+METHODS_ONLY = $(OBJDIR)/uninominal.o $(OBJDIR)/jugement.o $(OBJDIR)/condorcet.o
 REQUIRED_SCRUTIN = $(OBJETS_UTILS_EXTRAS) $(METHODS_ONLY) $(OBJDIR)/arg_parse_util.o 
 
 
@@ -138,7 +138,7 @@ $(OBJDIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 all_utils: test_vmv test_sha test_graph test_lecture_csv test_matrice 
-all_methods: test_jgm test_uni 
+all_methods: test_jgm test_uni test_condorcet
 
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi

@@ -7,7 +7,8 @@
  * Les trois résolutions de paradoxe implémentés peuvent renvoyer des sommets différents
  * \file condorcet.h
  */
-
+#ifndef __CONDORCET_H__
+#define __CONDORCET_H__
 #include <stdlib.h>
 #include <stdio.h>
 #include "utils_sd/graph.h"
@@ -60,3 +61,4 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
 void condorcet_Schulze(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
 
 /**@}*/
+#endif

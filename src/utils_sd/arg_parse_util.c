@@ -5,6 +5,7 @@
 #include "../CSV/lecture_csv.h"
 #include "../uninominal.h"
 #include "../jugement.h"
+#include "../condorcet.h"
 #include "matrice.h"
 
 void check_compatibility(int *tab, int len_tab)
@@ -53,14 +54,15 @@ void lancer_methode(char *methode, char *nom_csv, char *type_csv)
         break;
     case 2: // Condorcet + minimax
         // fonction qui appelle la méthode de vote
-            
-            // vainqueur_condorcet prendra en param mat_duel et entete A CHANGER
-
+        condorcet_minimax(mat_duel, entete, nb_electeur);
+            // vainqueur_condorcet prendra en param mat_duel et entete A CHANGER    
         break;
     case 3: // Condorcet + paires
+        condorcet_paires(mat_duel, entete,nb_electeur);
         // fonction qui appelle la méthode de vote
         break;
     case 4: // Condorcet + Schulze
+        condorcet_Schulze(mat_duel, entete,nb_electeur);
         // fonction qui appelle la méthode de vote
         break;
     case 5: // jugement majoritaire
@@ -72,11 +74,13 @@ void lancer_methode(char *methode, char *nom_csv, char *type_csv)
         // - si -d(matrice de duel), alors on lance toutes les méthodes sauf uni1 et uni2
         if (*type_csv == 'i')
         {
+            traitement_uninominal(matrice_de_vote, 1);
+            traitement_uninominal(matrice_de_vote, 2);
             methode_jugement(matrice_de_vote);
         }
         else 
         {
-            // methode_jugement(matrice_de_vote);
+            // les 3 méthodes de condorcet
         }        
         break;
     default:
@@ -88,6 +92,7 @@ void lancer_methode(char *methode, char *nom_csv, char *type_csv)
         exit(EXIT_FAILURE);
     }
     supprimer_matrice_char(matrice_de_vote);
+    supprimer_matrice_int(mat_duel);
 }
 
 void afficher_res(char* nom_methode, int nb_candidats, int nb_electeurs, char* nom_vainqueur, char *score)
