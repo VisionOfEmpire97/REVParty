@@ -10,6 +10,8 @@ sommet *creer_sommet(char *nom)
     s->nbSuccesseur = 0;
     s->tabSuccesseur = NULL;
     s->tabPredecesseur = NULL;
+    s->CC = s;
+    s->visite = 0;
     return s;
 }
 void liberer_graph(graph *g)
@@ -116,6 +118,19 @@ void initialiser_arc(graph *g, t_mat_int_dyn *mat_duel)
                 arrivee = g->sommets[i];
                 depart = g->sommets[j];
             }
+            else if (poids == poids2)
+            {
+                poids = 1;
+                if (!rand()%2)
+                {
+                    arrivee = g->sommets[i];
+                    depart = g->sommets[j];
+                }else
+                {
+                    arrivee = g->sommets[j];
+                    depart = g->sommets[i];
+                }
+            }
             else
             {
                 poids = poids - poids2;
@@ -158,7 +173,7 @@ void afficher_graph(graph *g)
     printf("-Arcs\n");
     for (int j = 0; j < (g->nbArc); j++)
     {
-        printf("(%s) ---%d---> (%s)\n", (((g->arcs[j])->depart)->nom), ((g->arcs[j])->poids), (((g->arcs[j])->arrivee)->nom));
+        printf("(%-20s \t---%d---> (%s)\n", (((g->arcs[j])->depart)->nom), ((g->arcs[j])->poids), (((g->arcs[j])->arrivee)->nom));
     }
 }
 void enlever_sommet(int taille, sommet **tableau, sommet *sEnlever)
