@@ -69,22 +69,30 @@ void eval_mention(t_mat_int_dyn *m,t_mat_char_star_dyn *mat, char **noms_candida
  */
 void afficher_tab_mentions(t_mat_int_dyn *mentions, char ** noms_candidats, int nb_candidats)
 {
-    //pour s'assurer du bon alignement il faudrait convertir en ASCII ? les "é" et "à" ne passent pas...
+    //pour s'assurer du bon alignement il faut juste utiliser tab
     char *nom_methode = " **** Jugement majoritaire ****";
-    printf("%s\n",nom_methode);
-    printf("%-40s","");
+    sprintf(buff,"%s\n",nom_methode);
+    append_to_log_file(buff);
+    sprintf(buff,"%-35s\t","");
+    append_to_log_file(buff);
     for (int i = 0; i < NB_MENTIONS; i++) {
-        printf("%7s",str_mentions[i]);
+        sprintf(buff,"%7s",str_mentions[i]);
+        append_to_log_file(buff);
     }
-    printf("\n");
+    sprintf(buff,"\n");
+    append_to_log_file(buff);
     for (int i = 0; i < nb_candidats; i++) 
     {   
-        printf("%-40s",noms_candidats[i]);
+        sprintf(buff, "%-35s\t",noms_candidats[i]);
+        append_to_log_file(buff);
+        //printf("%-40s",noms_candidats[i]);
         for (int j = 0; j < NB_MENTIONS;j++ ) 
         {
-            printf("%7d",mentions->matrice[i][j]);
+            sprintf(buff,"%7d",mentions->matrice[i][j]);
+            append_to_log_file(buff);
         }
-        printf("\n");
+        sprintf(buff,"\n");
+        append_to_log_file(buff);
     }
 }
 /**
