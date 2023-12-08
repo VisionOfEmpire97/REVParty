@@ -87,6 +87,7 @@ void lancer_methode(char *methode, char *nom_csv, char *type_csv)
         exit(EXIT_FAILURE);
     }
     supprimer_matrice_char(matrice_de_vote);
+    supprimer_matrice_int(mat_duel);
 }
 
 void afficher_res(char* nom_methode, int nb_candidats, int nb_electeurs, char* nom_vainqueur, char *score)
