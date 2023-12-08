@@ -34,7 +34,6 @@ arc *arcDePoidsMinimal(graph *graphe)
             arcPoidsMin = graphe->arcs[i];
         }
     }
-
     return arcPoidsMin;
 }
 
@@ -187,7 +186,6 @@ char *vainqueurCondorcet(graph *graphe)
     {
         sprintf(buf, "\n[CDC] Le candidat %s est déclaré vainqueur de Condorcet.\n\n", vainqueur);
         append_to_log_file(buf);
-        liberer_graph(graphe);
     }
     else
     {
@@ -266,9 +264,9 @@ void condorcet_minimax(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
         append_to_log_file(buf);
         sprintf(buf, "[CDC_MX] %s est déclaré vainqueur selon la méthode de Condorcet minimax.\n\n", vainqueurMinimax);
         append_to_log_file(buf);
-        liberer_graph(graphe);
     }
     afficher_res(NOM_METHODE_CDC_MNMX, nbCandidats, nbElecteurs, vainqueurMinimax, NULL);
+    liberer_graph(graphe);
 }
 
 void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
