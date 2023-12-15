@@ -1,4 +1,6 @@
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "matrice.h"
 #include "graph.h"
 
@@ -231,4 +233,15 @@ int enlever_arc(graph *g, arc *a)
     (g->nbArc)--;
 
     return nbArc; // besoin de retour ??
+}
+
+void directed_graph_to_dot(graph *g,char *dot_file_name){
+    FILE *dot_file;
+    dot_file = fopen(dot_file_name, "w");
+    fprintf(dot_file, "strict digraph {\n");
+    for(int i = 0; i < g->nbArc; i ++){
+        fprintf(dot_file, "%s -> %s [label = %d, arrowhead = vee]\n",g->arcs[i]->depart->nom, g->arcs[i]->arrivee->nom,g->arcs[i]->poids);
+    }
+    fprintf(dot_file, "}\n");
+    fclose(dot_file);
 }
