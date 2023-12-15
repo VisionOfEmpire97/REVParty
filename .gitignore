@@ -54,8 +54,9 @@ dkms.conf
 #Object and executables
 bin/*
 
-#VSCode
-.vscode/
+#IDE
+.vscode/*
+.idea/*
 
 #Doxygen
 documentation/

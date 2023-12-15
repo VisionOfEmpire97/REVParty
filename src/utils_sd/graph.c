@@ -77,8 +77,8 @@ int ajouter_arc(graph *g, arc *a)
 
     g->arcs = realloc(g->arcs, nba * sizeof(arc *));
     g->arcs[nba - 1] = a;
-    ajouter_Successeur(a->depart, a->arrivee);
-    return nba;
+    ajouter_Successeur(a->depart, a->arrivee); // Ajouter adjacences
+    return nba; // besoin de retourner un truc ?
 }
 
 void initialiser_sommet(graph *g, char *listeNomSommets[], int nbCandidats)
@@ -96,31 +96,31 @@ void initialiser_sommet(graph *g, char *listeNomSommets[], int nbCandidats)
 void initialiser_arc(graph *g, t_mat_int_dyn *mat_duel)
 {
 
-    int colonne = mat_duel->col;
+    int colonne = mat_duel->col; //matrice carrée ? renommer "colonne" en "taille" ?
 
-    int poids, poids2;
-    sommet *arrivee, *depart;
+    int poids, poids2; //p(A->B), p(B->A)
+    sommet *arrivee, *depart; //A, B
     arc *pa;
-    for (int i = 0; i < colonne - 1; i++)
+    for (int i = 0; i < colonne - 1; i++) //ligne de 0 à taille - 1
     {
 
-        for (int j = i + 1; j < colonne; j++)
+        for (int j = i + 1; j < colonne; j++) //colonne de 1 à taille
         {
 
-            poids = mat_duel->matrice[i][j];
-            poids2 = mat_duel->matrice[j][i];
-            arrivee = g->sommets[j];
-            depart = g->sommets[i];
-            if (poids < poids2)
+            poids = mat_duel->matrice[i][j]; //p(A->B) = nb de vote où A domine B
+            poids2 = mat_duel->matrice[j][i]; //p(B->A) = nb de vote où B domine A
+            arrivee = g->sommets[j]; // B = ...
+            depart = g->sommets[i]; // A = ...
+            if (poids < poids2) // si p(A->B) < p(B->A)
             {
-                poids = poids2 - poids;
-                arrivee = g->sommets[i];
-                depart = g->sommets[j];
+                poids = poids2 - poids; //ambigu un peu non ? pq pas une 3ᵉ variable pr récup le résultat
+                arrivee = g->sommets[i]; 
+                depart = g->sommets[j]; // Resultat : arc B->A
             }
             else if (poids == poids2)
             {
-                poids = 1;
-                if (!rand()%2)
+                poids = 1; // pq pas poids = 0 ?? (demander à Rémy)
+                if (!rand()%2) // Pourquoi ??
                 {
                     arrivee = g->sommets[i];
                     depart = g->sommets[j];
@@ -132,7 +132,7 @@ void initialiser_arc(graph *g, t_mat_int_dyn *mat_duel)
             }
             else
             {
-                poids = poids - poids2;
+                poids = poids - poids2; // Resultat : arc A->B
             }
             pa = creer_arc(arrivee, depart, poids);
             ajouter_arc(g, pa);
@@ -217,5 +217,5 @@ int enlever_arc(graph *g, arc *a)
     g->arcs = nouvelListe;
     (g->nbArc)--;
 
-    return nbArc;
+    return nbArc; // besoin de retour ??
 }
