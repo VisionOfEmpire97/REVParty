@@ -238,9 +238,9 @@ int enlever_arc(graph *g, arc *a)
 void directed_graph_to_dot(graph *g,char *dot_file_name){
     FILE *dot_file;
     dot_file = fopen(dot_file_name, "w");
-    fprintf(dot_file, "strict digraph {\n");
+    fprintf(dot_file, "strict digraph {\n\tedge [arrowhead=vee]\n");
     for(int i = 0; i < g->nbArc; i ++){
-        fprintf(dot_file, "%s -> %s [label = %d, arrowhead = vee]\n",g->arcs[i]->depart->nom, g->arcs[i]->arrivee->nom,g->arcs[i]->poids);
+        fprintf(dot_file, "\t%s -> %s [label = %d, weight = %d]\n",g->arcs[i]->depart->nom, g->arcs[i]->arrivee->nom,g->arcs[i]->poids, g->arcs[i]->poids);
     }
     fprintf(dot_file, "}\n");
     fclose(dot_file);
