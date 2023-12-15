@@ -256,7 +256,7 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
     int nbCandidats = matrice->col;
     graph *graphe;
     graphe = creer_graphe_de_matrice_duel(matrice, entete);
-
+    directed_graph_to_dot(graphe, "log/graphe_paire.dot");
     if ((vainqueurDeCondorcet = vainqueurCondorcet(graphe)) != NULL)
     {
         vainqueurPaires = vainqueurDeCondorcet;
@@ -279,7 +279,7 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
 
         retirerCircuits(graphe);
         afficher_graph(graphe);
-
+        directed_graph_to_dot(graphe, "log/graphe_condorcet_paire_sans_cycle.dot");
         // vainqueurCondorcet(graphe);
 
         for (unsigned i = 0; i < nbCandidats; i++)

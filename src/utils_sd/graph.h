@@ -110,6 +110,13 @@ void enlever_sommet(int taille, sommet **tableau, sommet *sEnlever);
 /// @param a L'adresse de l'arc
 /// @return Le nombre d'arcs du graph
 int enlever_arc(graph *g, arc *a);
+
+/**
+ * @brief make a visual pdf from a graph using the dot command
+ * @param g the graph to process
+ * @param dot_file_name name of the dot file (with the .dot extension)
+ */
+void directed_graph_to_dot(graph *g,char *dot_file_name);
 /**
  * @}
  */

@@ -131,6 +131,12 @@ test_condorcet: dirs $(REQUIRED_CONDORCET)
 	@$(CC) -o $(TESTCONDORCET) $(REQUIRED_CONDORCET) $(TESTDIR)/test_condorcet.c -ggdb
 	@./$(TESTCONDORCET) fich_tests/vote10.csv
 
+test_cd_paires: scrutin
+	@./$(PROG_PRINCIPAL) -i $(PATHTOCSVTEST)/sansegalite1000.csv -m cp -o $(LOGDIR)/test_log1.txt
+	@./$(PROG_PRINCIPAL) -i $(PATHTOCSVTEST)/sansegalite1000.csv -m cp -o $(LOGDIR)/test_log2.txt
+	@./$(PROG_PRINCIPAL) -i $(PATHTOCSVTEST)/sansegalite1000.csv -m cp -o $(LOGDIR)/test_log3.txt
+	@dot -Tpdf log/*.dot -O
+
 vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
 vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
 
