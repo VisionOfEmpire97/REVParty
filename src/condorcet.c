@@ -37,27 +37,6 @@ arc *arcDePoidsMinimal(graph *graphe)
     return arcPoidsMin;
 }
 
-void redistributionPoidsUnique(arc **arcs, int nbArcs)
-{
-/*     for (unsigned i = 0; i < nbArcs; i++)
-    {
-        arcs[i]->poids *= 2; //??
-    }
-    for (unsigned i = 0; i < nbArcs - 1; i++)
-    {
-        for (unsigned j = i + 1; j < nbArcs; j++)
-        {
-            if (arcs[i]->poids == arcs[j]->poids)
-            {
-                arcs[i]->depart->nbSuccesseur > arcs[j]->depart->nbSuccesseur ? arcs[i]->poids++ : arcs[j]->poids++;
-            }
-        }
-    } */
-    for (unsigned i = 0; i < nbArcs; i++) {
-        
-    }
-}
-
 void triArcsDecroissant(graph *g)
 {
     arc *arc_temp;
@@ -71,6 +50,17 @@ void triArcsDecroissant(graph *g)
                 g->arcs[i] = g->arcs[j];
                 g->arcs[j] = arc_temp;
             }
+            else if(g->arcs[j]->poids == g->arcs[i]->poids)
+            {
+                if (g->arcs[j]->depart->nbSuccesseur > g->arcs[i]->depart->nbSuccesseur)
+                {
+                    arc_temp = g->arcs[i];
+                    g->arcs[i] = g->arcs[j];
+                    g->arcs[j] = arc_temp;
+                }
+                
+            }
+            
         }
         for (int k = i; k > 0; k--) {
             if (k > 0 && g->arcs[k]->poids == g->arcs[k-1]->poids) {
@@ -95,9 +85,9 @@ void retirerCircuits(graph *graphe)
     {
         depart = graphe->arcs[i]->depart;
         arrivee = graphe->arcs[i]->arrivee;
-        if (depart->CC != arrivee->CC)
+        if (depart->CC != arrivee)
         {
-            // printf("CC %s = %s , CC %s = %s\n", depart->nom, depart->CC->nom, arrivee->nom, arrivee->CC->nom);
+            printf("CC %s = %s , CC %s = %s\n", depart->nom, depart->CC->nom, arrivee->nom, arrivee->CC->nom);
             union_f(arrivee, depart->CC);
             i++;
         }
@@ -280,7 +270,7 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
         retirerCircuits(graphe);
         afficher_graph(graphe);
 
-        // vainqueurCondorcet(graphe);
+        vainqueurCondorcet(graphe);
 
         for (unsigned i = 0; i < nbCandidats; i++)
         {

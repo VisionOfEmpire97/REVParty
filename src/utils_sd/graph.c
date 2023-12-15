@@ -139,6 +139,19 @@ void initialiser_arc(graph *g, t_mat_int_dyn *mat_duel)
         }
     }
 }
+int trouver_direction_arc(sommet *s1,sommet* s2){
+    for (int i=0;i<s1->nbSuccesseur;i++){
+        if(s1->tabSuccesseur[i]==s2){
+            return 1;
+        }
+    }
+    for (int i=0;i<s1->nbPredecesseur;i++){
+        if(s1->tabPredecesseur[i]==s2){
+            return 2;
+        }
+    }
+    return 0;
+}
 graph *creer_graphe_de_matrice_duel(t_mat_int_dyn *mat_duel, char **listeNomSommets)
 {
 
