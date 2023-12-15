@@ -39,9 +39,9 @@ arc *arcDePoidsMinimal(graph *graphe)
 
 void redistributionPoidsUnique(arc **arcs, int nbArcs)
 {
-    for (unsigned i = 0; i < nbArcs; i++)
+/*     for (unsigned i = 0; i < nbArcs; i++)
     {
-        arcs[i]->poids *= 2;
+        arcs[i]->poids *= 2; //??
     }
     for (unsigned i = 0; i < nbArcs - 1; i++)
     {
@@ -52,21 +52,29 @@ void redistributionPoidsUnique(arc **arcs, int nbArcs)
                 arcs[i]->depart->nbSuccesseur > arcs[j]->depart->nbSuccesseur ? arcs[i]->poids++ : arcs[j]->poids++;
             }
         }
+    } */
+    for (unsigned i = 0; i < nbArcs; i++) {
+        
     }
 }
 
 void triArcsDecroissant(graph *g)
 {
-    arc *temp;
-    for (int i = 0; i < g->nbArc - 1; i++)
+    arc *arc_temp;
+    for (int i = 0; i < g->nbArc; i++)
     {
         for (int j = i + 1; j < g->nbArc; j++)
         {
             if (g->arcs[j]->poids > g->arcs[i]->poids)
             {
-                temp = g->arcs[i];
+                arc_temp = g->arcs[i];
                 g->arcs[i] = g->arcs[j];
-                g->arcs[j] = temp;
+                g->arcs[j] = arc_temp;
+            }
+        }
+        for (int k = i; k > 0; k--) {
+            if (k > 0 && g->arcs[k]->poids == g->arcs[k-1]->poids) {
+                g->arcs[k-1]->poids++;
             }
         }
     }
@@ -143,7 +151,7 @@ char *vainqueurCondorcet(graph *graphe)
 
     /**Vérifications du déroulement des duels, création de logs*/
 
-    for (unsigned i = 0; i < nbCandidats; i++)
+    for (unsigned i = 0; i < nbCandidats; i++) //pq unsigned
     {
         sprintf(buf, "[CDC] Candidat %s => Nombre de duels remportés: %2d. Nombre de duels perdus: %2d. Nombre total de participants: %2d\n",
                 graphe->sommets[i]->nom, graphe->sommets[i]->nbSuccesseur, graphe->sommets[i]->nbPredecesseur, nbCandidats);
@@ -258,19 +266,19 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
         sprintf(buf, "[CDC_P] Résolution du paradoxe avec la méthode des paires par ordre decroissants.\n\n");
         append_to_log_file(buf);
 
-
-        printf("premier affichage\n");
+        printf("graphe non trié\n");
+        afficher_graph(graphe);
 
         triArcsDecroissant(graphe);
-        afficher_graph(graphe);
         // redistributionPoidsUnique(graphe->arcs, graphe->nbArc);
         // triArcsDecroissant(graphe);
 
-        printf("second affichage\n");
+        printf("graphe trié, pas d'égalités de poids\n");
         afficher_graph(graphe);
         // afficher_matrice_int(matrice);
 
         retirerCircuits(graphe);
+        afficher_graph(graphe);
 
         // vainqueurCondorcet(graphe);
 
