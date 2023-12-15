@@ -27,7 +27,6 @@ typedef struct t_sommet
     struct t_sommet **tabSuccesseur;
     struct t_sommet **tabPredecesseur;
     struct t_sommet *CC;
-    int visite;
 } sommet;
 
 typedef struct t_arc
