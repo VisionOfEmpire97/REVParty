@@ -11,7 +11,6 @@ sommet *creer_sommet(char *nom)
     s->tabSuccesseur = NULL;
     s->tabPredecesseur = NULL;
     s->CC = s;
-    s->visite = 0;
     return s;
 }
 void liberer_graph(graph *g)
