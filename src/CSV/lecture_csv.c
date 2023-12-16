@@ -8,6 +8,28 @@
 #define SEPARATEUR ","
 #define BUFF_SIZE 500
 
+/**
+ * \brief Permet d'insérer une ligne entière dans la matrice
+ * \param[in] ligne ligne à insérer
+ * \param[in] mat matrice destination
+ */
+void inserer_ligne_matrice(char *ligne, t_mat_char_star_dyn *mat)
+{
+    char chaine[BUFF_SIZE];
+    strcpy(chaine, ligne);
+    size_t length = strlen(chaine);
+    if (chaine[length - 1] == '\n')
+        chaine[--length] = '\0'; 
+
+    char *tok = strtok(chaine, SEPARATEUR);
+    while (tok != NULL)
+    {
+        inserer_matrice_char(tok, mat);
+        tok = strtok(NULL, SEPARATEUR);
+    }
+}
+
+
 t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
 {
 
@@ -42,26 +64,6 @@ t_mat_char_star_dyn *lecture_fichier(const char *nom_fichier)
 }
 
 
-/**
- * \brief Permet d'insérer une ligne entière dans la matrice
- * \param[in] ligne ligne à insérer
- * \param[in] mat matrice destination
- */
-void inserer_ligne_matrice(char *ligne, t_mat_char_star_dyn *mat)
-{
-    char chaine[BUFF_SIZE];
-    strcpy(chaine, ligne);
-    size_t length = strlen(chaine);
-    if (chaine[length - 1] == '\n')
-        chaine[--length] = '\0'; 
-
-    char *tok = strtok(chaine, SEPARATEUR);
-    while (tok != NULL)
-    {
-        inserer_matrice_char(tok, mat);
-        tok = strtok(NULL, SEPARATEUR);
-    }
-}
 
 t_mat_char_star_dyn *recherche_hash(char *hash, const char *nom_fichier)
 {
