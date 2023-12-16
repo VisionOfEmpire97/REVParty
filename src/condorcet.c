@@ -12,6 +12,37 @@
 
 char buf[200];
 
+
+void duelsToLog(t_mat_int_dyn *mat_duels, char **entete)
+{
+    int nbCandidats = mat_duels->col;
+    int compteur = 0, scoreCandidat1, scoreCandidat2;
+
+    for (unsigned i = 0; i < nbCandidats; i++)
+    {
+        for (unsigned j = i + 1; j < nbCandidats; j++)
+        {
+            scoreCandidat1 = mat_duels->matrice[i][j];
+            scoreCandidat2 = mat_duels->matrice[j][i];
+            sprintf(buf, "[CDC] Duel %2d => %s (%2d victoires) vs %s (%2d victoires) => Vainqueur: %s(Score=%2d)\n",
+                    ++compteur, entete[i], scoreCandidat1, entete[j], scoreCandidat2, scoreCandidat1 > scoreCandidat2 ? entete[i] : entete[j], scoreCandidat1 > scoreCandidat2 ? scoreCandidat1 - scoreCandidat2 : scoreCandidat2 - scoreCandidat1);
+            append_to_log_file(buf);
+        }
+    }
+    append_to_log_file("\n");
+}
+
+void arcsToLog(graph *g){
+
+    for (int j = 0; j < (g->nbArc); j++)
+    {   
+        sprintf(buf, "%-20s \t---%d---> (%s)\n", (((g->arcs[j])->depart)->nom), ((g->arcs[j])->poids), (((g->arcs[j])->arrivee)->nom));
+        append_to_log_file(buf);
+    }
+    append_to_log_file("\n");
+}
+
+
 /**
  * \brief Fonction permettant de retrouver l'arc de poids minimal d'un graphe.
  * Fonction utile pour le fonctionnement de la méthode Schulze.
@@ -36,6 +67,8 @@ arc *arcDePoidsMinimal(graph *graphe)
     }
     return arcPoidsMin;
 }
+
+
 
 void triArcsDecroissant(graph *g)
 {
@@ -70,10 +103,12 @@ void triArcsDecroissant(graph *g)
     }
 }
 
+
 void union_f(sommet *s, sommet *racine)
 {
     s->CC = racine;
 }
+
 
 void retirerCircuits(graph *graphe)
 {
@@ -87,39 +122,21 @@ void retirerCircuits(graph *graphe)
         arrivee = graphe->arcs[i]->arrivee;
         if (depart->CC != arrivee)
         {
-            printf("CC %s = %s , CC %s = %s\n", depart->nom, depart->CC->nom, arrivee->nom, arrivee->CC->nom);
+            // sprintf(buf, "CC %s = %s , CC %s = %s\n", depart->nom, depart->CC->nom, arrivee->nom, arrivee->CC->nom);
+            // append_to_log_file(buf);
             union_f(arrivee, depart->CC);
             i++;
         }
         else
         {
-            printf("Arc retiré (cycle détecté) : %s -> %s (Poids : %d)\n",
+            sprintf(buf, "Arc retiré (cycle détecté) : %s -> %s (Poids : %d)\n",
                    graphe->arcs[i]->depart->nom, graphe->arcs[i]->arrivee->nom, graphe->arcs[i]->poids);
+            append_to_log_file(buf);
             enlever_arc(graphe, graphe->arcs[i]);
         }
     }
-    
-    // afficher_graph(graphe);
 }
 
-void afficherDuels(t_mat_int_dyn *mat_duels, char **entete)
-{
-    int nbCandidats = mat_duels->col;
-    int compteur = 0, scoreCandidat1, scoreCandidat2;
-
-    for (unsigned i = 0; i < nbCandidats; i++)
-    {
-        for (unsigned j = i + 1; j < nbCandidats; j++)
-        {
-            scoreCandidat1 = mat_duels->matrice[i][j];
-            scoreCandidat2 = mat_duels->matrice[j][i];
-            sprintf(buf, "[CDC] Duel %2d => %s (%2d victoires) vs %s (%2d victoires) => Vainqueur: %s(Score=%2d)\n",
-                    ++compteur, entete[i], scoreCandidat1, entete[j], scoreCandidat2, scoreCandidat1 > scoreCandidat2 ? entete[i] : entete[j], scoreCandidat1 > scoreCandidat2 ? scoreCandidat1 - scoreCandidat2 : scoreCandidat2 - scoreCandidat1);
-            append_to_log_file(buf);
-        }
-    }
-    append_to_log_file("\n");
-}
 
 
 
@@ -171,7 +188,7 @@ void condorcet_minimax(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
      * celui avec le poids le plus elevé, et donc celui avec la pire défaite.
      * Le sommet avec la pire défaite la plus basse remporte le scrutin
      */
-    afficherDuels(matrice, entete);
+    duelsToLog(matrice, entete);
 
     char *vainqueurMinimax, *vainqueurDeCondorcet;
     int nbCandidats = matrice->col;
@@ -240,13 +257,14 @@ void condorcet_minimax(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
 
 void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
 {
-    afficherDuels(matrice, entete);
+    duelsToLog(matrice, entete);
 
     char *vainqueurPaires, *vainqueurDeCondorcet;
     int nbCandidats = matrice->col;
     graph *graphe;
     graphe = creer_graphe_de_matrice_duel(matrice, entete);
     directed_graph_to_dot(graphe, "log/graphe_paire.dot");
+
     if ((vainqueurDeCondorcet = vainqueurCondorcet(graphe)) != NULL)
     {
         vainqueurPaires = vainqueurDeCondorcet;
@@ -255,22 +273,20 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
     {
         sprintf(buf, "[CDC_P] Résolution du paradoxe avec la méthode des paires par ordre decroissants.\n\n");
         append_to_log_file(buf);
-
-        printf("graphe non trié\n");
-        afficher_graph(graphe);
+        sprintf(buf, "[CDC_P] Tri des arcs dans l'ordre décroissant des poids (sans ex-aequo).\n\n");
+        append_to_log_file(buf);
+        sprintf(buf, "[CDC_P] Arcs avant tri : \n\n");
+        append_to_log_file(buf);
+        arcsToLog(graphe);
 
         triArcsDecroissant(graphe);
-        // redistributionPoidsUnique(graphe->arcs, graphe->nbArc);
-        // triArcsDecroissant(graphe);
 
-        printf("graphe trié, pas d'égalités de poids\n");
-        afficher_graph(graphe);
-        // afficher_matrice_int(matrice);
+        sprintf(buf, "[CDC_P] Arcs après tri : \n\n");
+        append_to_log_file(buf);
+        arcsToLog(graphe);
+
 
         retirerCircuits(graphe);
-        afficher_graph(graphe);
-        directed_graph_to_dot(graphe, "log/graphe_condorcet_paire_sans_cycle.dot");
-        // vainqueurCondorcet(graphe);
 
         vainqueurCondorcet(graphe);
 
@@ -293,7 +309,7 @@ void condorcet_Schulze(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
      * Retirer successivements les arcs de poids minimal jusqu'à retrouver un vainqueur de Condorcet
      * Si égalité, renvoyer tous les sommets restants après avoir retiré tous les arcs
      */
-    afficherDuels(matrice, entete);
+    duelsToLog(matrice, entete);
 
     char *vainqueurSchulze, *vainqueurDeCondorcet;
     int nbCandidats = matrice->col;
