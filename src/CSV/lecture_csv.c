@@ -19,7 +19,7 @@ void inserer_ligne_matrice(char *ligne, t_mat_char_star_dyn *mat)
     strcpy(chaine, ligne);
     size_t length = strlen(chaine);
     if (chaine[length - 1] == '\n')
-        chaine[--length] = '\0'; 
+        chaine[--length] = '\0';
 
     char *tok = strtok(chaine, SEPARATEUR);
     while (tok != NULL)
@@ -28,7 +28,6 @@ void inserer_ligne_matrice(char *ligne, t_mat_char_star_dyn *mat)
         tok = strtok(NULL, SEPARATEUR);
     }
 }
-
 
 t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
 {
@@ -39,8 +38,8 @@ t_mat_char_star_dyn *lecture_entete(const char *nom_fichier)
 
     if (fgets(buffer, sizeof(buffer), file) != NULL)
     {
-        //suppress a warning because we ignore fgets' return value
-        //On lit que la première ligne du fichier, on atteindra jamais EOF
+        // suppress a warning because we ignore fgets' return value
+        // On lit que la première ligne du fichier, on atteindra jamais EOF
     }
     ajouter_ligne(mat);
     inserer_ligne_matrice(buffer, mat);
@@ -62,8 +61,6 @@ t_mat_char_star_dyn *lecture_fichier(const char *nom_fichier)
     fclose(file);
     return mat;
 }
-
-
 
 t_mat_char_star_dyn *recherche_hash(char *hash, const char *nom_fichier)
 {

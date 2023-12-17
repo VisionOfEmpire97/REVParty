@@ -50,6 +50,7 @@ JGM = $(EXECDIR)/JugementMajoritaire
 
 #Fichiers de test
 TESTCLASSEMENT = fich_tests/vote10.csv
+TESTDUEL = fich_tests/calcul1.csv
 CLASSEMENT = fichiers_votes/VoteCondorcet.csv
 
 ##### Objets
@@ -86,7 +87,8 @@ test_matrice: dirs $(OBJET_UTILS)
 test_graph: dirs $(OBJETS_UTILS_EXTRAS)
 	@$(CC) -o $(TESTGRAPH) $(OBJETS_UTILS_EXTRAS) $(TESTDIR)/test_graph.c
 	@echo "succès ! L'exécutable $(TESTGRAPH) est situé dans $(TESTGRAPH)"
-	@./$(TESTGRAPH) $(TESTCLASSEMENT)
+	@./$(TESTGRAPH) $(TESTCLASSEMENT) 0
+	@./$(TESTGRAPH) $(TESTDUEL) 1
 
 test_lecture_csv : dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTCSV) $(OBJET_UTILS) $(CSVDIR)/test_lecteur.c
