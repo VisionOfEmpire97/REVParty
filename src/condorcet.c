@@ -129,7 +129,7 @@ void retirerCircuits(graph *graphe)
         }
         else
         {
-            sprintf(buf, "Arc retiré (cycle détecté) : %s -> %s (Poids : %d)\n",
+            sprintf(buf, "[CDC_P] Arc retiré (cycle détecté) : %s -> %s (Poids : %d)\n",
                    graphe->arcs[i]->depart->nom, graphe->arcs[i]->arrivee->nom, graphe->arcs[i]->poids);
             append_to_log_file(buf);
             enlever_arc(graphe, graphe->arcs[i]);
@@ -285,7 +285,7 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
         append_to_log_file(buf);
         arcsToLog(graphe);
 
-
+        directed_graph_to_dot(graphe, "log/graphe_paire.dot");
         retirerCircuits(graphe);
 
         vainqueurCondorcet(graphe);
@@ -314,7 +314,9 @@ void condorcet_Schulze(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
     char *vainqueurSchulze, *vainqueurDeCondorcet;
     int nbCandidats = matrice->col;
     graph *graphe;
+    arc *arcMinimal;
     graphe = creer_graphe_de_matrice_duel(matrice, entete);
+    
 
     if (!vainqueurCondorcet(graphe))
     {
@@ -324,7 +326,12 @@ void condorcet_Schulze(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
     
     while ((vainqueurDeCondorcet = vainqueurCondorcet(graphe)) == NULL)
     {
-        enlever_arc(graphe, arcDePoidsMinimal(graphe));
+        arcsToLog(graphe);
+        arcMinimal = arcDePoidsMinimal(graphe);
+        sprintf(buf, "[CDC_S] Arc retiré: %s -> %s (Poids : %d)\n\n",
+                   arcMinimal->depart->nom, arcMinimal->arrivee->nom, arcMinimal->poids);
+        append_to_log_file(buf);
+        enlever_arc(graphe, arcMinimal);
     }
     vainqueurSchulze = vainqueurDeCondorcet;
     liberer_graph(graphe);
