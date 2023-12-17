@@ -12,6 +12,11 @@
  - GCC, make
  - Valgrind pour le test mémoire
 
+# RENDU FINAL
+- Appelez __make all_tests__ pour tester toutes les méthodes de scrutin dans des appels séparés afin d'obtenir un fichier de log différent pour chaque méthode
+- Appelez __make all__ afin de générer également la documentation et tester le programme indépendant verify_my_vote 
+- Appelez __make test_all_methods__ pour tester le programme avec la balise `-m all`
+
 ## CC2
 - Pour vérifier que le programme `verify_my_vote` marche, lancez __make test_vmv__. Cette commande vous indiquera également avec quels arguments exécuter Valgrind
 - Pour tester la lecture du CSV, faites __make test_lecture_csv__, le programme sera appelé avec:
@@ -28,4 +33,5 @@
 - Il est également possible de tester la méthode uninominale uniquement avec __make uninominal__ ou __make test_uni__
 - **Important** :
     - Au deuxième tour, on considère que si le vote de préférence est le même pour les deux candidants, alors c'est un vote blanc que ne sera pas compté.
+
 

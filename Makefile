@@ -138,6 +138,12 @@ test_condorcet: scrutin
 	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENTCENT) -m cp -o $(LOGDIR)/condorcet_paires_vote100.txt
 	@dot -Tpdf log/*.dot -O
 
+test_all_methods: scrutin
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m all -o $(LOGDIR)/all_votecondorcet.txt
+	@./$(PROG_PRINCIPAL) -d $(TESTDUEL) -m all -o $(LOGDIR)/all_calcul1.txt
+	@dot -Tpdf log/*.dot -O
+	
+
 vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
 vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
 
