@@ -49,7 +49,8 @@ TESTUNI = $(EXECDIR)/uninominal
 JGM = $(EXECDIR)/JugementMajoritaire
 
 #Fichiers de test
-TESTCLASSEMENT = fich_tests/vote10.csv
+TESTCLASSEMENTDIX = fich_tests/vote10.csv
+TESTCLASSEMENTCENT = fich_tests/vote100.csv
 TESTDUEL = fich_tests/calcul1.csv
 CLASSEMENT = fichiers_votes/VoteCondorcet.csv
 
@@ -82,12 +83,12 @@ test_sha: dirs $(OBJ_SHA_UTILS)
 test_matrice: dirs $(OBJET_UTILS)
 	@$(CC) -o $(TESTMAT) $(OBJET_UTILS) $(TESTDIR)/test_matrice.c
 	@echo "succès ! L'exécutable $(TESTMAT) est situé dans $(TESTMAT)"
-	@./$(TESTMAT) $(TESTCLASSEMENT)
+	@./$(TESTMAT) $(TESTCLASSEMENTDIX)
 
 test_graph: dirs $(OBJETS_UTILS_EXTRAS)
 	@$(CC) -o $(TESTGRAPH) $(OBJETS_UTILS_EXTRAS) $(TESTDIR)/test_graph.c
 	@echo "succès ! L'exécutable $(TESTGRAPH) est situé dans $(TESTGRAPH)"
-	@./$(TESTGRAPH) $(TESTCLASSEMENT) 0
+	@./$(TESTGRAPH) $(TESTCLASSEMENTDIX) 0
 	@./$(TESTGRAPH) $(TESTDUEL) 1
 
 test_lecture_csv : dirs $(OBJET_UTILS)
@@ -110,17 +111,16 @@ test_vmv : vmv
 	\"$(RED)valgrind --leak-check=full $(verify_my_vote) roset nathan e9RkoTAH $(CLASSEMENT)$(END_C)\""
 	@echo "Vous pouvez générer la documentation avec make doxygen (les packages doxygen et dot sont requis.)"
 
-#  test_jgm : $(REQUIRED_JUGEMENT)
-# 	@$(CC) -o $(JGM) $(REQUIRED_JUGEMENT) $(TESTDIR)/test_jugement.c
-# 	@./$(JGM) $(TESTCLASSEMENT)
-
 test_jgm: scrutin
-	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENT) -m jm -o $(LOGDIR)/log_jgm.txt
-	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m jm -o $(LOGDIR)/log_jgm2.txt
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENTDIX) -m jm -o $(LOGDIR)/jugement_vote10.txt
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENTCENT) -m jm -o $(LOGDIR)/jugement_vote100.txt
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m jm -o $(LOGDIR)/jugement_votecondorcet.txt
 	
-test_uni: dirs $(REQUIRED_UNI)
-	@$(CC) -o $(TESTUNI) $(REQUIRED_UNI) $(SRCDIR)/test_uninominal.c
-	@./$(TESTUNI) $(PATHTOCSVTEST)/vote10.csv
+test_uni: scrutin
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENTCENT) -m uni1 -o $(LOGDIR)/uninom1_vote100.txt
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENTCENT) -m uni2 -o $(LOGDIR)/uninom2_vote100.txt
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni1 -o $(LOGDIR)/uninom1_votecondorcet.txt
+	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o $(LOGDIR)/uninom2_votecondorcet.txt
 
 scrutin: dirs $(REQUIRED_SCRUTIN)
 	@$(CC) -o $(PROG_PRINCIPAL) $(REQUIRED_SCRUTIN) $(SRCDIR)/scrutin.c
@@ -129,14 +129,13 @@ test_scrutin: scrutin
 	@./$(PROG_PRINCIPAL) -i $(CLASSEMENT) -m uni2 -o $(LOGDIR)/test_log.txt
 	@echo "$(GREEN)Vous pouvez consulter le fichier de log dans $(LOGDIR)/test_log.txt$(END_C)"
 
-test_condorcet: dirs $(REQUIRED_CONDORCET)
-	@$(CC) -o $(TESTCONDORCET) $(REQUIRED_CONDORCET) $(TESTDIR)/test_condorcet.c -ggdb
-	@./$(TESTCONDORCET) fich_tests/vote10.csv
-
-test_cd_paires: scrutin
-	@./$(PROG_PRINCIPAL) -i $(PATHTOCSVTEST)/sansegalite1000.csv -m cp -o $(LOGDIR)/test_log1.txt
-	@./$(PROG_PRINCIPAL) -i $(PATHTOCSVTEST)/sansegalite1000.csv -m cp -o $(LOGDIR)/test_log2.txt
-	@./$(PROG_PRINCIPAL) -i $(PATHTOCSVTEST)/sansegalite1000.csv -m cp -o $(LOGDIR)/test_log3.txt
+test_condorcet: scrutin
+	@./$(PROG_PRINCIPAL) -d $(TESTDUEL) -m cm -o $(LOGDIR)/condorcet_minimax_calcul1.txt
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENTCENT) -m cm -o $(LOGDIR)/condorcet_minimax_vote100.txt
+	@./$(PROG_PRINCIPAL) -d $(TESTDUEL) -m cs -o $(LOGDIR)/condorcet_schulze_calcul1.txt
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENTCENT) -m cs -o $(LOGDIR)/condorcet_schulze_vote100.txt
+	@./$(PROG_PRINCIPAL) -d $(TESTDUEL) -m cp -o $(LOGDIR)/condorcet_paires_calcul1.txt
+	@./$(PROG_PRINCIPAL) -i $(TESTCLASSEMENTCENT) -m cp -o $(LOGDIR)/condorcet_paires_vote100.txt
 	@dot -Tpdf log/*.dot -O
 
 vpath %.c $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR) $(TESTDIR)
@@ -145,8 +144,8 @@ vpath %.h $(UTILDIR) $(SRCDIR) $(SHADIR) $(CSVDIR)
 $(OBJDIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-all_utils: test_vmv test_sha test_graph test_lecture_csv test_matrice 
-all_methods: test_jgm test_uni test_condorcet
+all: all_tests doc test_vmv
+all_tests: test_uni test_jgm test_condorcet
 
 dirs:
 	@if [ ! -d "./$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
@@ -179,6 +178,7 @@ deliverCC:
 	cp -r $(SRCDIR) $(TEAMNAME)
 	cp -r $(PATHTOCSVFILE) $(TEAMNAME)
 	cp -r $(PATHTOCSVTEST) $(TEAMNAME)
+	cp -r $(LOGDIR) $(TEAMNAME)
 	cp Makefile Doxyfile $(TEAMNAME)
 	cp README_DELIVER.md $(TEAMNAME)
 	zip -r $(TEAMNAME).zip $(TEAMNAME)
