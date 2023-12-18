@@ -188,7 +188,7 @@ bool existeChemin(sommet *sommet1, sommet *sommet2)
     for (unsigned i = 0; i < sommet1->nbSuccesseur; i++)
     {
         /*sommet2 est-il un successeur direct de sommet1?*/
-        if (strcmp(sommet2->nom, sommet1->tabSuccesseur[i]->nom) == 0)
+        if (sommet2->nom ==  sommet1->tabSuccesseur[i]->nom)
         {
             sprintf(buf, "[CDC_P] Chemin entre %s et %s existe\n", sommet1->nom, sommet2->nom);
             append_to_log_file(buf);
@@ -395,8 +395,8 @@ void condorcet_minimax(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
         sprintf(buf, "[CDC_MX] %s est déclaré vainqueur selon la méthode de Condorcet minimax.\n\n", vainqueurMinimax);
         append_to_log_file(buf);
     }
-    afficher_res(NOM_METHODE_CDC_MNMX, nbCandidats, nbElecteurs, vainqueurMinimax, NULL);
     liberer_graph(graphe);
+    afficher_res(NOM_METHODE_CDC_MNMX, nbCandidats, nbElecteurs, vainqueurMinimax, NULL);
 }
 
 /**********************************************************************************************
