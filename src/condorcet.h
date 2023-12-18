@@ -23,6 +23,8 @@
  * 
  * \details Pour chacun des candidats, on regarde le pire des scores qu’il ferait dans ses
  * différents faces-à-faces, puis on déclare élu celui des candidats dont le pire des scores est le meilleur.
+ * Si plusieurs vainqueurs ont le meme score de pire défaite, on les fait s'affronter en duel deux à deux,
+ * avec le graphe d'origine comme référentiel.
  * 
  * \param[in] matrice Le matrice de duels du fichier csv du scrutin, qu'on transformera en graphe.
  * \param[in] entete La partie de l'entete du fichier csv, où l'on retrouvera les candidats.
@@ -59,7 +61,7 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs);
  * 
  * \details En guise d'explication concise de la méthode Schulze, il est nécessaire de retirer dans le graphe
  * les arcs de poids minimal jusqu'à ce qu'un des sommets gagne tous ses duels (ou n'en perd aucun), et donc
- * se désigne comme vainqueur de Condorcet.
+ * se désigne comme vainqueur de Condorcet. Cette methode implémente l'heuristique de Schwartz de manière simplifiée.
  * 
  * \param[in] matrice Le matrice de duels du fichier csv du scrutin, qu'on transformera en graphe.
  * \param[in] entete La partie de l'entete du fichier csv, où l'on retrouvera les candidats.
