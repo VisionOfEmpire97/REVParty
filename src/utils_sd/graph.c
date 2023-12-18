@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "matrice.h"
 #include "graph.h"
 
@@ -246,15 +247,33 @@ int enlever_arc(graph *g, arc *a)
     return nbArc; // besoin de retour ??
 }
 
+void strip_to_alphanum(char *nom, char *new_name)
+{
+    int i, j = 0;
+    for (int i = 0; nom[i] != '\0' ;i++) {
+        if(isalnum(nom[i]))
+        {
+            new_name[j++] = nom[i];
+        }
+    }
+    new_name[j] = '\0';
+}
+
 void directed_graph_to_dot(graph *g, char *dot_file_name)
 {
     FILE *dot_file;
+    char *nom_depart = malloc(50 * sizeof(char));
+    char *nom_arrivee = malloc(50 * sizeof(char));
     dot_file = fopen(dot_file_name, "w");
     fprintf(dot_file, "strict digraph {\n\tedge [arrowhead=vee]\n");
     for (int i = 0; i < g->nbArc; i++)
     {
-        fprintf(dot_file, "\t%s -> %s [label = %d, weight = %d]\n", g->arcs[i]->depart->nom, g->arcs[i]->arrivee->nom, g->arcs[i]->poids, g->arcs[i]->poids);
+        strip_to_alphanum(g->arcs[i]->depart->nom, nom_depart);
+        strip_to_alphanum(g->arcs[i]->arrivee->nom, nom_arrivee);
+        fprintf(dot_file, "\t%s -> %s [label = %d, weight = %d]\n", nom_depart, nom_arrivee, g->arcs[i]->poids, g->arcs[i]->poids);
     }
     fprintf(dot_file, "}\n");
     fclose(dot_file);
+    free(nom_depart);
+    free(nom_arrivee);
 }
