@@ -12,7 +12,6 @@ sommet *creer_sommet(char *nom)
     s->nbSuccesseur = 0;
     s->tabSuccesseur = NULL;
     s->tabPredecesseur = NULL;
-    s->CC = s;
     return s;
 }
 void liberer_graph(graph *g)
@@ -217,7 +216,7 @@ int enlever_arc(graph *g, arc *a)
     arc **nouvelListe = NULL;
     int temp = 0;
     enlever_sommet(((a->arrivee)->nbPredecesseur)--, (a->arrivee)->tabPredecesseur, a->depart);
-    enlever_sommet(((a->depart)->nbSuccesseur)--, (a->depart)->tabSuccesseur, a->arrivee);
+    // enlever_sommet(((a->depart)->nbSuccesseur)--, (a->depart)->tabSuccesseur, a->arrivee);
     if (nbArc > 0)
     {
         nouvelListe = (arc **)malloc(nbArc * sizeof(arc *));

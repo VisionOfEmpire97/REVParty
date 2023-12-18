@@ -8,10 +8,9 @@
 #define NOM_METHODE_CDC_MNMX "Condorcet minimax"
 #define NOM_METHODE_CDC_SCH "Condorcet Schulze"
 #define NOM_METHODE_CDC_P "Condorcet paires"
-#define MAX_INT 998
+#define MAX_INT 999
 
 char buf[200];
-
 
 void duelsToLog(t_mat_int_dyn *mat_duels, char **entete)
 {
@@ -32,16 +31,16 @@ void duelsToLog(t_mat_int_dyn *mat_duels, char **entete)
     append_to_log_file("\n");
 }
 
-void arcsToLog(graph *g){
+void arcsToLog(graph *g)
+{
 
     for (int j = 0; j < (g->nbArc); j++)
-    {   
+    {
         sprintf(buf, "%-20s \t---%d---> (%s)\n", (((g->arcs[j])->depart)->nom), ((g->arcs[j])->poids), (((g->arcs[j])->arrivee)->nom));
         append_to_log_file(buf);
     }
     append_to_log_file("\n");
 }
-
 
 /**
  * \brief Fonction permettant de retrouver l'arc de poids minimal d'un graphe.
@@ -68,8 +67,6 @@ arc *arcDePoidsMinimal(graph *graphe)
     return arcPoidsMin;
 }
 
-
-
 void triArcsDecroissant(graph *g)
 {
     arc *arc_temp;
@@ -83,7 +80,7 @@ void triArcsDecroissant(graph *g)
                 g->arcs[i] = g->arcs[j];
                 g->arcs[j] = arc_temp;
             }
-            else if(g->arcs[j]->poids == g->arcs[i]->poids)
+            else if (g->arcs[j]->poids == g->arcs[i]->poids)
             {
                 if (g->arcs[j]->depart->nbSuccesseur > g->arcs[i]->depart->nbSuccesseur)
                 {
@@ -91,54 +88,98 @@ void triArcsDecroissant(graph *g)
                     g->arcs[i] = g->arcs[j];
                     g->arcs[j] = arc_temp;
                 }
-                
             }
-            
         }
-        for (int k = i; k > 0; k--) {
-            if (k > 0 && g->arcs[k]->poids == g->arcs[k-1]->poids) {
-                g->arcs[k-1]->poids++;
+        for (int k = i; k > 0; k--)
+        {
+            if (k > 0 && g->arcs[k]->poids == g->arcs[k - 1]->poids)
+            {
+                g->arcs[k - 1]->poids++;
             }
         }
     }
 }
 
-
-void union_f(sommet *s, sommet *racine)
+void resetSuccesseurs(graph *graphe)
 {
-    s->CC = racine;
+    sommet *s;
+
+    for (unsigned i = 0; i < graphe->nbSommet; i++)
+    {
+        s = graphe->sommets[i];
+        for (int i = 0; i < s->nbSuccesseur; i++)
+        {
+            s->tabSuccesseur[i] = NULL;
+        }
+        s->nbSuccesseur = 0;
+    }
 }
 
+bool existeChemin(sommet *sommet1, sommet *sommet2)
+{
+    /*Si le sommet de départ est égal au sommet d'arrivée, un chemin existe*/
+    
+    for (unsigned i = 0; i < sommet1->nbSuccesseur; i++)
+    {
+        if (strcmp(sommet2->nom, sommet1->tabSuccesseur[i]->nom) == 0)
+        {
+            sprintf(buf, "Chemin entre %s et %s existe\n", sommet1->nom, sommet2->nom);
+            append_to_log_file(buf);
+            for (unsigned j = 0; j < sommet1->nbSuccesseur; j++)
+            {
+                sprintf(buf, "Successeurs de %s : %s\n", sommet1->nom, sommet1->tabSuccesseur[j]->nom);
+                append_to_log_file(buf);
+            }
+            
+            return true;
+        }
+        else
+        {
+
+            sprintf(buf, "pas de chemin concret entre %s et %s. On regarde le fils %s\n", sommet1->nom, sommet2->nom, sommet1->tabSuccesseur[i]->nom);
+            append_to_log_file(buf);
+            if (existeChemin(sommet1->tabSuccesseur[i], sommet2))
+            {
+                return true;
+            }
+        }
+    }
+    sprintf(buf, "pas de chemin concret entre %s et %s\n", sommet1->nom, sommet2->nom);
+    append_to_log_file(buf);
+    return false; // Aucun chemin trouvé
+}
 
 void retirerCircuits(graph *graphe)
 {
-
     sommet *depart, *arrivee;
+    resetSuccesseurs(graphe);
     int i = 0;
-
-    while (graphe->nbArc > i)
+    while (i < graphe->nbArc)
     {
         depart = graphe->arcs[i]->depart;
-        arrivee = graphe->arcs[i]->arrivee;
-        if (depart->CC != arrivee)
+        arrivee = graphe->arcs[i]->arrivee;  
+        sprintf(buf, "analyse de l'arc %s - %s\n", depart->nom, arrivee->nom);
+        append_to_log_file(buf);
+        if (!existeChemin(arrivee, depart))
         {
-            // sprintf(buf, "CC %s = %s , CC %s = %s\n", depart->nom, depart->CC->nom, arrivee->nom, arrivee->CC->nom);
-            // append_to_log_file(buf);
-            union_f(arrivee, depart->CC);
+            depart->tabSuccesseur[depart->nbSuccesseur++] = arrivee;
+            for (size_t i = 0; i < depart->nbSuccesseur; i++)
+            {
+                sprintf(buf, "%s %d\n", depart->nom, depart->nbSuccesseur);
+                append_to_log_file(buf);
+            }
             i++;
         }
         else
         {
             sprintf(buf, "[CDC_P] Arc retiré (cycle détecté) : %s -> %s (Poids : %d)\n",
-                   graphe->arcs[i]->depart->nom, graphe->arcs[i]->arrivee->nom, graphe->arcs[i]->poids);
+                    graphe->arcs[i]->depart->nom, graphe->arcs[i]->arrivee->nom, graphe->arcs[i]->poids);
             append_to_log_file(buf);
             enlever_arc(graphe, graphe->arcs[i]);
         }
     }
+
 }
-
-
-
 
 /**
  * \brief Retourne le vainqueur du suffrage selon la méthode de Condorcet. Si vainqueurCondorcet == NULL,
@@ -158,7 +199,7 @@ char *vainqueurCondorcet(graph *graphe)
 
     /**Vérifications du déroulement des duels, création de logs*/
 
-    for (unsigned i = 0; i < nbCandidats; i++) //pq unsigned
+    for (unsigned i = 0; i < nbCandidats; i++)
     {
         sprintf(buf, "[CDC] Candidat %s => Nombre de duels remportés: %2d. Nombre de duels perdus: %2d. Nombre total de participants: %2d\n",
                 graphe->sommets[i]->nom, graphe->sommets[i]->nbSuccesseur, graphe->sommets[i]->nbPredecesseur, nbCandidats);
@@ -261,7 +302,7 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
 
     char *vainqueurPaires, *vainqueurDeCondorcet;
     int nbCandidats = matrice->col;
-    graph *graphe;
+    graph *graphe, *newGraphe = creer_graph();
     graphe = creer_graphe_de_matrice_duel(matrice, entete);
     directed_graph_to_dot(graphe, "log/graphe_paire.dot");
 
@@ -277,17 +318,19 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
         append_to_log_file(buf);
         sprintf(buf, "[CDC_P] Arcs avant tri : \n\n");
         append_to_log_file(buf);
+
         arcsToLog(graphe);
 
         triArcsDecroissant(graphe);
 
         sprintf(buf, "[CDC_P] Arcs après tri : \n\n");
         append_to_log_file(buf);
+
         arcsToLog(graphe);
 
-        directed_graph_to_dot(graphe, "log/graphe_paire.dot");
         retirerCircuits(graphe);
 
+        directed_graph_to_dot(graphe, "log/graphe_paire.dot");
         vainqueurCondorcet(graphe);
 
         for (unsigned i = 0; i < nbCandidats; i++)
@@ -301,6 +344,7 @@ void condorcet_paires(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
     liberer_graph(graphe);
     afficher_res(NOM_METHODE_CDC_P, nbCandidats, nbElecteurs, vainqueurPaires, NULL);
 }
+
 
 void condorcet_Schulze(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
 {
@@ -316,20 +360,19 @@ void condorcet_Schulze(t_mat_int_dyn *matrice, char **entete, int nbElecteurs)
     graph *graphe;
     arc *arcMinimal;
     graphe = creer_graphe_de_matrice_duel(matrice, entete);
-    
 
     if (!vainqueurCondorcet(graphe))
     {
         sprintf(buf, "[CDC_S] Résolution du paradoxe avec la méthode Schulze.\n\n");
         append_to_log_file(buf);
     }
-    
+
     while ((vainqueurDeCondorcet = vainqueurCondorcet(graphe)) == NULL)
     {
         arcsToLog(graphe);
         arcMinimal = arcDePoidsMinimal(graphe);
         sprintf(buf, "[CDC_S] Arc retiré: %s -> %s (Poids : %d)\n\n",
-                   arcMinimal->depart->nom, arcMinimal->arrivee->nom, arcMinimal->poids);
+                arcMinimal->depart->nom, arcMinimal->arrivee->nom, arcMinimal->poids);
         append_to_log_file(buf);
         enlever_arc(graphe, arcMinimal);
     }

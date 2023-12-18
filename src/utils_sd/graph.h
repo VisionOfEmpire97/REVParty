@@ -26,7 +26,6 @@ typedef struct t_sommet
     int nbPredecesseur;
     struct t_sommet **tabSuccesseur;
     struct t_sommet **tabPredecesseur;
-    struct t_sommet *CC;
 } sommet;
 
 typedef struct t_arc
