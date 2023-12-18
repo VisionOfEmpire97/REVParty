@@ -95,6 +95,8 @@ void electionUninominal(int votes[], char *candidats[], int nbCandidats, int nom
     sprintf(buffer,"Mode de scrutin : uninominal à %d tours, tour 1, %d candidats, %d votants, vainqueur = %s, score = %.2d%%\n",
            tours, nbCandidats, nombreDeVotes, candidats[premierGagnant], pourcentagePremierGagnant);
     append_to_log_file(buffer);
+    sprintf(buffer,"Mode de scrutin : uninominal à %d tours, tour 1", tours);
+    afficher_res(buffer,nbCandidats,nombreDeVotes,candidats[premierGagnant], pourcentagePremierGagnant);
     if (pourcentagePremierGagnant <= 50 && tours == 2)
     {
         pourcentageDeuxiemeTourGagnant = (premierTour[deuxiemeGagnant] * 100) / nombreDeVotes;
@@ -118,8 +120,9 @@ void electionUninominal(int votes[], char *candidats[], int nbCandidats, int nom
         pourcentageDeuxiemeTourGagnant = (deuxiemeTourVotes[IndiceVainqueur] * 100) / compteur;
 
         sprintf(buffer,"Mode de scrutin : uninominal à 2 tours, tour 2, 2 candidats, %d votants, vainqueur = %s, score = %.2d%%\n",
-               nbCandidats, candidats[deuxiemeTourGagnant], pourcentageDeuxiemeTourGagnant);
+               nombreDeVotes, candidats[deuxiemeTourGagnant], pourcentageDeuxiemeTourGagnant);
         append_to_log_file(buffer);
+        printf("%s",buffer);
     }
 }
 

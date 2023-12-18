@@ -20,7 +20,7 @@ void check_compatibility(int *tab, int len_tab)
     }
 }
 
-void lancer_methode(char *methode, char *nom_csv, char *type_csv)    
+void lancer_methode(char *methode, char *nom_csv, char *type_csv)
 {
     t_mat_char_star_dyn *matrice_de_vote = lecture_fichier(nom_csv);
     char **entete;
@@ -30,6 +30,7 @@ void lancer_methode(char *methode, char *nom_csv, char *type_csv)
     {
         entete = recuperer_candidats(matrice_de_vote, 0); // mat de duel == 0
         mat_duel = transformer_mat_char_mat_duel(matrice_de_vote);
+        nb_electeur = mat_duel->matrice[0][1] + mat_duel->matrice[1][0];
     }
     else
     {
@@ -104,18 +105,18 @@ void lancer_methode(char *methode, char *nom_csv, char *type_csv)
 
 void afficher_res(char *nom_methode, int nb_candidats, int nb_electeurs, char *nom_vainqueur, char *score)
 {
-    printf("Mode de scrutin : %s, %d candidats, %d votants", nom_methode, nb_candidats, nb_electeurs);
+    printf("%sMode de scrutin : %s, %d candidats, %d votants%s", GREEN, nom_methode, nb_candidats, nb_electeurs, END_COLOR);
     if (nom_vainqueur != NULL)
     {
-        printf(", vainqueur = %s", nom_vainqueur);
+        printf("%s, vainqueur = %s%s", GREEN, nom_vainqueur, END_COLOR);
     }
     else
     {
-        printf(", vainqueur = pas de vainqueur");
+        printf("%s, vainqueur = pas de vainqueur%s",RED, END_COLOR);
     }
     if (score != NULL)
     {
-        printf(", score = %s", score);
+        printf("%s, score = %s%s", GREEN, score, END_COLOR);
     }
     printf("\n");
 };

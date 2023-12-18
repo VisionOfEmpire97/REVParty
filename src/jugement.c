@@ -71,21 +71,31 @@ void afficher_tab_mentions(t_mat_int_dyn *mentions, char **noms_candidats, int n
 {
     // pour s'assurer du bon alignement il faudrait convertir en ASCII ? les "é" et "à" ne passent pas...
     char *nom_methode = " **** Jugement majoritaire ****";
-    printf("%s\n", nom_methode);
-    printf("%-40s", "");
+    sprintf(buff, "%s\n", nom_methode);
+    append_to_log_file(buff);
+    sprintf(buff, "%-40s", "");
+    append_to_log_file(buff);
+
     for (int i = 0; i < NB_MENTIONS; i++)
     {
-        printf("%7s", str_mentions[i]);
+        sprintf(buff, "%7s", str_mentions[i]);
+        append_to_log_file(buff);
     }
-    printf("\n");
+    sprintf(buff, "\n");
+    append_to_log_file(buff);
+
     for (int i = 0; i < nb_candidats; i++)
     {
-        printf("%-40s", noms_candidats[i]);
+        sprintf(buff, "%-40s", noms_candidats[i]);
+        append_to_log_file(buff);
+
         for (int j = 0; j < NB_MENTIONS; j++)
         {
-            printf("%7d", mentions->matrice[i][j]);
+            sprintf(buff, "%7d", mentions->matrice[i][j]);
+            append_to_log_file(buff);
         }
-        printf("\n");
+        sprintf(buff, "\n");
+        append_to_log_file(buff);
     }
 }
 
@@ -269,7 +279,7 @@ void methode_jugement(t_mat_char_star_dyn *mat)
     // déclarer le vainqueur en sortie de boucle
     int vainqueur = declarer_vainqueur(classement_candidat, nb_candidats, &meilleure_mention);
     sprintf(buff, "[JGM] Le candidat %s a été déclaré vainqueur par méthode de jugement majoritaire\n", nom_candidats[vainqueur]);
+    afficher_res("Jugement majoritaire", nb_candidats, nb_electeurs, nom_candidats[vainqueur], str_mentions[meilleure_mention]);
     append_to_log_file(buff);
-    printf("%s%s%s\n", GREEN, buff, END_COLOR);
     supprimer_matrice_int(mentions);
 }
