@@ -215,8 +215,14 @@ int enlever_arc(graph *g, arc *a)
     int nbArc = (g->nbArc) - 1;
     arc **nouvelListe = NULL;
     int temp = 0;
-    enlever_sommet(((a->arrivee)->nbPredecesseur)--, (a->arrivee)->tabPredecesseur, a->depart);
-    // enlever_sommet(((a->depart)->nbSuccesseur)--, (a->depart)->tabSuccesseur, a->arrivee);
+    if ((a->arrivee)->nbPredecesseur > 0)
+    {
+        enlever_sommet(((a->arrivee)->nbPredecesseur)--, (a->arrivee)->tabPredecesseur, a->depart);
+    }
+    if ((a->depart)->nbSuccesseur > 0)
+    {
+        enlever_sommet(((a->depart)->nbSuccesseur)--, (a->depart)->tabSuccesseur, a->arrivee);
+    }
     if (nbArc > 0)
     {
         nouvelListe = (arc **)malloc(nbArc * sizeof(arc *));
