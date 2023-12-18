@@ -26,7 +26,6 @@ typedef struct t_sommet
     int nbPredecesseur;
     struct t_sommet **tabSuccesseur;
     struct t_sommet **tabPredecesseur;
-    struct t_sommet *CC;
 } sommet;
 
 typedef struct t_arc
@@ -79,6 +78,16 @@ int ajouter_sommet(graph *g, sommet *s);
 /// @param a L'arc
 /// @return Le nombre d'arc du graph
 int ajouter_arc(graph *g, arc *a);
+
+
+/// @brief renvoie la direction de l'arc entre 2 sommets
+/// @param s1 Le premier sommet
+/// @param s2 Le deuxieme sommet
+/// @return 0  si il n'y a pas d'arc entre les sommets
+///         1  si L'arc est de s1 vers s2
+///         2  si L'arc est de s2 vers s1
+int trouver_direction_arc(sommet *s1,sommet* s2);
+
 
 /// @brief Creer un graph avec un matrice de chaine de charactere en entree
 /// @param mat La matrice de chaine de charactere

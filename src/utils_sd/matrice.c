@@ -191,7 +191,7 @@ t_mat_int_dyn *transformer_mat_char_mat_duel(t_mat_char_star_dyn *mat)
     {
         for (int j = 0; j < colonne; j++)
         {
-            mat_duel->matrice[i][j] = atoi(mat->matrice[i][j]);
+            mat_duel->matrice[i - 1][j] = atoi(mat->matrice[i][j]);
         }
     }
     return mat_duel;
